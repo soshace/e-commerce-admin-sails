@@ -6,15 +6,16 @@
  */
 
 var passport = require('passport');
+
 module.exports = {
   login: function (request, response) {
-    passport.authenticate('local', function (error, user, info) {
+    passport.authenticate('local', function (error, user) {
       if ((error) || (!user)) {
         return response.send({
           message: 'login failed'
         });
-        response.send(error);
       }
+
       request.logIn(user, function (error) {
         if (error) {
           response.send(error);
