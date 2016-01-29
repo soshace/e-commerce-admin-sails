@@ -10,6 +10,7 @@ var passport = require('passport');
 module.exports = {
   login: function (request, response) {
     passport.authenticate('local', function (error, user) {
+      console.log('passport.authenticate', error, user);
       if ((error) || (!user)) {
         return response.send({
           message: 'login failed'

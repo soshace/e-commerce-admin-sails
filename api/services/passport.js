@@ -1,10 +1,11 @@
 var passport = require('passport'),
   LocalStrategy = require('passport-local').Strategy,
   bcrypt = require('bcrypt');
-
+console.log('service/passport');
 //helper functions
 function findById(id, callback) {
-  User.findOne(id).done(function (error, user) {
+  User.findOne(id).exec(function (error, user) {
+    console.log('User.findOne-----------!!!!!!!!!!!!');
     if (error) {
       return callback(null, null);
     } else {
@@ -13,10 +14,11 @@ function findById(id, callback) {
   });
 }
 
-function findByUsername(username, callback) {
+function findByEmail(email, callback) {
+  console.log('findByEmail-----------!!!!!!!!!!!!', email);
   User.findOne({
-    name: username
-  }).done(function (error, user) {
+    email: email
+  }).exec(function (error, user) {
     // Error handling
     if (error) {
       return callback(null, null);
@@ -33,10 +35,12 @@ function findByUsername(username, callback) {
 // this will be as simple as storing the user ID when serializing, and finding
 // the user by ID when deserializing.
 passport.serializeUser(function (user, done) {
+  console.log('-----------serializeUser---------1', user);
   done(null, user.id);
 });
 
 passport.deserializeUser(function (id, done) {
+  console.log('deserializeUser-----------!!!!!!!!!!!!');
   findById(id, function (error, user) {
     done(error, user);
   });
@@ -46,27 +50,32 @@ passport.deserializeUser(function (id, done) {
 // Strategies in passport require a `verify` function, which accept
 // credentials (in this case, a username and password), and invoke a callback
 // with a user object.
-passport.use(new LocalStrategy(
-  function (username, password, done) {
+passport.use(new LocalStrategy({
+    usernameField: 'email',
+    passwordField: 'password'
+  },
+  function (email, password, done) {
+    console.log('-----------findByUsername---------0', email, password);
     // asynchronous verification, for effect...
     process.nextTick(function () {
       // Find the user by username. If there is no user with the given
       // username, or the password is not correct, set the user to `false` to
       // indicate failure and set a flash message. Otherwise, return the
       // authenticated `user`.
-      findByUsername(username, function (error, user) {
+      findByEmail(email, function (error, user) {
+        console.log('-----------findByUsername---------', error, user);
         if (error) {
           return done(null, error);
         }
 
         if (!user) {
           return done(null, false, {
-            message: 'Unknown user ' + username
+            message: 'Unknown user ' + email
           });
         }
         bcrypt.compare(password, user.password, function (error, response) {
           var returnUser;
-
+          console.log('-----------findByUsername---------2', error, response);
           if (!response)
             return done(null, false, {
               message: 'Invalid Password'
