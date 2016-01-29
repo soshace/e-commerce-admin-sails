@@ -13,6 +13,7 @@ module.exports = {
       console.log('passport.authenticate', error, user);
       if ((error) || (!user)) {
         return response.send({
+          code: 'login.failed',
           message: 'login failed'
         });
       }
@@ -22,8 +23,8 @@ module.exports = {
           response.send(error);
         }
 
-        response.cookie('isAuthenticated', '1');
         return response.send({
+          code: 'login.successful',
           message: 'login successful'
         });
       });
@@ -31,8 +32,10 @@ module.exports = {
   },
   logout: function (request, response) {
     request.logout();
-    response.clearCookie('isAuthenticated');
-    response.send('logout successful');
+    response.send({
+      code: 'logout.successful',
+      message: 'logout successful'
+    });
   }
 };
 
