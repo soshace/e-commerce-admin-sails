@@ -60,8 +60,8 @@ module.exports = {
     return Team.create({name: 'Admin'});
   },
 
-  afterCreate: function (user, callback) {
-    console.log('user afterCreate', user);
-  }
+  //afterCreate: function (user, callback) {
+  //  console.log('user afterCreate', user);
+  //}
 };
 
