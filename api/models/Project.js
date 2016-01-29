@@ -25,6 +25,10 @@ module.exports = {
       type: 'string',
       enum: ['en', 'fr', 'de', 'ja', 'zh'],
       required: true
+    },
+    company: {
+      model: 'company',
+      via: 'projects'
     }
   }
 };

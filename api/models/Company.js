@@ -12,12 +12,17 @@ module.exports = {
       type: 'string',
       required: true
     },
-    companies: {
-      collection: 'team'
+    teams: {
+      collection: 'team',
+      via: 'companies'
     },
     projects: {
-      collection: 'project'
+      collection: 'project',
+      via: 'company'
+    },
+    owner: {
+      model: 'user',
+      via: 'companies'
     }
   }
 };
-

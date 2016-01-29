@@ -27,8 +27,9 @@ module.exports = {
       collection: 'team',
       via: 'members'
     },
-    company:{
-      model: 'company'
+    company: {
+      collection: 'company',
+      via: 'owner'
     },
     toJSON: function () {
       var obj = this.toObject();
@@ -49,6 +50,18 @@ module.exports = {
         }
       });
     });
+  },
+
+  createCompany(companyName){
+    return Company.create({name: companyName});
+  },
+
+  createAdminTeam(userId){
+    return Team.create({name: 'Admin'});
+  },
+
+  afterCreate: function (user, callback) {
+    console.log('user afterCreate', user);
   }
 };
 
