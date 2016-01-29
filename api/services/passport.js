@@ -5,7 +5,7 @@ console.log('service/passport');
 //helper functions
 function findById(id, callback) {
   User.findOne(id).exec(function (error, user) {
-    console.log('User.findOne-----------!!!!!!!!!!!!');
+    console.log('User.findOne-----------!!!!!!!!!!!!1');
     if (error) {
       return callback(null, null);
     } else {

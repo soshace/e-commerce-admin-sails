@@ -20,7 +20,10 @@ module.exports = {
 
       request.logIn(user, function (error) {
         if (error) {
-          response.send(error);
+          response.send({
+            code: 'error',
+            message: error
+          });
         }
 
         return response.send({
@@ -35,6 +38,14 @@ module.exports = {
     response.send({
       code: 'logout.successful',
       message: 'logout successful'
+    });
+  },
+
+  getProfile: function(request, response){
+    console.log('getProfile', request.isAuthenticated());
+    response.send({
+      code: 'profile',
+      message: 'profile is sent'
     });
   }
 };
