@@ -18,10 +18,12 @@ module.exports = {
     },
     currency: {
       type: 'string',
+      enum: ['USD', 'EUR', 'GBR', 'INR'],
       required: true
     },
     language: {
       type: 'string',
+      enum: ['en', 'fr', 'de', 'ja', 'zh'],
       required: true
     }
   }
