@@ -21,6 +21,8 @@ module.exports = {
         if (error) {
           response.send(error);
         }
+
+        response.cookie('isAuthenticated', '1');
         return response.send({
           message: 'login successful'
         });
@@ -29,6 +31,7 @@ module.exports = {
   },
   logout: function (request, response) {
     request.logout();
+    response.clearCookie('isAuthenticated');
     response.send('logout successful');
   }
 };
