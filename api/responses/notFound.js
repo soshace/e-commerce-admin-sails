@@ -20,12 +20,12 @@
 module.exports = function notFound (data, options) {
 
   // Get access to `req`, `res`, & `sails`
-  var req = this.req;
-  var res = this.res;
-  var sails = req._sails;
+  var request = this.req;
+  var response = this.res;
+  var sails = request._sails;
 
   // Set status code
-  res.status(404);
+  response.status(404);
 
   // Log error to console
   if (data !== undefined) {
@@ -42,8 +42,8 @@ module.exports = function notFound (data, options) {
 
   // If the user-agent wants JSON, always respond with JSON
   // If views are disabled, revert to json
-  if (req.wantsJSON || sails.config.hooks.views === false) {
-    return res.jsonx(data);
+  if (request.wantsJSON || sails.config.hooks.views === false) {
+    return response.jsonx(data);
   }
 
   // If second argument is a string, we take that to mean it refers to a view.
@@ -54,12 +54,12 @@ module.exports = function notFound (data, options) {
   // Otherwise try to guess an appropriate view, or if that doesn't
   // work, just send JSON.
   if (options.view) {
-    return res.view(options.view, { data: data });
+    return response.view(options.view, { data: data });
   }
 
   // If no second argument provided, try to serve the default view,
   // but fall back to sending JSON(P) if any errors occur.
-  else return res.view('404', { data: data }, function (err, html) {
+  else return response.view('404', { data: data }, function (err, html) {
 
     // If a view error occured, fall back to JSON(P).
     if (err) {
@@ -73,10 +73,10 @@ module.exports = function notFound (data, options) {
       else {
         sails.log.warn('res.notFound() :: When attempting to render error page view, an error occured (sending JSON instead).  Details: ', err);
       }
-      return res.jsonx(data);
+      return response.jsonx(data);
     }
 
-    return res.send(html);
+    return response.send(html);
   });
 
 };
