@@ -23,6 +23,13 @@ module.exports = {
       minLength: 6,
       required: true
     },
+    teams: {
+      collection: 'team',
+      via: 'members'
+    },
+    company:{
+      model: 'company'
+    },
     toJSON: function () {
       var obj = this.toObject();
       delete obj.password;

@@ -11,6 +11,10 @@ module.exports = {
     name: {
       type: 'string',
       required: true
+    },
+    members: {
+      collection: 'user',
+      via: 'teams'
     }
   }
 };
