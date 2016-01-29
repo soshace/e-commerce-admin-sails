@@ -39,7 +39,6 @@ module.exports.http = {
       'session',
       'passportInit',
       'passportSession',
-      'isDashboardAuthenticated',
       'myRequestLogger',
       'bodyParser',
       'handleBodyParserError',
@@ -59,20 +58,6 @@ module.exports.http = {
      * Example custom middleware; logs each request to the console.              *
      *                                                                           *
      ****************************************************************************/
-
-    isDashboardAuthenticated: function (request, response, next) {
-      var isDashboardUrl = /\/dashboard.+/.test(request.url),
-        notAuthenticated = !request.isAuthenticated();
-
-      if (isDashboardUrl && notAuthenticated) {
-        return response.send({
-          code: 'not.authenticated',
-          message: 'you are not authenticated'
-        });
-      }
-
-      next();
-    }
 
     // myRequestLogger: function (req, res, next) {
     //     console.log("Requested :: ", req.method, req.url);

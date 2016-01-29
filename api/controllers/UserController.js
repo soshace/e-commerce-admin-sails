@@ -9,12 +9,12 @@ var passport = require('passport');
 
 module.exports = {
   login: function (request, response) {
-    passport.authenticate('local', function (error, user) {
+    passport.authenticate('local', function (error, user, info) {
       console.log('passport.authenticate', error, user);
       if ((error) || (!user)) {
         return response.send({
           code: 'login.failed',
-          message: 'login failed'
+          message: info.message
         });
       }
 
@@ -28,7 +28,7 @@ module.exports = {
 
         return response.send({
           code: 'login.successful',
-          message: 'login successful'
+          message: info.message
         });
       });
     })(request, response);
@@ -38,14 +38,6 @@ module.exports = {
     response.send({
       code: 'logout.successful',
       message: 'logout successful'
-    });
-  },
-
-  getProfile: function(request, response){
-    console.log('getProfile', request.isAuthenticated());
-    response.send({
-      code: 'profile',
-      message: 'profile is sent'
     });
   }
 };
