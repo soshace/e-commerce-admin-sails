@@ -32,6 +32,9 @@ module.exports = {
       collection: 'company',
       via: 'owner'
     },
+    projects: {
+
+    },
     toJSON: function () {
       var obj = this.toObject();
       delete obj.password;
@@ -53,40 +56,59 @@ module.exports = {
     });
   },
 
+  getSlug: function (name) {
+    return name.replace(/\s+/g, '-');
+  },
+
   /**
    * Method creates Company and team 'Admin' associated with registered user
    * @param user
    * @param afterCallback
    */
   afterCreate: function (user, afterCallback) {
-    var userName = user.name,
+    var that = this,
+      userName = user.name,
       companyName = userName + '\'s Company';
 
 
-    console.log('--------beforeCreate1--------', user);
+    console.log('--------afterCreate--------', user);
     async.waterfall([
         function (callback) {
-          console.log('--------beforeCreate2--------', user);
+          console.log('--------afterCreate--------', user);
           Company.create({name: companyName}).exec(callback);
         },
         function (company, callback) {
-          console.log('--------beforeCreate3--------', company);
+          console.log('--------afterCreate--------', company);
           Team.create({name: 'Admin'}).exec(function (error, createdTeam) {
             callback(error, company, createdTeam)
           });
         },
         function (company, team, callback) {
-          console.log('--------beforeCreate4--------', company, team);
+          console.log('--------afterCreate--------', company, team);
           company.teams.add(team.id);
           company.save(function (error) {
             callback(error, team);
           });
         },
         function (team, callback) {
-          console.log('--------beforeCreate5--------', team);
+          console.log('--------afterCreate--------', team);
           team.members.add(user.id);
           team.save(callback);
-        }
+        },
+        //function (team, callback) {
+        //  var projectName = 'New Project by User ' + user.id,
+        //    slug = that.getSlug(projectName);
+        //
+        //  Project.create({
+        //    name: 'projectName',
+        //    slug: slug,
+        //    currency: 'USD',
+        //    language: 'en'
+        //  }).exec(callback);
+        //},
+        //function(){
+        //
+        //}
       ],
       afterCallback);
   }
