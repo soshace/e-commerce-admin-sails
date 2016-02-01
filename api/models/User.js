@@ -33,7 +33,8 @@ module.exports = {
       via: 'owner'
     },
     projects: {
-
+      collection: 'project',
+      via: 'members'
     },
     toJSON: function () {
       var obj = this.toObject();
@@ -74,41 +75,44 @@ module.exports = {
     console.log('--------afterCreate--------', user);
     async.waterfall([
         function (callback) {
-          console.log('--------afterCreate--------', user);
+          console.log('--------afterCreate1--------', user);
           Company.create({name: companyName}).exec(callback);
         },
         function (company, callback) {
-          console.log('--------afterCreate--------', company);
+          console.log('--------afterCreate2--------', company);
           Team.create({name: 'Admin'}).exec(function (error, createdTeam) {
             callback(error, company, createdTeam)
           });
         },
         function (company, team, callback) {
-          console.log('--------afterCreate--------', company, team);
-          company.teams.add(team.id);
-          company.save(function (error) {
-            callback(error, team);
+          console.log('--------afterCreate5--------', team);
+          team.members.add(user.id);
+          team.save(function(error, createdTeam){
+            callback(error, company, createdTeam);
           });
         },
-        function (team, callback) {
-          console.log('--------afterCreate--------', team);
-          team.members.add(user.id);
-          team.save(callback);
+        function (company, team, callback) {
+          console.log('--------afterCreate3--------', company, team);
+          company.teams.add(team.id);
+          company.save(callback);
         },
-        //function (team, callback) {
-        //  var projectName = 'New Project by User ' + user.id,
-        //    slug = that.getSlug(projectName);
-        //
-        //  Project.create({
-        //    name: 'projectName',
-        //    slug: slug,
-        //    currency: 'USD',
-        //    language: 'en'
-        //  }).exec(callback);
-        //},
-        //function(){
-        //
-        //}
+        function (company, callback) {
+          console.log('--------afterCreate6--------', company);
+          var projectName = 'New Project by User ' + user.id,
+            slug = that.getSlug(projectName);
+
+          Project.create({
+            name: projectName,
+            slug: slug,
+            currency: 'USD',
+            language: 'en'
+          }).exec(callback);
+        },
+        function (project, callback) {
+          console.log('--------afterCreate7--------', project);
+          project.members.add(user.id);
+          project.save(callback);
+        }
       ],
       afterCallback);
   }

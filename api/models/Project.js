@@ -30,10 +30,10 @@ module.exports = {
       model: 'company',
       via: 'projects'
     },
-    //members: {
-    //  model: 'user',
-    //  via: 'projects'
-    //}
+    members: {
+      collection: 'user',
+      via: 'projects'
+    }
   }
 };
 
