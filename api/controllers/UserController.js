@@ -39,6 +39,12 @@ module.exports = {
       code: 'logout.successful',
       message: 'logout successful'
     });
+  },
+  getProfile: function (request, response) {
+    response.send({
+      code: 'profile',
+      profile: request.user
+    });
   }
 };
 

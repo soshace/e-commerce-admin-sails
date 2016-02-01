@@ -47,5 +47,5 @@ module.exports.routes = {
   ***************************************************************************/
   'post /login': 'UserController.login',
   'get /logout': 'UserController.logout',
-  'get /dashboard/profile': 'DashboardController.getProfile'
+  'get /profile': 'UserController.getProfile'
 };
