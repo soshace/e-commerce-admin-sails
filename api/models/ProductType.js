@@ -8,7 +8,20 @@
 module.exports = {
 
   attributes: {
-
+    name: {
+      type: 'string',
+      required: true
+    },
+    description: {
+      type: 'string',
+      required: true,
+      unique: true
+    },
+    //TODO: need to change this fields as said at documentation AttributeDefinition
+    attributes: {
+      type: 'string',
+      required: true
+    }
   }
 };
 
