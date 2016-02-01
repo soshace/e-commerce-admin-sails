@@ -35,7 +35,11 @@ module.exports.policies = {
    *                                                                          *
    ***************************************************************************/
 
+    //TODO: need to add access rights for projects /
   'UserController': {
+    'find': ['isAuthenticated', 'doesUserHaveAccess'],
+    'update': ['isAuthenticated', 'doesUserHaveAccess'],
+    'destroy': ['isAuthenticated', 'doesUserHaveAccess'],
     'getProfile': 'isAuthenticated',
     'logout': 'isAuthenticated'
   },
