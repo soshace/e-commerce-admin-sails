@@ -96,23 +96,23 @@ module.exports = {
           company.teams.add(team.id);
           company.save(callback);
         },
-        function (company, callback) {
-          console.log('--------afterCreate6--------', company);
-          var projectName = 'New Project by User ' + user.id,
-            slug = that.getSlug(projectName);
-
-          Project.create({
-            name: projectName,
-            slug: slug,
-            currency: 'USD',
-            language: 'en'
-          }).exec(callback);
-        },
-        function (project, callback) {
-          console.log('--------afterCreate7--------', project);
-          project.members.add(user.id);
-          project.save(callback);
-        }
+        //function (company, callback) {
+        //  console.log('--------afterCreate6--------', company);
+        //  var projectName = 'New Project by User ' + user.id,
+        //    slug = that.getSlug(projectName);
+        //
+        //  Project.create({
+        //    name: projectName,
+        //    slug: slug,
+        //    currency: 'USD',
+        //    language: 'en'
+        //  }).exec(callback);
+        //},
+        //function (project, callback) {
+        //  console.log('--------afterCreate7--------', project);
+        //  project.members.add(user.id);
+        //  project.save(callback);
+        //}
       ],
       afterCallback);
   }
