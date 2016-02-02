@@ -26,22 +26,11 @@ module.exports = {
           });
         }
 
-        //have to get user again from database, because user object from request doesn't have full information about current user
-        User.findOne({id: user.id}).exec(function (error, user) {
-          if (error) {
-            return response.send({
-              code: 'error',
-              message: error
-            });
-          }
-
-          response.send({
-            code: 'login.successful',
-            message: info.message,
-            user: user
-          });
+        response.send({
+          code: 'login.successful',
+          message: info.message,
+          user: user
         });
-
       });
     })(request, response);
   },
