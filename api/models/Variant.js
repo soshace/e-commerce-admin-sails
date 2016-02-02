@@ -22,9 +22,11 @@ module.exports = {
       type: 'string',
       required: true
     },
-    images: {},
+    images: {
+      collection: 'image'
+    },
     prices: {
-      collection: 'price`'
+      collection: 'price'
     }
   }
 };

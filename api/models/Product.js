@@ -17,9 +17,8 @@ module.exports = {
       required: true,
       unique: true
     },
-    //TODO: need to change this fields as said at documentation LocalizedString
     keywords: {
-      type: 'string',
+      model: 'localizedString',
       required: true
     },
     productType: {

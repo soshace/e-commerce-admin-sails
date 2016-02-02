@@ -1,5 +1,5 @@
 /**
-* Company.js
+* AttributeDefinition.js
 *
 * @description :: TODO: You might write a short summary of how this model works and what it represents here.
 * @docs        :: http://sailsjs.org/#!documentation/models
@@ -12,17 +12,20 @@ module.exports = {
       type: 'string',
       required: true
     },
-    teams: {
-      collection: 'team',
-      via: 'company'
+    label: {
+      type: 'string',
+      required: true
     },
-    projects: {
-      collection: 'project',
-      via: 'company'
+    constraints: {
+      type: 'string',
+      enum: ['none', 'unique', 'combo', 'same'],
     },
-    owner: {
-      model: 'user',
-      via: 'companies'
+    isRequired: {
+      type: 'boolean'
+    },
+    isSearchable: {
+      type: 'boolean'
     }
   }
 };
+

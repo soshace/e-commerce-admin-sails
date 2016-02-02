@@ -24,8 +24,8 @@ module.exports = {
       minLength: 6,
       required: true
     },
-    teams: {
-      collection: 'team',
+    team: {
+      model: 'team',
       via: 'members'
     },
     companies: {

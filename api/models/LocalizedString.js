@@ -1,5 +1,5 @@
 /**
-* Team.js
+* LocalizedString.js
 *
 * @description :: TODO: You might write a short summary of how this model works and what it represents here.
 * @docs        :: http://sailsjs.org/#!documentation/models
@@ -8,18 +8,15 @@
 module.exports = {
 
   attributes: {
-    name: {
-      type: 'string',
-      required: true
+    en: {
+      type: 'string'
     },
-    members: {
-      collection: 'user',
-      via: 'team'
+    de: {
+      type: 'string'
     },
-    company: {
-      model: 'company',
-      via: 'teams'
-    }
+    ru: {
+      type: 'string'
+    },
   }
 };
 
