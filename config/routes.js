@@ -45,7 +45,7 @@ module.exports.routes = {
   * for configuration options and examples.                                  *
   *                                                                          *
   ***************************************************************************/
-  'post /login': 'UserController.login',
-  'get /logout': 'UserController.logout',
-  'get /profile': 'UserController.getProfile'
+  'post /users/login': 'UsersController.login',
+  'get /users/logout': 'UsersController.logout',
+  'get /users/profile': 'UsersController.getProfile'
 };

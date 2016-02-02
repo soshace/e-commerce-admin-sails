@@ -1,5 +1,5 @@
 /**
- * Project.js
+ * Product.js
  *
  * @description :: TODO: You might write a short summary of how this model works and what it represents here.
  * @docs        :: http://sailsjs.org/#!documentation/models
@@ -12,27 +12,24 @@ module.exports = {
       type: 'string',
       required: true
     },
-    slug: {
+    description: {
       type: 'string',
+      required: true,
+      unique: true
+    },
+    keywords: {
+      model: 'localizedStrings',
       required: true
     },
-    currency: {
-      type: 'string',
-      enum: ['USD', 'EUR', 'GBR', 'INR'],
-      required: true
+    productType: {
+      model: 'productTypes',
+      via: 'products'
     },
-    language: {
-      type: 'string',
-      enum: ['en', 'fr', 'de', 'ja', 'zh'],
-      required: true
+    categories: {
+      collection: 'categories'
     },
-    company: {
-      model: 'company',
-      via: 'projects'
-    },
-    members: {
-      collection: 'user',
-      via: 'projects'
+    taxGroup: {
+      model: 'taxGroups'
     }
   }
 };

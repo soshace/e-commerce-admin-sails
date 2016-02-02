@@ -1,5 +1,5 @@
 /**
-* ProductType.js
+* Company.js
 *
 * @description :: TODO: You might write a short summary of how this model works and what it represents here.
 * @docs        :: http://sailsjs.org/#!documentation/models
@@ -12,15 +12,17 @@ module.exports = {
       type: 'string',
       required: true
     },
-    description: {
-      type: 'string',
-      required: true,
-      unique: true
+    teams: {
+      collection: 'teams',
+      via: 'company'
     },
-    attributes: {
-      collection: 'attributeDefinition',
-      required: true
+    projects: {
+      collection: 'projects',
+      via: 'company'
+    },
+    owner: {
+      model: 'users',
+      via: 'companies'
     }
   }
 };
-

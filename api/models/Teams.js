@@ -13,11 +13,11 @@ module.exports = {
       required: true
     },
     members: {
-      collection: 'user',
+      collection: 'users',
       via: 'team'
     },
     company: {
-      model: 'company',
+      model: 'companies',
       via: 'teams'
     }
   }

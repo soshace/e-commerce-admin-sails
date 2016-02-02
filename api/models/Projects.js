@@ -1,5 +1,5 @@
 /**
- * Variant.js
+ * Project.js
  *
  * @description :: TODO: You might write a short summary of how this model works and what it represents here.
  * @docs        :: http://sailsjs.org/#!documentation/models
@@ -12,21 +12,27 @@ module.exports = {
       type: 'string',
       required: true
     },
-    description: {
-      type: 'string',
-      required: true,
-      unique: true
-    },
-    //TODO: need to change this fields as said at documentation AttributeDefinition
-    attributes: {
+    slug: {
       type: 'string',
       required: true
     },
-    images: {
-      collection: 'image'
+    currency: {
+      type: 'string',
+      enum: ['USD', 'EUR', 'GBR', 'INR'],
+      required: true
     },
-    prices: {
-      collection: 'price'
+    language: {
+      type: 'string',
+      enum: ['en', 'fr', 'de', 'ja', 'zh'],
+      required: true
+    },
+    company: {
+      model: 'companies',
+      via: 'projects'
+    },
+    members: {
+      collection: 'users',
+      via: 'projects'
     }
   }
 };

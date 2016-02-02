@@ -36,7 +36,7 @@ module.exports.policies = {
    ***************************************************************************/
 
     //TODO: need to add access rights for projects / teams / companies
-  'UserController': {
+  'UsersController': {
     'find': ['isAuthenticated', 'doesUserHaveAccess'],
     'update': ['isAuthenticated', 'doesUserHaveAccess'],
     'destroy': ['isAuthenticated', 'doesUserHaveAccess'],

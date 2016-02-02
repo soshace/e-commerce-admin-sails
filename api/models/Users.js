@@ -25,15 +25,15 @@ module.exports = {
       required: true
     },
     team: {
-      model: 'team',
+      model: 'teams',
       via: 'members'
     },
     companies: {
-      collection: 'company',
+      collection: 'companies',
       via: 'owner'
     },
     projects: {
-      collection: 'project',
+      collection: 'projects',
       via: 'members'
     },
     toJSON: function () {
@@ -57,10 +57,6 @@ module.exports = {
     });
   },
 
-  getSlug: function (name) {
-    return name.replace(/\s+/g, '-');
-  },
-
   /**
    * Method creates Company and team 'Admin' associated with registered user
    * @param user
@@ -76,11 +72,11 @@ module.exports = {
     async.waterfall([
         function (callback) {
           console.log('--------afterCreate1--------', user);
-          Company.create({name: companyName}).exec(callback);
+          Companies.create({name: companyName}).exec(callback);
         },
         function (company, callback) {
           console.log('--------afterCreate2--------', company);
-          Team.create({name: 'Admin'}).exec(function (error, createdTeam) {
+          Teams.create({name: 'Admin'}).exec(function (error, createdTeam) {
             callback(error, company, createdTeam)
           });
         },
@@ -95,24 +91,7 @@ module.exports = {
           console.log('--------afterCreate3--------', company, team);
           company.teams.add(team.id);
           company.save(callback);
-        },
-        //function (company, callback) {
-        //  console.log('--------afterCreate6--------', company);
-        //  var projectName = 'New Project by User ' + user.id,
-        //    slug = that.getSlug(projectName);
-        //
-        //  Project.create({
-        //    name: projectName,
-        //    slug: slug,
-        //    currency: 'USD',
-        //    language: 'en'
-        //  }).exec(callback);
-        //},
-        //function (project, callback) {
-        //  console.log('--------afterCreate7--------', project);
-        //  project.members.add(user.id);
-        //  project.save(callback);
-        //}
+        }
       ],
       afterCallback);
   }
