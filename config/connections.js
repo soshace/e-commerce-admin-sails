@@ -21,7 +21,7 @@
 
 module.exports.connections = {
 
-  //TODO: need to replace authentification data with  url: process.env.MONGOLAB_URI
+  //TODO: need to replace authentification data with  uri: process.env.MONGOLAB_URI
   //https://github.com/balderdashy/sails-mongo
 
   //currently need to create database in mongo shell 'freeway' (use freeway) and user (db.createUser({"user":"user", "pwd":"password", roles:["dbAdmin", "readWrite"]}))
