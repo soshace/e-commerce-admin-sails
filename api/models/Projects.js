@@ -14,6 +14,7 @@ module.exports = {
     },
     slug: {
       type: 'string',
+      unique: true,
       required: true
     },
     currency: {
