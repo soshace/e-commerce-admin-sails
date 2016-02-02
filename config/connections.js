@@ -16,42 +16,21 @@
  * (this is to prevent you inadvertently sensitive credentials up to your repository.)
  *
  * For more information on configuration, check out:
- * http://sailsjs.org/#!/documentation/reference/sails.config/sails.config.connections.html
+ * http://links.sailsjs.org/docs/config/connections
  */
 
 module.exports.connections = {
 
-  someMongodbServer: {
+  //TODO: need to replace authentification data with  url: process.env.MONGOLAB_URI
+  //https://github.com/balderdashy/sails-mongo
+
+  //currently need to create database in mongo shell 'freeway' (use freeway) and user (db.createUser({"user":"user", "pwd":"password", roles:["dbAdmin", "readWrite"]}))
+  mongo: {
     adapter: 'sails-mongo',
     host: 'localhost',
-    port: 27017,
-    // user: 'username',
-    // password: 'password',
-    // database: 'your_mongo_db_name_here'
-  },
-
-  /***************************************************************************
-  *                                                                          *
-  * PostgreSQL is another officially supported relational database.          *
-  * http://en.wikipedia.org/wiki/PostgreSQL                                  *
-  *                                                                          *
-  * Run: npm install sails-postgresql                                        *
-  *                                                                          *
-  *                                                                          *
-  ***************************************************************************/
-  somePostgresqlServer: {
-    adapter: 'sails-postgresql',
-    host: 'YOUR_POSTGRES_SERVER_HOSTNAME_OR_IP_ADDRESS',
-    user: 'YOUR_POSTGRES_USER',
-    password: 'YOUR_POSTGRES_PASSWORD',
-    database: 'YOUR_POSTGRES_DB'
+    port: '27017',
+    user: 'user',
+    password: 'password',
+    database: 'freeway'
   }
-
-
-  /***************************************************************************
-  *                                                                          *
-  * More adapters: https://github.com/balderdashy/sails                      *
-  *                                                                          *
-  ***************************************************************************/
-
 };
