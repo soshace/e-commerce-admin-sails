@@ -23,7 +23,7 @@ passport.use(new LocalStrategy({
         return done(error);
       }
 
-      if (user === null) {
+      if (typeof user === 'undefined') {
         return done(null, false, {message: 'Incorrect email.'});
       }
 
