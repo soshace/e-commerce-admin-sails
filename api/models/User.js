@@ -74,22 +74,11 @@ module.exports = {
           }).exec(callback);
         },
         function (company, callback) {
-          console.log('--------afterCreate3--------', company);
-          Team.create({name: 'Admin'}).exec(function (error, createdTeam) {
-            callback(error, company, createdTeam)
-          });
-        },
-        function (company, team, callback) {
-          console.log('--------afterCreate4--------', team);
-          team.members.add(user.id);
-          team.save(function (error, createdTeam) {
-            callback(error, company, createdTeam);
-          });
-        },
-        function (company, team, callback) {
-          console.log('--------afterCreate5--------', company, team);
-          company.teams.add(team.id);
-          company.save(callback);
+          console.log('--------afterCreate2--------', company);
+          Team.create({
+            name: 'Admin',
+            company: company.id
+          }).exec(callback);
         }
       ],
       afterCallback);
