@@ -24,17 +24,13 @@ module.exports = {
       minLength: 6,
       required: true
     },
-    team: {
+    teams: {
       model: 'team',
       via: 'members'
     },
     companies: {
       collection: 'company',
       via: 'owner'
-    },
-    projects: {
-      collection: 'project',
-      via: 'members'
     },
     toJSON: function () {
       var obj = this.toObject();

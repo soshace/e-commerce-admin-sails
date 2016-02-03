@@ -31,9 +31,9 @@ module.exports = {
       model: 'company',
       via: 'projects'
     },
-    members: {
-      collection: 'user',
-      via: 'projects'
+    permissions: {
+      collection: 'permission',
+      via: 'project'
     }
   }
 };

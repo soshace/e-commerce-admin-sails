@@ -36,5 +36,9 @@ module.exports = {
         message: 'Slug name is available'
       });
     });
+  },
+
+  create: function (request, response) {
+
   }
 };

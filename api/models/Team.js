@@ -14,11 +14,15 @@ module.exports = {
     },
     members: {
       collection: 'user',
-      via: 'team'
+      via: 'teams'
     },
     company: {
       model: 'company',
       via: 'teams'
+    },
+    permissions:{
+      collection: 'permission',
+      via: 'team'
     }
   }
 };
