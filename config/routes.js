@@ -45,8 +45,9 @@ module.exports.routes = {
   * for configuration options and examples.                                  *
   *                                                                          *
   ***************************************************************************/
-  'post /users/login': 'UsersController.login',
-  'get /users/logout': 'UsersController.logout',
-  'get /users/profile': 'UsersController.getProfile',
-  'get /projects/slug/check': 'ProjectsController.checkSlug'
+  'post /api/users/': 'UsersController.create',
+  'post /api/users/login': 'UsersController.login',
+  'get /api/users/logout': 'UsersController.logout',
+  'get /api/users/profile': 'UsersController.getProfile',
+  'get /api/projects/slug/check': 'ProjectsController.checkSlug'
 };
