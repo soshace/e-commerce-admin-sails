@@ -25,15 +25,15 @@ module.exports = {
       required: true
     },
     team: {
-      model: 'teams',
+      model: 'team',
       via: 'members'
     },
     companies: {
-      collection: 'companies',
+      collection: 'company',
       via: 'owner'
     },
     projects: {
-      collection: 'projects',
+      collection: 'project',
       via: 'members'
     },
     toJSON: function () {
@@ -72,14 +72,14 @@ module.exports = {
     async.waterfall([
         function (callback) {
           console.log('--------afterCreate1--------', user);
-          Companies.create({
+          Company.create({
             name: companyName,
             owner: user.id
           }).exec(callback);
         },
         function (company, callback) {
           console.log('--------afterCreate3--------', company);
-          Teams.create({name: 'Admin'}).exec(function (error, createdTeam) {
+          Team.create({name: 'Admin'}).exec(function (error, createdTeam) {
             callback(error, company, createdTeam)
           });
         },

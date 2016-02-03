@@ -17,7 +17,7 @@ module.exports = {
       });
     }
 
-    Projects.findOne({slug: slug}).exec(function (error, project) {
+    Project.findOne({slug: slug}).exec(function (error, project) {
       if (error) {
         return response.send({
           code: 'error',

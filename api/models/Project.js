@@ -28,11 +28,11 @@ module.exports = {
       required: true
     },
     company: {
-      model: 'companies',
+      model: 'company',
       via: 'projects'
     },
     members: {
-      collection: 'users',
+      collection: 'user',
       via: 'projects'
     }
   }

@@ -45,7 +45,7 @@ module.exports = {
   create: function (request, response) {
     var usersData = request.body;
 
-    Users.create(usersData).exec(_.bind(function (error) {
+    User.create(usersData).exec(_.bind(function (error) {
       if (error) {
         return response.send({
           code: 'error',

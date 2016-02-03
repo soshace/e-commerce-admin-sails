@@ -1,5 +1,5 @@
 /**
- * Variant.js
+ * Product.js
  *
  * @description :: TODO: You might write a short summary of how this model works and what it represents here.
  * @docs        :: http://sailsjs.org/#!documentation/models
@@ -17,16 +17,19 @@ module.exports = {
       required: true,
       unique: true
     },
-    //TODO: need to change this fields as said at documentation AttributeDefinition
-    attributes: {
-      type: 'string',
+    keywords: {
+      model: 'localizedString',
       required: true
     },
-    images: {
-      collection: 'images'
+    productType: {
+      model: 'productType',
+      via: 'products'
     },
-    prices: {
-      collection: 'prices'
+    categories: {
+      collection: 'category'
+    },
+    taxGroup: {
+      model: 'taxGroup'
     }
   }
 };

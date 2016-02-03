@@ -18,7 +18,7 @@ module.exports = {
       unique: true
     },
     attributes: {
-      collection: 'attributeDefinitions',
+      collection: 'attributeDefinition',
       required: true
     }
   }

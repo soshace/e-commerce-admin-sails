@@ -1,5 +1,5 @@
 /**
-* Company.js
+* Team.js
 *
 * @description :: TODO: You might write a short summary of how this model works and what it represents here.
 * @docs        :: http://sailsjs.org/#!documentation/models
@@ -12,17 +12,14 @@ module.exports = {
       type: 'string',
       required: true
     },
-    teams: {
-      collection: 'teams',
-      via: 'company'
+    members: {
+      collection: 'user',
+      via: 'team'
     },
-    projects: {
-      collection: 'projects',
-      via: 'company'
-    },
-    owner: {
-      model: 'users',
-      via: 'companies'
+    company: {
+      model: 'company',
+      via: 'teams'
     }
   }
 };
+
