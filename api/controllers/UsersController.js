@@ -5,7 +5,8 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
-var passport = require('passport');
+var passport = require('passport'),
+  _ = require('underscore');
 
 module.exports = {
   login: function (request, response) {
@@ -40,6 +41,20 @@ module.exports = {
       code: 'logout.successful',
       message: 'logout successful'
     });
+  },
+  create: function (request, response) {
+    var usersData = request.body;
+
+    Users.create(usersData).exec(_.bind(function (error) {
+      if (error) {
+        return response.send({
+          code: 'error',
+          message: error
+        });
+      }
+
+      this.login(request, response);
+    }, this));
   },
   getProfile: function (request, response) {
     response.send({
