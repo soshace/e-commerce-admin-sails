@@ -39,6 +39,62 @@ module.exports = {
   },
 
   create: function (request, response) {
+    var projectData = request.body;
 
+    Project.create(projectData).exec(function(error, project){
+      if(error){
+        return response.send({
+          code: 'error',
+          message: error
+        });
+      }
+
+      response.send({
+        code: 'successfully.created',
+        project: project
+      });
+    });
+  },
+
+  getProjectsByCompanyId: function (companyId, callback) {
+    Project.find({company: companyId}).exec(function(error, companies){
+
+    });
+  },
+
+  getProjectsWithAccess: function (userId) {
+
+  },
+
+  find: function (request, response) {
+    var user = request.user;
+
+    async.waterfall([
+        function (callback) {
+          user.populate('companies').exec(callback);
+        },
+        function (user, callback) {
+          var companies = user.companies;
+
+          user.populate('companies').exec(callback);
+        },
+        function (callback) {
+          Project.find({company: companyId}).exec(callback);
+        },
+        function (projects, callback) {
+          Project.find({company: companyId}).exec(callback);
+        },
+        function (company, callback) {
+          Team.create({
+            name: 'Admin',
+            company: company.id
+          }).exec(callback);
+        }
+      ],
+      afterCallback);
+
+    User.findOne({id: userId}).populate('companies').exec(function(error){
+
+    })
   }
 };

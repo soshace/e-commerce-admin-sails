@@ -29,7 +29,8 @@ module.exports = {
     },
     company: {
       model: 'company',
-      via: 'projects'
+      via: 'projects',
+      required: true
     },
     permissions: {
       collection: 'permission',

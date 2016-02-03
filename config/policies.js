@@ -44,6 +44,11 @@ module.exports.policies = {
     'logout': 'isAuthenticated'
   },
 
+  'ProjectController': {
+    'create': 'isAuthenticated',
+    'find': 'isAuthenticated'
+  }
+
   // RabbitController: {
 
   // Apply the `false` policy as the default for all of RabbitController's actions

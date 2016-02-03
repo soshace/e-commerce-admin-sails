@@ -22,7 +22,7 @@ module.exports = {
     },
     owner: {
       model: 'user',
-      via: 'company'
+      via: 'companies'
     }
   }
 };
