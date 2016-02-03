@@ -72,23 +72,26 @@ module.exports = {
     async.waterfall([
         function (callback) {
           console.log('--------afterCreate1--------', user);
-          Companies.create({name: companyName}).exec(callback);
+          Companies.create({
+            name: companyName,
+            owner: user.id
+          }).exec(callback);
         },
         function (company, callback) {
-          console.log('--------afterCreate2--------', company);
+          console.log('--------afterCreate3--------', company);
           Teams.create({name: 'Admin'}).exec(function (error, createdTeam) {
             callback(error, company, createdTeam)
           });
         },
         function (company, team, callback) {
-          console.log('--------afterCreate5--------', team);
+          console.log('--------afterCreate4--------', team);
           team.members.add(user.id);
-          team.save(function(error, createdTeam){
+          team.save(function (error, createdTeam) {
             callback(error, company, createdTeam);
           });
         },
         function (company, team, callback) {
-          console.log('--------afterCreate3--------', company, team);
+          console.log('--------afterCreate5--------', company, team);
           company.teams.add(team.id);
           company.save(callback);
         }
