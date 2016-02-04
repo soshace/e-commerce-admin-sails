@@ -59,4 +59,7 @@ module.exports.routes = {
   'put /companies/:id': 'CompanyController.update',
   'get /companies/:id/teams': 'CompanyController.findTeams',
   'get /companies/:id/projects': 'CompanyController.findProjects',
+  'post /teams': 'TeamController.create',
+  'get /teams': 'TeamController.find',
+  'put /teams/:id': 'TeamController.update',
 };
