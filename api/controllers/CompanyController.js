@@ -8,7 +8,7 @@
 module.exports = {
   create: function (request, response) {
     var user = request.user,
-      companyData = request.body;
+      companyData = request.body || {};
 
     companyData.owner = user.id;
     Company.create(companyData).exec(function (error, company) {
