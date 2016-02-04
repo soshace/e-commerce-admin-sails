@@ -37,16 +37,15 @@ module.exports.policies = {
 
     //TODO: need to add access rights for projects / teams / companies
   'UserController': {
-    'find': ['isAuthenticated', 'doesUserHaveAccess'],
-    'update': ['isAuthenticated', 'doesUserHaveAccess'],
-    'destroy': ['isAuthenticated', 'doesUserHaveAccess'],
+    'update': ['isAuthenticated', 'isProfileOwner'],
     'getProfile': 'isAuthenticated',
     'logout': 'isAuthenticated'
   },
 
   'ProjectController': {
     'create': 'isAuthenticated',
-    'find': 'isAuthenticated'
+    'find': 'isAuthenticated',
+    'update': ['isAuthenticated', 'isProjectOwner'],
   }
 
   // RabbitController: {

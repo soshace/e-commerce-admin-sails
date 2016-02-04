@@ -7,7 +7,7 @@ module.exports = function (request, response, next) {
     return next();
   }
 
-  return response.send({
+  return response.send(401, {
     code: 'not.authenticated',
     message: 'you are not authenticated'
   });
