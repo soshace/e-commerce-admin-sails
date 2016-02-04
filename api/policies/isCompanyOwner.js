@@ -2,10 +2,9 @@
  * Checking if user is owner of the company or not
  */
 module.exports = function (request, response, next) {
-  var params = request.param(),
-    companyId = params.id,
+  var companyId = request.param('id'),
     profile = request.user,
-    profileId = profile.id;
+    profileId = profile && profile.id;
 
   if (typeof companyId === 'undefined') {
     return response.send(400, {

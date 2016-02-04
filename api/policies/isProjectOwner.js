@@ -2,8 +2,7 @@
  * Checking if user is owner of the project or not
  */
 module.exports = function (request, response, next) {
-  var params = request.param(),
-    projectId = params.id,
+  var projectId = request.param('id'),
     profile = request.user,
     profileId = profile.id;
 

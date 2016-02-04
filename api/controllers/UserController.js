@@ -11,7 +11,7 @@ var passport = require('passport'),
 module.exports = {
   login: function (request, response) {
     passport.authenticate('local', function (error, user, info) {
-      console.log('passport.authenticate', error, user);
+      sails.log('passport.authenticate', error, user);
       if ((error) || (!user)) {
         return response.send(401, {
           code: 'error',
@@ -27,20 +27,23 @@ module.exports = {
           });
         }
 
-        User.findOne({id: user.id}).populate('ownCompanies').populate('ownTeams').exec(function(error, userPopulated){
-          if (error) {
-            return response.send(500, {
-              code: 'error',
-              message: error
-            });
-          }
+        User.findOne({id: user.id})
+          .populate('ownCompanies')
+          .populate('ownTeams')
+          .exec(function (error, userPopulated) {
+            if (error) {
+              return response.send(500, {
+                code: 'error',
+                message: error
+              });
+            }
 
-          response.send(200, {
-            code: 'successful',
-            message: info.message,
-            user: userPopulated
+            response.send(200, {
+              code: 'successful',
+              message: info.message,
+              user: userPopulated
+            });
           });
-        });
       });
     })(request, response);
   },

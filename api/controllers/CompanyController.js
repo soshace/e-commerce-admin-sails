@@ -28,8 +28,7 @@ module.exports = {
   },
 
   update: function (request, response) {
-    var params = request.param(),
-      companyId = params.id,
+    var companyId = request.param('id'),
       companyData = request.body;
 
     Company.update({id: companyId}, companyData).exec(function (error, company) {
@@ -68,9 +67,11 @@ module.exports = {
   },
 
   findTeams: function (request, response) {
-    var companyId = params.id;
+    var companyId = request.param('id');
 
-    Company.find({id: companyId}).populate('teams').exec(function (error, company) {
+    Company.findOne({id: companyId}).populate('teams').exec(function (error, company) {
+      var teams;
+
       if (error) {
         return response.send(500, {
           code: 'error',
@@ -78,18 +79,22 @@ module.exports = {
         });
       }
 
+
+      teams = company.teams || [];
       return response.send(200, {
         code: 'successful',
         message: 'Company\'s teams were successfully found',
-        projects: company.teams
+        teams: teams
       });
     });
   },
 
   findProjects: function (request, response) {
-    var companyId = params.id;
+    var companyId = request.param('id');
 
-    Company.find({id: companyId}).populate('projects').exec(function (error, company) {
+    Company.findOne({id: companyId}).populate('projects').exec(function (error, company) {
+      var projects;
+
       if (error) {
         return response.send(500, {
           code: 'error',
@@ -97,10 +102,13 @@ module.exports = {
         });
       }
 
+      sails.log('----------CompanyController--company---', company);
+      sails.log('----------CompanyController--company.projects---', company.projects);
+      projects = company.projects || [];
       return response.send(200, {
         code: 'successful',
         message: 'Company\'s projects were successfully found',
-        projects: company.projects
+        projects: projects
       });
     });
   }

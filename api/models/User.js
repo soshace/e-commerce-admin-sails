@@ -72,17 +72,17 @@ module.exports = {
       companyName = userName + '\'s Company';
 
 
-    console.log('--------afterCreate--------', user);
+    sails.log('--------afterCreate--------', user);
     async.waterfall([
         function (callback) {
-          console.log('--------afterCreate1--------', user);
+          sails.log('--------afterCreate1--------', user);
           Company.create({
             name: companyName,
             owner: user.id
           }).exec(callback);
         },
         function (company, callback) {
-          console.log('--------afterCreate2--------', company);
+          sails.log('--------afterCreate2--------', company);
           Team.create({
             name: 'Admin',
             company: company.id,

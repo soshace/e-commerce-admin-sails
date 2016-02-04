@@ -91,7 +91,7 @@ module.exports = {
           User.findOne({id: userId}).populate('teams').populate('ownProjects').exec(callback);
         },
         function (userPopulated, callback) {
-          console.log('--------projectController.find userPopulated----------', userPopulated);
+          sails.log('--------projectController.find userPopulated----------', userPopulated);
           var ownProjects = userPopulated.ownProjects,
             teams = userPopulated.teams,
             pluckPermissions = _.pluck(teams, 'permissions'),
@@ -99,10 +99,10 @@ module.exports = {
             userInvitedProjects = _.pluck(permissions, 'project'),
             fullListOfProjects = ownProjects.concat(userInvitedProjects);
 
-          console.log('--------projectController.find ownProjects----------', ownProjects);
-          console.log('--------projectController.find pluckPermissions----------', pluckPermissions);
-          console.log('--------projectController.find permissions----------', permissions);
-          console.log('--------projectController.find userInvitedProjects----------', userInvitedProjects);
+          sails.log('--------projectController.find ownProjects----------', ownProjects);
+          sails.log('--------projectController.find pluckPermissions----------', pluckPermissions);
+          sails.log('--------projectController.find permissions----------', permissions);
+          sails.log('--------projectController.find userInvitedProjects----------', userInvitedProjects);
 
           callback(null, fullListOfProjects);
         }
