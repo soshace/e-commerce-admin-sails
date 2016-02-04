@@ -22,7 +22,8 @@ module.exports = {
     },
     owner: {
       model: 'user',
-      via: 'ownCompanies'
+      via: 'ownCompanies',
+      required: true
     }
   }
 };

@@ -51,9 +51,9 @@ module.exports.policies = {
   'CompanyController': {
     'create': 'isAuthenticated',
     'find': 'isAuthenticated',
-    'update': ['isAuthenticated', 'isCompanyOwnerOwner'],
-    'findTeams': ['isAuthenticated', 'isCompanyOwnerOwner'],
-    'findProjects': ['isAuthenticated', 'isCompanyOwnerOwner'],
+    'update': ['isAuthenticated', 'isCompanyOwner'],
+    'findTeams': ['isAuthenticated', 'isCompanyOwner'],
+    'findProjects': ['isAuthenticated', 'isCompanyOwner'],
   }
 
   // RabbitController: {
