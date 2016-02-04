@@ -50,7 +50,7 @@ module.exports.routes = {
   'post /users/login': 'UserController.login',
   'get /users/logout': 'UserController.logout',
   'get /users/profile': 'UserController.getProfile',
-  'get /projects/slug/check': 'ProjectController.checkSlug',
+  'get /projects/slug/check/:slugName': 'ProjectController.checkSlug',
   'post /projects': 'ProjectController.create',
   'get /projects': 'ProjectController.find',
   'put /projects/:id': 'ProjectController.update',

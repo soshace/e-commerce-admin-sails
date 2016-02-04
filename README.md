@@ -399,11 +399,7 @@ PUT /teams/:id
 
 ###Checking if slug is available or not
 ```
-GET /projects/slug/check
-```
-**Example of the API's request:**
-```
-/projects/slug/check?slug=project-name
+GET /projects/slug/check/:slugName
 ```
 **Examples of the API's answers:**
 ```

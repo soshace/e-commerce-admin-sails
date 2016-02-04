@@ -9,8 +9,7 @@ var _ = require('underscore');
 
 module.exports = {
   checkSlug: function (request, response) {
-    var queryParams = request.query,
-      slug = queryParams && queryParams.slug;
+    var slug = request.param('slugName');
 
     if (typeof slug === 'undefined') {
       return response.send(400, {
