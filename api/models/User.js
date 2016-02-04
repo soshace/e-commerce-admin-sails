@@ -85,7 +85,8 @@ module.exports = {
           console.log('--------afterCreate2--------', company);
           Team.create({
             name: 'Admin',
-            company: company.id
+            company: company.id,
+            owner: user.id
           }).exec(callback);
         }
       ],
