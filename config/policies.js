@@ -45,7 +45,7 @@ module.exports.policies = {
   'ProjectController': {
     'create': 'isAuthenticated',
     'find': 'isAuthenticated',
-    'update': ['isAuthenticated', 'isProjectOwner'],
+    'update': ['isAuthenticated', 'isProjectOwner']
   }
 
   // RabbitController: {
