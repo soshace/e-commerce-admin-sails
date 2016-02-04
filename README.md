@@ -57,6 +57,9 @@ POST /users
 
 ###Update user
 **Danger Zone | TODO: Need to close access for updating email, companies, password from here**
+```
+PUT /users/:id
+```
 **Example of the API's request:**
 ```
 {
