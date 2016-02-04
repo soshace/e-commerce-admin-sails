@@ -28,7 +28,15 @@ module.exports = {
       model: 'team',
       via: 'members'
     },
-    companies: {
+    ownTeams: {
+      collection: 'team',
+      via: 'owner'
+    },
+    ownProjects: {
+      collection: 'project',
+      via: 'owner'
+    },
+    ownCompanies: {
       collection: 'company',
       via: 'owner'
     },

@@ -32,6 +32,11 @@ module.exports = {
       via: 'projects',
       required: true
     },
+    owner: {
+      model: 'user',
+      via: 'ownProjects',
+      required: true
+    },
     permissions: {
       collection: 'permission',
       via: 'project'
