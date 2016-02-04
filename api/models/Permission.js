@@ -10,11 +10,13 @@ module.exports = {
   attributes: {
     project: {
       model: 'project',
-      via: 'permissions'
+      via: 'permissions',
+      required: true
     },
     team: {
       model: 'team',
-      via: 'permissions'
+      via: 'permissions',
+      required: true
     },
     productsPermission: {
       type: 'string',

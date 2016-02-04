@@ -67,7 +67,7 @@ module.exports = {
     _.extend(project, projectData);
 
     project.save(function (error, project) {
-      if(error){
+      if (error) {
         return response.send(500, {
           code: 'error',
           message: error
@@ -82,45 +82,43 @@ module.exports = {
     });
   },
 
-  getProjectsByCompanyId: function (companyId, callback) {
-    Project.find({company: companyId}).exec(function (error, companies) {
-
-    });
-  },
-
-  getProjectsWithAccess: function (userId) {
-
-  },
-
   find: function (request, response) {
     var user = request.user;
 
     async.waterfall([
         function (callback) {
-          user.populate('companies').exec(callback);
+          user.populate('ownProjects').exec(callback);
         },
         function (user, callback) {
-          var companies = user.companies;
-
-          user.populate('companies').exec(callback);
-        },
-        function (callback) {
-          Project.find({company: companyId}).exec(callback);
+          callback(null, user.ownProjects);
         },
         function (projects, callback) {
-          Project.find({company: companyId}).exec(callback);
+          user.populate(teams).exec(function (error, user) {
+            callback(error, user, projects);
+          });
         },
-        function (company, callback) {
-          Team.create({
-            name: 'Admin',
-            company: company.id
-          }).exec(callback);
+        function (user, projects, callback) {
+          var userTeams = user.teams,
+            pluckPermissions = _.pluck(userTeams, 'permissions'),
+            permissions = _.flatten(pluckPermissions),
+            userInvitedProjects = _.pluck(permissions, 'project'),
+            fullListOfProjects = projects.concat(userInvitedProjects);
+
+          callback(null, fullListOfProjects);
         }
       ],
-      afterCallback);
+      function (error, fullListOfProjects) {
+        if (error) {
+          return response.send(500, {
+            code: 'error',
+            message: error
+          });
+        }
 
-    User.findOne({id: userId}).populate('companies').exec(function (error) {
-
-    })
+        return response.send(200, {
+          code: 'successful',
+          projects: fullListOfProjects
+        });
+      });
   }
 };
