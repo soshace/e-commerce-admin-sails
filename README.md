@@ -484,6 +484,40 @@ GET /projects
 }
 ```
 
+```
+GET /projects/:id
+```
+**Example of the API's answer:**
+```
+{
+  "code": "successful",
+  "message": "Project was successfully found",
+  "project": {
+    "permissions": [],
+    "company": {
+      "name": "New Company2",
+      "owner": "56b343e718c168b564c98df5",
+      "createdAt": "2016-02-04T13:13:55.294Z",
+      "updatedAt": "2016-02-04T13:16:15.693Z",
+      "id": "56b34e932d62407e669fdd0c"
+    },
+    "owner": {
+      "email": "user@mail.com",
+      "name": "UsersName",
+      "createdAt": "2016-02-04T12:28:23.103Z",
+      "updatedAt": "2016-02-04T12:28:23.103Z",
+      "id": "56b343e718c168b564c98df5"
+    },
+    "name": "New Project 3",
+    "slug": "new-project",
+    "currency": "USD",
+    "language": "en",
+    "createdAt": "2016-02-04T13:21:36.298Z",
+    "updatedAt": "2016-02-04T13:32:59.056Z",
+    "id": "56b350602d62407e669fdd0e"
+  }
+}
+```
 
 ```
 PUT /projects/:id
