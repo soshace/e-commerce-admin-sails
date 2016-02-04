@@ -24,7 +24,7 @@ module.exports = function (request, response, next) {
     if (typeof project === 'undefined') {
       return response.send(400, {
         code: 'not.found',
-        message: 'Project not found'
+        message: 'Project was not found'
       });
     }
 

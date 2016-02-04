@@ -24,7 +24,7 @@ module.exports = function (request, response, next) {
     if (typeof company === 'undefined') {
       return response.send(400, {
         code: 'not.found',
-        message: 'Company not found'
+        message: 'Company was not found'
       });
     }
 

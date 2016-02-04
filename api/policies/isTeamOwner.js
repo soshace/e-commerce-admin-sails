@@ -24,7 +24,7 @@ module.exports = function (request, response, next) {
     if (typeof team === 'undefined') {
       return response.send(400, {
         code: 'not.found',
-        message: 'Team not found'
+        message: 'Team was not found'
       });
     }
 
