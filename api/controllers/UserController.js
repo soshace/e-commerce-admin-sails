@@ -73,6 +73,27 @@ module.exports = {
       code: 'successful',
       profile: request.user
     });
+  },
+
+  //TODO: need to check data for update! Like email, companies, etc...
+  update: function (request, response) {
+    var userId = request.param('id'),
+      dataForUpdate = request.body;
+
+    User.update({id: userId}, dataForUpdate).exec(function (error, user) {
+      if (error) {
+        return response.send(500, {
+          code: 'error',
+          message: error
+        });
+      }
+
+      response.send(200, {
+        code: 'successful',
+        message: 'User was updated successfully',
+        user: user
+      });
+    });
   }
 };
 

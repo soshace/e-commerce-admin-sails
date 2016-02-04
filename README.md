@@ -55,6 +55,33 @@ POST /users
 }
 ```
 
+###Update user
+**Danger Zone | TODO: Need to close access for updating email, companies, password from here**
+**Example of the API's request:**
+```
+{
+    "email": "user2@mail.com",
+    "password": "password",
+    "name": "UsersName"
+}
+```
+**Example of the API's answer:**
+```
+{
+  "code": "successful",
+  "message": "User was updated successfully",
+  "user": [
+    {
+      "email": "user2@mail.com",
+      "name": "UsersName",
+      "createdAt": "2016-02-04T16:55:29.489Z",
+      "updatedAt": "2016-02-04T17:07:41.738Z",
+      "id": "56b38281f292e1536f0d119c"
+    }
+  ]
+}
+```
+
 ###Sign In
 ```
 POST /users/login
@@ -191,6 +218,7 @@ GET /companies
 ```
 
 ###Updating company's profile
+**Danger Zone | TODO: need to close access for updating teams, projects**
 ```
 PUT /companies/:id
 ```
@@ -253,6 +281,7 @@ GET /companies/:id
 DELETE /companies/:id
 ```
 **Example of the API's answer:**
+**Danger Zone | TODO: need to check teams, projects before removing**
 ```
 {
   "code": "successful",
@@ -473,6 +502,7 @@ PUT /teams/:id
 DELETE /teams/:id
 ```
 **Example of the API's answer:**
+**Danger Zone | TODO: need to check Permissions before moving**
 ```
 {
   "code": "successful",
