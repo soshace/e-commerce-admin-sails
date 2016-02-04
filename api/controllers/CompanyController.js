@@ -6,6 +6,20 @@
  */
 
 module.exports = {
-	
+  create: function (request, response) {
+
+  },
+  update: function (request, response) {
+
+  },
+  find: function (request, response) {
+
+  },
+  findTeams: function (request, response) {
+
+  },
+  findProjects: function (request, response) {
+
+  }
 };
 
