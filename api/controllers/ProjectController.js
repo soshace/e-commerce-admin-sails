@@ -82,10 +82,23 @@ module.exports = {
   },
 
   findOne: function (request, response) {
-    response.send(200, {
-      code: 'successful',
-      message: 'Project was successfully found',
-      project: request.project
+    var projectId = request.param('id');
+
+    Project.findOne({id: projectId})
+      .populate('permissions')
+      .exec(function (error, project) {
+      if (error) {
+        return response.send(500, {
+          code: 'error',
+          message: error
+        });
+      }
+
+      response.send(200, {
+        code: 'successful',
+        message: 'Project was successfully found',
+        project: project
+      });
     });
   },
 
