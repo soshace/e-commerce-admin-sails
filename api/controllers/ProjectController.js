@@ -97,13 +97,41 @@ module.exports = {
         if (typeof project === 'undefined') {
           return response.send(400, {
             code: 'not.found',
-            message: 'Project not found'
+            message: 'Project was not found'
           });
         }
 
         response.send(200, {
           code: 'successful',
           message: 'Project was successfully found',
+          project: project
+        });
+      });
+  },
+
+  //TODO: need to check all tied projects!
+  remove: function (request, response) {
+    var projectId = request.param('id');
+
+    Project.destroy({id: projectId})
+      .exec(function (error, project) {
+        if (error) {
+          return response.send(500, {
+            code: 'error',
+            message: error
+          });
+        }
+
+        if (typeof project === 'undefined') {
+          return response.send(400, {
+            code: 'not.found',
+            message: 'Project was not found'
+          });
+        }
+
+        response.send(200, {
+          code: 'successful',
+          message: 'Project was removed successfully',
           project: project
         });
       });

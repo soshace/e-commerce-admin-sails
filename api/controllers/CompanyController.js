@@ -64,13 +64,41 @@ module.exports = {
         if (typeof company === 'undefined') {
           return response.send(400, {
             code: 'not.found',
-            message: 'Company not found'
+            message: 'Company was not found'
           });
         }
 
         return response.send(200, {
           code: 'successful',
           message: 'Company was successfully found',
+          company: company
+        });
+      });
+  },
+
+  //TODO: need to check all tied teams and projects!
+  remove: function (request, response) {
+    var companyId = request.param('id');
+
+    Company.destroy({id: companyId})
+      .exec(function (error, company) {
+        if (error) {
+          return response.send(500, {
+            code: 'error',
+            message: error
+          });
+        }
+
+        if (typeof company === 'undefined') {
+          return response.send(400, {
+            code: 'not.found',
+            message: 'Company was not found'
+          });
+        }
+
+        return response.send(200, {
+          code: 'successful',
+          message: 'Company was removed successfully',
           company: company
         });
       });

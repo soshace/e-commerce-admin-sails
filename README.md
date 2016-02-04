@@ -248,6 +248,27 @@ GET /companies/:id
 }
 ```
 
+###Delete company
+```
+DELETE /companies/:id
+```
+**Example of the API's answer:**
+```
+{
+  "code": "successful",
+  "message": "Company was removed successfully",
+  "company": [
+    {
+      "name": "New Company2",
+      "owner": "56b343e718c168b564c98df5",
+      "createdAt": "2016-02-04T13:13:55.294Z",
+      "updatedAt": "2016-02-04T13:16:15.693Z",
+      "id": "56b34e932d62407e669fdd0c"
+    }
+  ]
+}
+```
+
 ###Getting list of company's teams
 ```
 GET /companies/:id/teams
@@ -447,6 +468,28 @@ PUT /teams/:id
 ```
 
 
+###Remove team
+```
+DELETE /teams/:id
+```
+**Example of the API's answer:**
+```
+{
+  "code": "successful",
+  "message": "Team was removed successfully",
+  "team": [
+    {
+      "name": "New Team 3",
+      "company": "56b343e718c168b564c98df6",
+      "owner": "56b343e718c168b564c98df5",
+      "createdAt": "2016-02-04T12:28:23.116Z",
+      "updatedAt": "2016-02-04T13:28:10.854Z",
+      "id": "56b343e718c168b564c98df7"
+    }
+  ]
+}
+```
+
 ##Projects
 
 ###Checking if slug is available or not
@@ -598,5 +641,30 @@ PUT /projects/:id
     "updatedAt": "2016-02-04T13:32:59.056Z",
     "id": "56b350602d62407e669fdd0e"
   }
+}
+```
+
+
+```
+DELETE /projects/:id
+```
+**Example of the API's answer:**
+```
+{
+  "code": "successful",
+  "message": "Project was removed successfully",
+  "project": [
+    {
+      "name": "New Project 3",
+      "company": "56b34e932d62407e669fdd0c",
+      "slug": "new-project",
+      "currency": "USD",
+      "language": "en",
+      "owner": "56b343e718c168b564c98df5",
+      "createdAt": "2016-02-04T13:21:36.298Z",
+      "updatedAt": "2016-02-04T13:32:59.056Z",
+      "id": "56b350602d62407e669fdd0e"
+    }
+  ]
 }
 ```

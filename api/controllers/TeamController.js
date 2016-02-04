@@ -73,7 +73,6 @@ module.exports = {
     });
   },
 
-
   findOne: function (request, response) {
     var teamId = request.param('id');
 
@@ -97,6 +96,35 @@ module.exports = {
 
         return response.send(200, {
           code: 'successful',
+          message: 'Team was successfully found',
+          team: team
+        });
+      });
+  },
+
+
+  remove: function (request, response) {
+    var teamId = request.param('id');
+
+    Team.destroy({id: teamId})
+      .exec(function (error, team) {
+        if (error) {
+          return response.send(500, {
+            code: 'error',
+            message: error
+          });
+        }
+
+        if (typeof team === 'undefined') {
+          return response.send(400, {
+            code: 'not.found',
+            message: 'Team not found'
+          });
+        }
+
+        return response.send(200, {
+          code: 'successful',
+          message: 'Team was removed successfully',
           team: team
         });
       });

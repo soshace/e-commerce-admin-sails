@@ -46,6 +46,7 @@ module.exports.policies = {
     'create': 'isAuthenticated',
     'find': 'isAuthenticated',
     'findOne': ['isAuthenticated', 'isProjectOwner'],
+    'remove': ['isAuthenticated', 'isProjectOwner'],
     'update': ['isAuthenticated', 'isProjectOwner']
   },
 
@@ -54,6 +55,7 @@ module.exports.policies = {
     'find': 'isAuthenticated',
     'update': ['isAuthenticated', 'isCompanyOwner'],
     'findOne': ['isAuthenticated', 'isCompanyOwner'],
+    'remove': ['isAuthenticated', 'isCompanyOwner'],
     'findTeams': ['isAuthenticated', 'isCompanyOwner'],
     'findProjects': ['isAuthenticated', 'isCompanyOwner']
   },
@@ -62,6 +64,7 @@ module.exports.policies = {
     'create': 'isAuthenticated',
     'find': 'isAuthenticated',
     'findOne': ['isAuthenticated', 'isTeamOwner'],
+    'remove': ['isAuthenticated', 'isTeamOwner'],
     'update': ['isAuthenticated', 'isTeamOwner']
   }
 
