@@ -27,10 +27,19 @@ module.exports = {
           });
         }
 
-        response.send(200, {
-          code: 'login.successful',
-          message: info.message,
-          user: user
+        User.findOne({id: user.id}).populate('ownCompanies').populate('ownTeams').exec(function(error, userPopulated){
+          if (error) {
+            return response.send(500, {
+              code: 'error',
+              message: error
+            });
+          }
+
+          response.send(200, {
+            code: 'login.successful',
+            message: info.message,
+            user: userPopulated
+          });
         });
       });
     })(request, response);
