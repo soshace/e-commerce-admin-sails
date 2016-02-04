@@ -83,26 +83,25 @@ module.exports = {
   },
 
   find: function (request, response) {
-    var user = request.user;
+    var user = request.user,
+      userId = user.id;
 
     async.waterfall([
         function (callback) {
-          user.populate('ownProjects').exec(callback);
+          User.findOne({id: userId}).populate('teams').populate('ownProjects').exec(callback);
         },
-        function (user, callback) {
-          callback(null, user.ownProjects);
-        },
-        function (projects, callback) {
-          user.populate(teams).exec(function (error, user) {
-            callback(error, user, projects);
-          });
-        },
-        function (user, projects, callback) {
-          var userTeams = user.teams,
-            pluckPermissions = _.pluck(userTeams, 'permissions'),
+        function (userPopulated, callback) {
+          console.log('--------projectController.find userPopulated----------', userPopulated);
+          var ownProjects = userPopulated.ownProjects,
+            teams = userPopulated.teams,
+            pluckPermissions = _.pluck(teams, 'permissions'),
             permissions = _.flatten(pluckPermissions),
             userInvitedProjects = _.pluck(permissions, 'project'),
-            fullListOfProjects = projects.concat(userInvitedProjects);
+            fullListOfProjects = ownProjects.concat(userInvitedProjects);
+
+          console.log('--------projectController.find pluckPermissions----------', pluckPermissions);
+          console.log('--------projectController.find pluckPermissions----------', permissions);
+          console.log('--------projectController.find pluckPermissions----------', userInvitedProjects);
 
           callback(null, fullListOfProjects);
         }
