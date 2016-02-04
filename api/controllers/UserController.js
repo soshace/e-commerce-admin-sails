@@ -13,7 +13,7 @@ module.exports = {
     passport.authenticate('local', function (error, user, info) {
       console.log('passport.authenticate', error, user);
       if ((error) || (!user)) {
-        return response.send({
+        return response.send(401, {
           code: 'login.failed',
           message: info.message
         });
@@ -21,13 +21,13 @@ module.exports = {
 
       request.logIn(user, function (error) {
         if (error) {
-          return response.send({
+          return response.send(500, {
             code: 'error',
             message: error
           });
         }
 
-        response.send({
+        response.send(200, {
           code: 'login.successful',
           message: info.message,
           user: user
@@ -37,7 +37,7 @@ module.exports = {
   },
   logout: function (request, response) {
     request.logout();
-    response.send({
+    response.send(200, {
       code: 'logout.successful',
       message: 'logout successful'
     });
@@ -47,7 +47,7 @@ module.exports = {
 
     User.create(usersData).exec(_.bind(function (error) {
       if (error) {
-        return response.send({
+        return response.send(500, {
           code: 'error',
           message: error
         });
@@ -57,7 +57,7 @@ module.exports = {
     }, this));
   },
   getProfile: function (request, response) {
-    response.send({
+    response.send(200, {
       code: 'profile',
       profile: request.user
     });
