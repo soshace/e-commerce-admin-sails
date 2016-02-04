@@ -62,5 +62,6 @@ module.exports.routes = {
   'get /companies/:id/projects': 'CompanyController.findProjects',
   'post /teams': 'TeamController.create',
   'get /teams': 'TeamController.find',
+  'get /teams/:id': 'TeamController.findOne',
   'put /teams/:id': 'TeamController.update',
 };

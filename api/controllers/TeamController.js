@@ -72,7 +72,28 @@ module.exports = {
         teams: teams
       });
     });
+  },
 
+
+  findOne: function (request, response) {
+    var teamId = request.param('id');
+
+    Team.findOne({id: teamId})
+      .populate('permissions')
+      .populate('members')
+      .exec(function (error, team) {
+        if (error) {
+          return response.send(500, {
+            code: 'error',
+            message: error
+          });
+        }
+
+        return response.send(200, {
+          code: 'successful',
+          team: team
+        });
+      });
   }
 };
 

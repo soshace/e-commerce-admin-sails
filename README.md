@@ -355,6 +355,28 @@ GET /teams
 }
 ```
 
+###Get team by id
+```
+GET /teams/:id
+```
+
+**Example of the API's answer:**
+```
+{
+  "code": "successful",
+  "team": {
+    "members": [],
+    "permissions": [],
+    "company": "56b343e718c168b564c98df6",
+    "owner": "56b343e718c168b564c98df5",
+    "name": "New Team 3",
+    "createdAt": "2016-02-04T12:28:23.116Z",
+    "updatedAt": "2016-02-04T13:28:10.854Z",
+    "id": "56b343e718c168b564c98df7"
+  }
+}
+```
+
 ###Updating team's profile
 ```
 PUT /teams/:id
@@ -394,6 +416,7 @@ PUT /teams/:id
   }
 }
 ```
+
 
 ##Projects
 
@@ -484,6 +507,7 @@ GET /projects
 }
 ```
 
+###Get one project by id
 ```
 GET /projects/:id
 ```
@@ -494,20 +518,8 @@ GET /projects/:id
   "message": "Project was successfully found",
   "project": {
     "permissions": [],
-    "company": {
-      "name": "New Company2",
-      "owner": "56b343e718c168b564c98df5",
-      "createdAt": "2016-02-04T13:13:55.294Z",
-      "updatedAt": "2016-02-04T13:16:15.693Z",
-      "id": "56b34e932d62407e669fdd0c"
-    },
-    "owner": {
-      "email": "user@mail.com",
-      "name": "UsersName",
-      "createdAt": "2016-02-04T12:28:23.103Z",
-      "updatedAt": "2016-02-04T12:28:23.103Z",
-      "id": "56b343e718c168b564c98df5"
-    },
+    "company": "56b34e932d62407e669fdd0c",
+    "owner": "56b343e718c168b564c98df5",
     "name": "New Project 3",
     "slug": "new-project",
     "currency": "USD",

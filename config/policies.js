@@ -60,6 +60,7 @@ module.exports.policies = {
   'TeamController': {
     'create': 'isAuthenticated',
     'find': 'isAuthenticated',
+    'findOne': ['isAuthenticated', 'isTeamOwner'],
     'update': ['isAuthenticated', 'isTeamOwner']
   }
 
