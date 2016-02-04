@@ -99,9 +99,10 @@ module.exports = {
             userInvitedProjects = _.pluck(permissions, 'project'),
             fullListOfProjects = ownProjects.concat(userInvitedProjects);
 
+          console.log('--------projectController.find ownProjects----------', ownProjects);
           console.log('--------projectController.find pluckPermissions----------', pluckPermissions);
-          console.log('--------projectController.find pluckPermissions----------', permissions);
-          console.log('--------projectController.find pluckPermissions----------', userInvitedProjects);
+          console.log('--------projectController.find permissions----------', permissions);
+          console.log('--------projectController.find userInvitedProjects----------', userInvitedProjects);
 
           callback(null, fullListOfProjects);
         }
