@@ -53,6 +53,7 @@ module.exports.routes = {
   'get /projects/slug/check': 'ProjectController.checkSlug',
   'post /projects': 'ProjectController.create',
   'get /projects': 'ProjectController.find',
+  'put /projects/:id': 'ProjectController.update',
   'post /companies': 'CompanyController.create',
   'get /companies': 'CompanyController.find',
   'put /companies/:id': 'CompanyController.update',
