@@ -27,10 +27,10 @@ module.exports.connections = {
   //currently need to create database in mongo shell 'freeway' (use freeway) and user (db.createUser({"user":"user", "pwd":"password", roles:["dbAdmin", "readWrite"]}))
   mongo: {
     adapter: 'sails-mongo',
-    host: 'localhost',
-    port: '27017',
-    user: 'user',
-    password: 'password',
-    database: 'freeway'
+    host: process.env.DATABASE_HOST || 'localhost',
+    port: process.env.DATABASE_PORT || '27017',
+    user: process.env.DATABASE_USER || 'user',
+    password: process.env.DATABASE_PASSWORD || 'password',
+    database: process.env.DATABASE || 'freeway'
   }
 };
