@@ -21,6 +21,13 @@ module.exports = function (request, response, next) {
       });
     }
 
+    if (typeof project === 'undefined') {
+      return response.send(400, {
+        code: 'not.found',
+        message: 'Project not found'
+      });
+    }
+
     if (profileId !== project.owner) {
       return response.send(403, {
         code: 'no.access',

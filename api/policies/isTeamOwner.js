@@ -21,6 +21,13 @@ module.exports = function (request, response, next) {
       });
     }
 
+    if (typeof team === 'undefined') {
+      return response.send(400, {
+        code: 'not.found',
+        message: 'Team not found'
+      });
+    }
+
     if (profileId !== team.owner) {
       return response.send(403, {
         code: 'no.access',

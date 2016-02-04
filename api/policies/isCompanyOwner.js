@@ -21,6 +21,13 @@ module.exports = function (request, response, next) {
       });
     }
 
+    if (typeof company === 'undefined') {
+      return response.send(400, {
+        code: 'not.found',
+        message: 'Company not found'
+      });
+    }
+
     if (profileId !== company.owner) {
       return response.send(403, {
         code: 'no.access',

@@ -65,7 +65,6 @@ module.exports = {
         });
       }
 
-
       teams = userWithOwnTeams.ownTeams || [];
       return response.send(200, {
         code: 'successful',
@@ -86,6 +85,13 @@ module.exports = {
           return response.send(500, {
             code: 'error',
             message: error
+          });
+        }
+
+        if (typeof team === 'undefined') {
+          return response.send(400, {
+            code: 'not.found',
+            message: 'Team not found'
           });
         }
 

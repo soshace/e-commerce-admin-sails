@@ -87,19 +87,26 @@ module.exports = {
     Project.findOne({id: projectId})
       .populate('permissions')
       .exec(function (error, project) {
-      if (error) {
-        return response.send(500, {
-          code: 'error',
-          message: error
-        });
-      }
+        if (error) {
+          return response.send(500, {
+            code: 'error',
+            message: error
+          });
+        }
 
-      response.send(200, {
-        code: 'successful',
-        message: 'Project was successfully found',
-        project: project
+        if (typeof project === 'undefined') {
+          return response.send(400, {
+            code: 'not.found',
+            message: 'Project not found'
+          });
+        }
+
+        response.send(200, {
+          code: 'successful',
+          message: 'Project was successfully found',
+          project: project
+        });
       });
-    });
   },
 
   find: function (request, response) {
