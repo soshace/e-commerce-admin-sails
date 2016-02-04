@@ -54,7 +54,7 @@ module.exports = {
       }
 
       response.send(200, {
-        code: 'successfully.created',
+        code: 'successful',
         project: project
       });
     });
@@ -75,7 +75,7 @@ module.exports = {
       }
 
       response.send(200, {
-        code: 'successfully.updated',
+        code: 'successful',
         message: 'Project was successfully updated',
         project: project
       });

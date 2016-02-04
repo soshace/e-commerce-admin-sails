@@ -14,7 +14,7 @@ module.exports = {
       console.log('passport.authenticate', error, user);
       if ((error) || (!user)) {
         return response.send(401, {
-          code: 'login.failed',
+          code: 'error',
           message: info.message
         });
       }
@@ -36,7 +36,7 @@ module.exports = {
           }
 
           response.send(200, {
-            code: 'login.successful',
+            code: 'successful',
             message: info.message,
             user: userPopulated
           });
@@ -47,8 +47,8 @@ module.exports = {
   logout: function (request, response) {
     request.logout();
     response.send(200, {
-      code: 'logout.successful',
-      message: 'logout successful'
+      code: 'successful',
+      message: 'Logout is successful'
     });
   },
   create: function (request, response) {
@@ -67,7 +67,7 @@ module.exports = {
   },
   getProfile: function (request, response) {
     response.send(200, {
-      code: 'profile',
+      code: 'successful',
       profile: request.user
     });
   }
