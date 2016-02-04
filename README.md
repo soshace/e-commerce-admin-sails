@@ -218,6 +218,35 @@ PUT /companies/:id
 }
 ```
 
+###Getting company's profile
+```
+GET /companies/:id
+```
+**Example of the API's answer:**
+```
+{
+  "code": "successful",
+  "message": "Company was successfully found",
+  "company": {
+    "teams": [
+      {
+        "name": "New Team 3",
+        "company": "56b343e718c168b564c98df6",
+        "owner": "56b343e718c168b564c98df5",
+        "createdAt": "2016-02-04T12:28:23.116Z",
+        "updatedAt": "2016-02-04T13:28:10.854Z",
+        "id": "56b343e718c168b564c98df7"
+      }
+    ],
+    "projects": [],
+    "owner": "56b343e718c168b564c98df5",
+    "name": "UsersName's Company",
+    "createdAt": "2016-02-04T12:28:23.112Z",
+    "updatedAt": "2016-02-04T12:28:23.112Z",
+    "id": "56b343e718c168b564c98df6"
+  }
+}
+```
 
 ###Getting list of company's teams
 ```

@@ -47,6 +47,35 @@ module.exports = {
     });
   },
 
+  findOne: function (request, response) {
+    var companyId = request.param('id');
+
+    Company.findOne({id: companyId})
+      .populate('projects')
+      .populate('teams')
+      .exec(function (error, company) {
+        if (error) {
+          return response.send(500, {
+            code: 'error',
+            message: error
+          });
+        }
+
+        if (typeof company === 'undefined') {
+          return response.send(400, {
+            code: 'not.found',
+            message: 'Company not found'
+          });
+        }
+
+        return response.send(200, {
+          code: 'successful',
+          message: 'Company was successfully found',
+          company: company
+        });
+      });
+  },
+
   find: function (request, response) {
     var user = request.user;
 
