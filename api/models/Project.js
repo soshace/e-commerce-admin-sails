@@ -37,6 +37,26 @@ module.exports = {
       via: 'ownProjects',
       required: true
     },
+    products: {
+      collection: 'product',
+      via: 'project'
+    },
+    categories: {
+      collection: 'category',
+      via: 'project'
+    },
+    discounts: {
+      collection: 'discount',
+      via: 'project'
+    },
+    orders: {
+      collection: 'orders',
+      via: 'project'
+    },
+    productTypes: {
+      collection: 'productType',
+      via: 'project'
+    },
     permissions: {
       collection: 'permission',
       via: 'project'
