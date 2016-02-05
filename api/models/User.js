@@ -28,6 +28,10 @@ module.exports = {
       model: 'team',
       via: 'members'
     },
+    language: {
+      type: 'string',
+      enum: ['en', 'de', 'it', 'ru', 'zh']
+    },
     ownTeams: {
       collection: 'team',
       via: 'owner'
