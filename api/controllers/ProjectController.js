@@ -61,11 +61,15 @@ module.exports = {
 
   update: function (request, response) {
     var projectData = request.body || {},
-      project = request.project;
+      project = request.project || {};
 
     _.extend(project, projectData);
 
     project.save(function (error, project) {
+      var returnedProject,
+        company,
+        owner;
+
       if (error) {
         return response.send(500, {
           code: 'error',
@@ -73,10 +77,15 @@ module.exports = {
         });
       }
 
+      returnedProject = _.clone(project);
+      company = returnedProject.company;
+      owner = returnedProject.owner;
+      returnedProject.company = company && company.id;
+      returnedProject.owner = owner && owner.id;
       response.send(200, {
         code: 'successful',
         message: 'Project was successfully updated',
-        project: project
+        project: returnedProject
       });
     });
   },

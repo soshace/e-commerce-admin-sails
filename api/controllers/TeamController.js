@@ -30,7 +30,7 @@ module.exports = {
 
   update: function (request, response) {
     var teamData = request.body || {},
-      team = request.team;
+      team = request.team || {};
 
     _.extend(team, teamData);
 
@@ -128,6 +128,10 @@ module.exports = {
           team: team
         });
       });
+  },
+
+  inviteByEmail: function (request, response) {
+
   }
 };
 

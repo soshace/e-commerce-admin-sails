@@ -28,10 +28,12 @@ module.exports = {
   },
 
   update: function (request, response) {
-    var companyId = request.param('id'),
-      companyData = request.body;
+    var companyData = request.body || {},
+      company = request.company || {};
 
-    Company.update({id: companyId}, companyData).exec(function (error, company) {
+    _.extend(company, companyData);
+
+    company.save(function (error, company) {
       if (error) {
         return response.send(500, {
           code: 'error',
@@ -39,7 +41,7 @@ module.exports = {
         });
       }
 
-      return response.send(200, {
+      response.send(200, {
         code: 'successful',
         message: 'Company was successfully updated',
         company: company

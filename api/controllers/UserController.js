@@ -77,10 +77,14 @@ module.exports = {
 
   //TODO: need to check data for update! Like email, companies, etc...
   update: function (request, response) {
-    var userId = request.param('id'),
-      dataForUpdate = request.body;
+    var userData = request.body || {},
+      user = request.user || {};
 
-    User.update({id: userId}, dataForUpdate).exec(function (error, user) {
+    _.extend(user, userData);
+
+    user.save(function (error, user) {
+      var returnedUser;
+
       if (error) {
         return response.send(500, {
           code: 'error',
@@ -88,10 +92,13 @@ module.exports = {
         });
       }
 
+      returnedUser = _.pick(user, 'email', 'name', 'createdAt', 'updateAt', 'id');
+
+      sails.log('-----user.update-----user--------', user);
       response.send(200, {
         code: 'successful',
         message: 'User was updated successfully',
-        user: user
+        user: returnedUser
       });
     });
   }
