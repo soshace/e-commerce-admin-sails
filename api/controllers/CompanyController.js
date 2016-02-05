@@ -5,6 +5,8 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
+var _ = require('underscore');
+
 module.exports = {
   create: function (request, response) {
     var user = request.user,
@@ -34,6 +36,8 @@ module.exports = {
     _.extend(company, companyData);
 
     company.save(function (error, company) {
+      var returnedCompany;
+
       if (error) {
         return response.send(500, {
           code: 'error',
@@ -41,10 +45,11 @@ module.exports = {
         });
       }
 
+      returnedCompany = _.pick(company, 'name', 'createAt', 'updatedAt', 'id');
       response.send(200, {
         code: 'successful',
         message: 'Company was successfully updated',
-        company: company
+        company: returnedCompany
       });
     });
   },
