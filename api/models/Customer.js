@@ -8,7 +8,15 @@
 module.exports = {
 
   attributes: {
-
+    name: {
+      type: 'string',
+      required: true
+    },
+    project: {
+      model: 'project',
+      via: 'customers',
+      required: true
+    }
   }
 };
 

@@ -13,14 +13,22 @@ module.exports = {
       required: true
     },
     description: {
-      type: 'string',
-      required: true,
-      unique: true
+      type: 'string'
     },
     keywords: {
-      model: 'localizedString',
+      model: 'localizedString'
+    },
+    owner: {
+      model: 'user',
+      required: true,
+      via: 'ownProducts'
+    },
+    project: {
+      model: 'project',
+      via: 'products',
       required: true
     },
+    //TODO: make it required!
     productType: {
       model: 'productType',
       via: 'products'

@@ -50,7 +50,7 @@ module.exports = {
       via: 'project'
     },
     orders: {
-      collection: 'orders',
+      collection: 'order',
       via: 'project'
     },
     customers: {

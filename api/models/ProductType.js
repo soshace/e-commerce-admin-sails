@@ -20,6 +20,11 @@ module.exports = {
     attributes: {
       collection: 'attributeDefinition',
       required: true
+    },
+    project: {
+      model: 'project',
+      via: 'productTypes',
+      required: true
     }
   }
 };

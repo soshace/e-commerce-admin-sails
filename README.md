@@ -662,3 +662,142 @@ DELETE /projects/:id
   ]
 }
 ```
+
+##Products
+
+###Creating new product
+```
+POST /products
+```
+**Example of the API's request:**
+```
+{
+    "name": "Product",
+    "project": "56b4aeff00231f4a0a376ad9"
+}
+```
+
+**Example of the API's answer:**
+```
+{
+  "code": "successful",
+  "project": {
+    "name": "Product",
+    "project": "56b4aeff00231f4a0a376ad9",
+    "owner": "56b4aebb00231f4a0a376ad6",
+    "createdAt": "2016-02-05T14:17:56.449Z",
+    "updatedAt": "2016-02-05T14:17:56.449Z",
+    "id": "56b4af1400231f4a0a376ada"
+  }
+}
+```
+
+###Get full list of current user's products
+#####Answer includes products of user as an owner and which he has rights access
+```
+GET /projects
+```
+**Example of the API's answer:**
+```
+{
+  "code": "successful",
+  "projects": [
+    {
+      "name": "New Project",
+      "company": "56b34e932d62407e669fdd0c",
+      "slug": "new-project",
+      "currency": "USD",
+      "language": "en",
+      "owner": "56b343e718c168b564c98df5",
+      "createdAt": "2016-02-04T13:21:36.298Z",
+      "updatedAt": "2016-02-04T13:21:36.298Z",
+      "id": "56b350602d62407e669fdd0e"
+    },
+    {
+      "name": "New Project 2",
+      "company": "56b34e932d62407e669fdd0c",
+      "slug": "new-project-2",
+      "currency": "USD",
+      "language": "en",
+      "owner": "56b343e718c168b564c98df5",
+      "createdAt": "2016-02-04T13:22:24.036Z",
+      "updatedAt": "2016-02-04T13:22:24.036Z",
+      "id": "56b350902d62407e669fdd0f"
+    }
+  ]
+}
+```
+
+###Get one project by id
+```
+GET /projects/:id
+```
+**Example of the API's answer:**
+```
+{
+  "code": "successful",
+  "message": "Project was successfully found",
+  "project": {
+    "permissions": [],
+    "company": "56b34e932d62407e669fdd0c",
+    "owner": "56b343e718c168b564c98df5",
+    "name": "New Project 3",
+    "slug": "new-project",
+    "currency": "USD",
+    "language": "en",
+    "createdAt": "2016-02-04T13:21:36.298Z",
+    "updatedAt": "2016-02-04T13:32:59.056Z",
+    "id": "56b350602d62407e669fdd0e"
+  }
+}
+```
+
+```
+PUT /projects/:id
+```
+**Example of the API's request:**
+```
+{
+    "name": "New Project"
+}
+```
+**Example of the API's answer:**
+```
+{
+  "code": "successful",
+  "message": "Project was successfully updated",
+  "project": {
+    "id": "56b48196a4bcf8c3058d8e8e",
+    "name": "New Project",
+    "createdAt": "2016-02-05T11:03:50.540Z",
+    "updatedAt": "2016-02-05T11:53:01.106Z",
+    "company": "56b463697054d850020f3c79",
+    "owner": "56b463697054d850020f3c78"
+  }
+}
+```
+
+
+```
+DELETE /projects/:id
+```
+**Example of the API's answer:**
+```
+{
+  "code": "successful",
+  "message": "Project was removed successfully",
+  "project": [
+    {
+      "name": "New Project 3",
+      "company": "56b34e932d62407e669fdd0c",
+      "slug": "new-project",
+      "currency": "USD",
+      "language": "en",
+      "owner": "56b343e718c168b564c98df5",
+      "createdAt": "2016-02-04T13:21:36.298Z",
+      "updatedAt": "2016-02-04T13:32:59.056Z",
+      "id": "56b350602d62407e669fdd0e"
+    }
+  ]
+}
+```

@@ -8,7 +8,7 @@ module.exports = function (request, response, next) {
 
   if (typeof teamId === 'undefined') {
     return response.send(400, {
-      code: 'error.identificator.not.found',
+      code: 'error',
       message: 'You should specify company\'s id'
     });
   }

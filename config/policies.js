@@ -44,9 +44,25 @@ module.exports.policies = {
   'ProjectController': {
     'create': 'isAuthenticated',
     'find': 'isAuthenticated',
-    'findOne': ['isAuthenticated', 'isProjectOwner'],
-    'remove': ['isAuthenticated', 'isProjectOwner'],
-    'update': ['isAuthenticated', 'isProjectOwner']
+    'findOne': ['isAuthenticated', 'doesUserHaveProjectAccess'],
+    'remove': ['isAuthenticated', 'doesUserHaveProjectAccess'],
+    'update': ['isAuthenticated', 'doesUserHaveProjectAccess']
+  },
+
+  'ProductController': {
+    'create': 'isAuthenticated',
+    'find': 'isAuthenticated',
+    'findOne': ['isAuthenticated', 'doesUserHaveProductAccess'],
+    'remove': ['isAuthenticated', 'doesUserHaveProductAccess'],
+    'update': ['isAuthenticated', 'doesUserHaveProductAccess']
+  },
+
+  'CategoryController': {
+    'create': 'isAuthenticated',
+    'find': 'isAuthenticated',
+    'findOne': ['isAuthenticated', 'doesUserHaveCategoryAccess'],
+    'remove': ['isAuthenticated', 'doesUserHaveCategoryAccess'],
+    'update': ['isAuthenticated', 'doesUserHaveCategoryAccess']
   },
 
   'CompanyController': {

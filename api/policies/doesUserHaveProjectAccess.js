@@ -1,5 +1,7 @@
 /**
- * Checking if user is owner of the project or not
+ * TODO: Need to check project permissions + if user is owner
+ * TODO: Currently we are checking if he is owner or not
+ * Checking if user have enough rights access to the project or not
  */
 module.exports = function (request, response, next) {
   var projectId = request.param('id'),
@@ -8,7 +10,7 @@ module.exports = function (request, response, next) {
 
   if (typeof projectId === 'undefined') {
     return response.send(400, {
-      code: 'error.identificator.not.found',
+      code: 'error',
       message: 'You should specify project\'s id'
     });
   }

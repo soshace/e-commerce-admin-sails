@@ -119,7 +119,7 @@ module.exports = {
       });
   },
 
-  //TODO: need to check all tied projects!
+  //TODO: need to check all tied products!
   remove: function (request, response) {
     var projectId = request.param('id');
 
