@@ -82,6 +82,7 @@ module.exports = {
       owner = returnedProject.owner;
       returnedProject.company = company && company.id;
       returnedProject.owner = owner && owner.id;
+      returnedProject = _.pick(returnedProject, 'id', 'name', 'createdAt', 'updatedAt', 'company', 'owner');
       response.send(200, {
         code: 'successful',
         message: 'Project was successfully updated',

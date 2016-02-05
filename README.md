@@ -73,15 +73,12 @@ PUT /users/:id
 {
   "code": "successful",
   "message": "User was updated successfully",
-  "user": [
-    {
-      "email": "user2@mail.com",
-      "name": "UsersName",
-      "createdAt": "2016-02-04T16:55:29.489Z",
-      "updatedAt": "2016-02-04T17:07:41.738Z",
-      "id": "56b38281f292e1536f0d119c"
-    }
-  ]
+  "user": {
+    "email": "user2@mail.com",
+    "name": "UsersName",
+    "createdAt": "2016-02-05T08:55:05.563Z",
+    "id": "56b463697054d850020f3c78"
+  }
 }
 ```
 
@@ -237,15 +234,11 @@ PUT /companies/:id
 {
   "code": "successful",
   "message": "Company was successfully updated",
-  "company": [
-    {
-      "name": "New Company2",
-      "owner": "56b343e718c168b564c98df5",
-      "createdAt": "2016-02-04T13:13:55.294Z",
-      "updatedAt": "2016-02-04T13:16:15.693Z",
-      "id": "56b34e932d62407e669fdd0c"
-    }
-  ]
+  "company": {
+    "name": "New Company2",
+    "updatedAt": "2016-02-05T11:43:17.042Z",
+    "id": "56b463697054d850020f3c79"
+  }
 }
 ```
 
@@ -475,26 +468,10 @@ PUT /teams/:id
   "code": "successful",
   "message": "Team was successfully updated",
   "team": {
-    "members": [],
-    "permissions": [],
-    "company": {
-      "name": "UsersName's Company",
-      "owner": "56b343e718c168b564c98df5",
-      "createdAt": "2016-02-04T12:28:23.112Z",
-      "updatedAt": "2016-02-04T12:28:23.112Z",
-      "id": "56b343e718c168b564c98df6"
-    },
-    "owner": {
-      "email": "user@mail.com",
-      "name": "UsersName",
-      "createdAt": "2016-02-04T12:28:23.103Z",
-      "updatedAt": "2016-02-04T12:28:23.103Z",
-      "id": "56b343e718c168b564c98df5"
-    },
+    "id": "56b463697054d850020f3c7a",
     "name": "New Team 3",
-    "createdAt": "2016-02-04T12:28:23.116Z",
-    "updatedAt": "2016-02-04T13:28:10.854Z",
-    "id": "56b343e718c168b564c98df7"
+    "createdAt": "2016-02-05T08:55:05.611Z",
+    "updatedAt": "2016-02-05T11:48:23.790Z"
   }
 }
 ```
@@ -642,7 +619,7 @@ PUT /projects/:id
 **Example of the API's request:**
 ```
 {
-    "name": "New Project 3"
+    "name": "New Project"
 }
 ```
 **Example of the API's answer:**
@@ -651,28 +628,12 @@ PUT /projects/:id
   "code": "successful",
   "message": "Project was successfully updated",
   "project": {
-    "permissions": [],
-    "company": {
-      "name": "New Company2",
-      "owner": "56b343e718c168b564c98df5",
-      "createdAt": "2016-02-04T13:13:55.294Z",
-      "updatedAt": "2016-02-04T13:16:15.693Z",
-      "id": "56b34e932d62407e669fdd0c"
-    },
-    "owner": {
-      "email": "user@mail.com",
-      "name": "UsersName",
-      "createdAt": "2016-02-04T12:28:23.103Z",
-      "updatedAt": "2016-02-04T12:28:23.103Z",
-      "id": "56b343e718c168b564c98df5"
-    },
-    "name": "New Project 3",
-    "slug": "new-project",
-    "currency": "USD",
-    "language": "en",
-    "createdAt": "2016-02-04T13:21:36.298Z",
-    "updatedAt": "2016-02-04T13:32:59.056Z",
-    "id": "56b350602d62407e669fdd0e"
+    "id": "56b48196a4bcf8c3058d8e8e",
+    "name": "New Project",
+    "createdAt": "2016-02-05T11:03:50.540Z",
+    "updatedAt": "2016-02-05T11:53:01.106Z",
+    "company": "56b463697054d850020f3c79",
+    "owner": "56b463697054d850020f3c78"
   }
 }
 ```

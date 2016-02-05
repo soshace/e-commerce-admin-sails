@@ -35,6 +35,8 @@ module.exports = {
     _.extend(team, teamData);
 
     team.save(function (error, team) {
+      var returnedTeam;
+
       if (error) {
         return response.send(500, {
           code: 'error',
@@ -42,10 +44,11 @@ module.exports = {
         });
       }
 
+      returnedTeam = _.pick(team, 'id', 'name', 'createdAt', 'updatedAt');
       response.send(200, {
         code: 'successful',
         message: 'Team was successfully updated',
-        team: team
+        team: returnedTeam
       });
     });
   },
