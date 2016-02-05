@@ -53,6 +53,10 @@ module.exports = {
       collection: 'orders',
       via: 'project'
     },
+    customers: {
+      collection: 'customer',
+      via: 'project'
+    },
     productTypes: {
       collection: 'productType',
       via: 'project'
