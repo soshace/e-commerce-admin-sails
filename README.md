@@ -613,6 +613,64 @@ GET /projects/:id
 }
 ```
 
+###Get project's categories by id
+```
+GET /projects/:id/categories
+```
+**Example of the API's answer:**
+```
+{
+  "code": "successful",
+  "categories": [
+    {
+      "project": "56b4aeff00231f4a0a376ad9",
+      "name": "Category1",
+      "owner": "56b4aebb00231f4a0a376ad6",
+      "createdAt": "2016-02-05T16:16:36.197Z",
+      "updatedAt": "2016-02-05T16:16:36.197Z",
+      "id": "56b4cae4edc18b7925e6e98c"
+    },
+    {
+      "project": "56b4aeff00231f4a0a376ad9",
+      "name": "Category2",
+      "owner": "56b4aebb00231f4a0a376ad6",
+      "createdAt": "2016-02-05T16:16:45.471Z",
+      "updatedAt": "2016-02-05T16:16:45.471Z",
+      "id": "56b4caededc18b7925e6e98d"
+    }
+  ]
+}
+```
+
+###Get project's products by id
+```
+GET /projects/:id/products
+```
+**Example of the API's answer:**
+```
+{
+  "code": "successful",
+  "products": [
+    {
+      "owner": "56b4aebb00231f4a0a376ad6",
+      "project": "56b4aeff00231f4a0a376ad9",
+      "name": "Product1",
+      "createdAt": "2016-02-05T14:51:08.599Z",
+      "updatedAt": "2016-02-05T14:51:08.599Z",
+      "id": "56b4b6dcedd0d3410bf42b92"
+    },
+    {
+      "owner": "56b4aebb00231f4a0a376ad6",
+      "project": "56b4aeff00231f4a0a376ad9",
+      "name": "Product1",
+      "createdAt": "2016-02-05T16:05:44.624Z",
+      "updatedAt": "2016-02-05T16:05:44.624Z",
+      "id": "56b4c8587f2a24df104b825c"
+    }
+  ]
+}
+```
+
 ```
 PUT /projects/:id
 ```

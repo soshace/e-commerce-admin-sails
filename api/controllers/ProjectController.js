@@ -185,5 +185,41 @@ module.exports = {
           projects: fullListOfProjects
         });
       });
+  },
+
+  findProjectCategories: function (request, response) {
+    var projectId = request.param('id');
+
+    Category.find({project: projectId}).exec(function (error, categories) {
+      if (error) {
+        return response.send(500, {
+          code: 'error',
+          message: error
+        });
+      }
+
+      return response.send(200, {
+        code: 'successful',
+        categories: categories
+      });
+    });
+  },
+
+  findProjectProducts: function (request, response) {
+    var projectId = request.param('id');
+
+    Product.find({project: projectId}).exec(function (error, products) {
+      if (error) {
+        return response.send(500, {
+          code: 'error',
+          message: error
+        });
+      }
+
+      return response.send(200, {
+        code: 'successful',
+        products: products
+      });
+    });
   }
 };
