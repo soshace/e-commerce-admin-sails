@@ -14,7 +14,7 @@ module.exports = {
       profile = request.user;
 
     productData.owner = profile.id;
-    Product.create(productData).exec(function (error, project) {
+    Product.create(productData).exec(function (error, product) {
       if (error) {
         return response.send(500, {
           code: 'error',
@@ -24,7 +24,7 @@ module.exports = {
 
       response.send(200, {
         code: 'successful',
-        project: project
+        product: product
       });
     });
   },
@@ -94,7 +94,7 @@ module.exports = {
     var user = request.user,
       userId = user.id;
 
-    User.findOne({id: userId}).exec(function (error, products) {
+    Product.find({owner: userId}).exec(function (error, products) {
       if (error) {
         return response.send(500, {
           code: 'error',

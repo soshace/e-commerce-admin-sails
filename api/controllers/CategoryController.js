@@ -13,7 +13,7 @@ module.exports = {
       profile = request.user;
 
     categoryData.owner = profile.id;
-    Category.create(categoryData).exec(function (error, project) {
+    Category.create(categoryData).exec(function (error, category) {
       if (error) {
         return response.send(500, {
           code: 'error',
@@ -23,7 +23,7 @@ module.exports = {
 
       response.send(200, {
         code: 'successful',
-        project: project
+        category: category
       });
     });
   },
@@ -57,7 +57,7 @@ module.exports = {
     response.send(200, {
       code: 'successful',
       message: 'Category was successfully found',
-      project: request.category
+      category: request.category
     });
   },
 
@@ -92,7 +92,7 @@ module.exports = {
     var user = request.user,
       userId = user.id;
 
-    User.findOne({id: userId}).exec(function (error, categorys) {
+    Category.find({owner: userId}).exec(function (error, categories) {
       if (error) {
         return response.send(500, {
           code: 'error',
@@ -102,7 +102,7 @@ module.exports = {
 
       return response.send(200, {
         code: 'successful',
-        categorys: categorys
+        categories: categories
       });
     });
   }
