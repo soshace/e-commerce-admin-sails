@@ -34,7 +34,8 @@ module.exports = {
       via: 'products'
     },
     categories: {
-      collection: 'category'
+      collection: 'category',
+      via: 'products'
     },
     taxGroup: {
       model: 'taxGroup'

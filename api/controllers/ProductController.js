@@ -107,6 +107,67 @@ module.exports = {
         products: products
       });
     });
+  },
+
+  getCategories: function (request, response) {
+    var productId = request.param('id');
+
+    Product.findOne({id: productId}).populate('categories').exec(function (error, product) {
+      var categories;
+
+      if (error) {
+        return response.send(500, {
+          code: 'error',
+          message: error
+        });
+      }
+
+      categories = product.categories || [];
+      return response.send(200, {
+        code: 'successful',
+        categories: categories
+      });
+    });
+  },
+
+  addCategory: function (request, response) {
+    var categoryId = request.param('categoryId'),
+      product = request.product;
+
+    product.categories.add(categoryId);
+    product.save(function (error, product) {
+      if (error) {
+        return response.send(500, {
+          code: 'error',
+          message: error
+        });
+      }
+
+      return response.send(200, {
+        code: 'successful',
+        product: product
+      });
+    });
+  },
+
+  removeCategory: function (request, response) {
+    var categoryId = request.param('categoryId'),
+      product = request.product;
+
+    product.categories.remove(categoryId);
+    product.save(function (error, product) {
+      if (error) {
+        return response.send(500, {
+          code: 'error',
+          message: error
+        });
+      }
+
+      return response.send(200, {
+        code: 'successful',
+        product: product
+      });
+    });
   }
 };
 
