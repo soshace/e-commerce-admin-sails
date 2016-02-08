@@ -808,6 +808,8 @@ GET /products/:id
 }
 ```
 
+
+###Update product by id
 ```
 PUT /products/:id
 ```
@@ -831,7 +833,7 @@ PUT /products/:id
 }
 ```
 
-
+###Delete product by id
 ```
 DELETE /products/:id
 ```
@@ -853,6 +855,124 @@ DELETE /products/:id
 }
 ```
 
+###Get categories by product
+```
+GET /products/:id/categories
+```
+**Example of the API's answer:**
+```
+{
+  "code": "successful",
+  "categories": [
+    {
+      "name": "Category1",
+      "project": "56b4aeff00231f4a0a376ad9",
+      "owner": "56b4aebb00231f4a0a376ad6",
+      "createdAt": "2016-02-05T16:16:36.197Z",
+      "updatedAt": "2016-02-08T16:43:19.229Z",
+      "id": "56b4cae4edc18b7925e6e98c"
+    }
+  ]
+}
+```
+
+###Add relation between category and product
+```
+POST /products/:id/categories/:categoryId
+```
+**Example of the API's answer:**
+```
+{
+  "code": "successful",
+  "product": {
+    "categories": [
+      {
+        "name": "Category1",
+        "project": "56b4aeff00231f4a0a376ad9",
+        "owner": "56b4aebb00231f4a0a376ad6",
+        "createdAt": "2016-02-05T16:16:36.197Z",
+        "updatedAt": "2016-02-08T16:43:19.229Z",
+        "id": "56b4cae4edc18b7925e6e98c"
+      },
+      {
+        "name": "Category2",
+        "project": "56b4aeff00231f4a0a376ad9",
+        "owner": "56b4aebb00231f4a0a376ad6",
+        "createdAt": "2016-02-05T16:16:45.471Z",
+        "updatedAt": "2016-02-05T16:16:45.471Z",
+        "id": "56b4caededc18b7925e6e98d"
+      }
+    ],
+    "owner": {
+      "email": "user@mail.com",
+      "name": "UsersName",
+      "createdAt": "2016-02-05T14:16:27.193Z",
+      "updatedAt": "2016-02-05T14:16:27.193Z",
+      "id": "56b4aebb00231f4a0a376ad6"
+    },
+    "project": {
+      "name": "Project1",
+      "company": "56b4aebb00231f4a0a376ad7",
+      "slug": "project1",
+      "language": "en",
+      "currency": "USD",
+      "owner": "56b4aebb00231f4a0a376ad6",
+      "createdAt": "2016-02-05T14:17:35.807Z",
+      "updatedAt": "2016-02-05T14:17:35.807Z",
+      "id": "56b4aeff00231f4a0a376ad9"
+    },
+    "name": "Name 2",
+    "createdAt": "2016-02-05T14:51:08.599Z",
+    "updatedAt": "2016-02-08T16:51:17.578Z",
+    "id": "56b4b6dcedd0d3410bf42b92"
+  }
+}
+```
+
+###Delete relation between product and category
+```
+DELETE /products/:id/categories/:categoryId
+```
+**Example of the API's answer:**
+```
+{
+  "code": "successful",
+  "product": {
+    "categories": [
+      {
+        "name": "Category1",
+        "project": "56b4aeff00231f4a0a376ad9",
+        "owner": "56b4aebb00231f4a0a376ad6",
+        "createdAt": "2016-02-05T16:16:36.197Z",
+        "updatedAt": "2016-02-08T16:43:19.229Z",
+        "id": "56b4cae4edc18b7925e6e98c"
+      }
+    ],
+    "owner": {
+      "email": "user@mail.com",
+      "name": "UsersName",
+      "createdAt": "2016-02-05T14:16:27.193Z",
+      "updatedAt": "2016-02-05T14:16:27.193Z",
+      "id": "56b4aebb00231f4a0a376ad6"
+    },
+    "project": {
+      "name": "Project1",
+      "company": "56b4aebb00231f4a0a376ad7",
+      "slug": "project1",
+      "language": "en",
+      "currency": "USD",
+      "owner": "56b4aebb00231f4a0a376ad6",
+      "createdAt": "2016-02-05T14:17:35.807Z",
+      "updatedAt": "2016-02-05T14:17:35.807Z",
+      "id": "56b4aeff00231f4a0a376ad9"
+    },
+    "name": "Name 2",
+    "createdAt": "2016-02-05T14:51:08.599Z",
+    "updatedAt": "2016-02-08T16:52:44.665Z",
+    "id": "56b4b6dcedd0d3410bf42b92"
+  }
+}
+```
 
 ##Categories
 
@@ -921,7 +1041,7 @@ GET /categories
 }
 ```
 
-###Get one product by id
+###Get one category by id
 ```
 GET /categories/:id
 ```
@@ -941,6 +1061,7 @@ GET /categories/:id
 }
 ```
 
+###Update category by id
 ```
 PUT /categories/:id
 ```
@@ -965,7 +1086,7 @@ PUT /categories/:id
 }
 ```
 
-
+###Delete category by id
 ```
 DELETE /categories/:id
 ```
@@ -984,5 +1105,120 @@ DELETE /categories/:id
       "id": "56b4cabcedc18b7925e6e98b"
     }
   ]
+}
+```
+
+###Get products by category
+```
+GET /categories/:id/products
+```
+**Example of the API's answer:**
+```
+{
+  "code": "successful",
+  "products": [
+    {
+      "name": "Name 2",
+      "project": "56b4aeff00231f4a0a376ad9",
+      "owner": "56b4aebb00231f4a0a376ad6",
+      "createdAt": "2016-02-05T14:51:08.599Z",
+      "updatedAt": "2016-02-08T15:27:33.567Z",
+      "id": "56b4b6dcedd0d3410bf42b92"
+    },
+    {
+      "name": "Product1",
+      "project": "56b4aeff00231f4a0a376ad9",
+      "owner": "56b4aebb00231f4a0a376ad6",
+      "createdAt": "2016-02-05T16:05:44.624Z",
+      "updatedAt": "2016-02-05T16:05:44.624Z",
+      "id": "56b4c8587f2a24df104b825c"
+    }
+  ]
+}
+```
+
+###Add relation between category and product
+```
+POST /categories/:id/products/:productId
+```
+**Example of the API's answer:**
+```
+{
+  "code": "successful",
+  "category": {
+    "products": [
+      {
+        "name": "Name 2",
+        "project": "56b4aeff00231f4a0a376ad9",
+        "owner": "56b4aebb00231f4a0a376ad6",
+        "createdAt": "2016-02-05T14:51:08.599Z",
+        "updatedAt": "2016-02-08T15:27:33.567Z",
+        "id": "56b4b6dcedd0d3410bf42b92"
+      },
+      {
+        "name": "Product1",
+        "project": "56b4aeff00231f4a0a376ad9",
+        "owner": "56b4aebb00231f4a0a376ad6",
+        "createdAt": "2016-02-05T16:05:44.624Z",
+        "updatedAt": "2016-02-05T16:05:44.624Z",
+        "id": "56b4c8587f2a24df104b825c"
+      }
+    ],
+    "project": {
+      "name": "Project1",
+      "company": "56b4aebb00231f4a0a376ad7",
+      "slug": "project1",
+      "language": "en",
+      "currency": "USD",
+      "owner": "56b4aebb00231f4a0a376ad6",
+      "createdAt": "2016-02-05T14:17:35.807Z",
+      "updatedAt": "2016-02-05T14:17:35.807Z",
+      "id": "56b4aeff00231f4a0a376ad9"
+    },
+    "name": "Category1",
+    "owner": "56b4aebb00231f4a0a376ad6",
+    "createdAt": "2016-02-05T16:16:36.197Z",
+    "updatedAt": "2016-02-08T16:39:31.694Z",
+    "id": "56b4cae4edc18b7925e6e98c"
+  }
+}
+```
+
+###Delete relation between category and product
+```
+DELETE /categories/:id/products/:productId
+```
+**Example of the API's answer:**
+```
+{
+  "code": "successful",
+  "category": {
+    "products": [
+      {
+        "name": "Name 2",
+        "project": "56b4aeff00231f4a0a376ad9",
+        "owner": "56b4aebb00231f4a0a376ad6",
+        "createdAt": "2016-02-05T14:51:08.599Z",
+        "updatedAt": "2016-02-08T15:27:33.567Z",
+        "id": "56b4b6dcedd0d3410bf42b92"
+      }
+    ],
+    "project": {
+      "name": "Project1",
+      "company": "56b4aebb00231f4a0a376ad7",
+      "slug": "project1",
+      "language": "en",
+      "currency": "USD",
+      "owner": "56b4aebb00231f4a0a376ad6",
+      "createdAt": "2016-02-05T14:17:35.807Z",
+      "updatedAt": "2016-02-05T14:17:35.807Z",
+      "id": "56b4aeff00231f4a0a376ad9"
+    },
+    "name": "Category1",
+    "owner": "56b4aebb00231f4a0a376ad6",
+    "createdAt": "2016-02-05T16:16:36.197Z",
+    "updatedAt": "2016-02-08T16:05:11.847Z",
+    "id": "56b4cae4edc18b7925e6e98c"
+  }
 }
 ```
