@@ -24,7 +24,8 @@ module.exports = {
     },
     //TODO: need to add validation for update method
     language: {
-      type: 'array'
+      type: 'array',
+      defaultsTo: ['en']
     },
     company: {
       model: 'company',
