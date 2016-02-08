@@ -788,6 +788,44 @@ GET /products
 }
 ```
 
+###Get full list of current user's products + search + pagination
+#####Answer includes products of user as an owner and which he has rights access
+```
+GET /products/?name=:productName&page=:pageNumber&limit=:limitPerPage
+```
+**Example of the API's answer:**
+```
+{
+  "code": "successful",
+  "products": [
+    {
+      "owner": "56b4aebb00231f4a0a376ad6",
+      "project": "56b4aeff00231f4a0a376ad9",
+      "name": "Product1",
+      "createdAt": "2016-02-05T16:05:44.624Z",
+      "updatedAt": "2016-02-05T16:05:44.624Z",
+      "id": "56b4c8587f2a24df104b825c"
+    },
+    {
+      "owner": "56b4aebb00231f4a0a376ad6",
+      "project": "56b4aeff00231f4a0a376ad9",
+      "name": "Product1",
+      "createdAt": "2016-02-08T17:53:22.387Z",
+      "updatedAt": "2016-02-08T17:53:22.387Z",
+      "id": "56b8d612880d72b375adc214"
+    },
+    {
+      "owner": "56b4aebb00231f4a0a376ad6",
+      "project": "56b4aeff00231f4a0a376ad9",
+      "name": "Product1",
+      "createdAt": "2016-02-08T17:53:25.588Z",
+      "updatedAt": "2016-02-08T17:53:25.588Z",
+      "id": "56b8d615880d72b375adc215"
+    }
+  ]
+}
+```
+
 ###Get one product by id
 ```
 GET /products/:id

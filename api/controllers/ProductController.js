@@ -92,9 +92,31 @@ module.exports = {
   //TODO: need to include products which user has rights access
   find: function (request, response) {
     var user = request.user,
-      userId = user.id;
+      userId = user.id,
+      requestObj = {owner: userId},
+      query = request.query || {},
+      paginate = {},
+      findResults;
 
-    Product.find({owner: userId}).exec(function (error, products) {
+    if (query.page) {
+      paginate.page = query.page;
+    }
+
+    if (query.limit) {
+      paginate.limit = query.limit;
+    }
+
+    if (query.name) {
+      requestObj.name = query.name;
+    }
+
+    findResults = Product.find(requestObj);
+
+    if (!_.isEmpty(paginate)) {
+      findResults = findResults.paginate(paginate);
+    }
+
+    findResults.exec(function (error, products) {
       if (error) {
         return response.send(500, {
           code: 'error',
