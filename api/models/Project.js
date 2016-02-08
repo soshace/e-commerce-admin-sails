@@ -17,15 +17,17 @@ module.exports = {
       unique: true,
       required: true
     },
+    //TODO: need to add validation for update method
     currency: {
-      type: 'string',
-      enum: ['USD', 'EUR', 'GBR', 'INR'],
+      type: 'array',
+      defaultsTo: ['USD'],
       required: true
     },
     //TODO: need to add validation for update method
     language: {
       type: 'array',
-      defaultsTo: ['en']
+      defaultsTo: ['en'],
+      required: true
     },
     company: {
       model: 'company',
