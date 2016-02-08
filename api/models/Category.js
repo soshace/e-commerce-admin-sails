@@ -19,6 +19,10 @@ module.exports = {
       model: 'project',
       via: 'categories',
       required: true
+    },
+    products: {
+      collection: 'product',
+      via: 'categories'
     }
   }
 };

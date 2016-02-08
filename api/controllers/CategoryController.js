@@ -105,5 +105,66 @@ module.exports = {
         categories: categories
       });
     });
+  },
+
+  getProducts: function (request, response) {
+    var categoryId = request.param('id');
+
+    Category.findOne({id: categoryId}).populate('products').exec(function (error, category) {
+      var products;
+
+      if (error) {
+        return response.send(500, {
+          code: 'error',
+          message: error
+        });
+      }
+
+      products = category.products || [];
+      return response.send(200, {
+        code: 'successful',
+        products: products
+      });
+    });
+  },
+
+  addProduct: function (request, response) {
+    var productId = request.param('productId'),
+      category = request.category;
+
+    category.products.add(productId);
+    category.save(function (error, category) {
+      if (error) {
+        return response.send(500, {
+          code: 'error',
+          message: error
+        });
+      }
+
+      return response.send(200, {
+        code: 'successful',
+        category: category
+      });
+    });
+  },
+
+  removeProduct: function (request, response) {
+    var productId = request.param('productId'),
+      category = request.category;
+
+    category.products.remove(productId);
+    category.save(function (error, category) {
+      if (error) {
+        return response.send(500, {
+          code: 'error',
+          message: error
+        });
+      }
+
+      return response.send(200, {
+        code: 'successful',
+        category: category
+      });
+    });
   }
 };

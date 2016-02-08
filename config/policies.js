@@ -56,7 +56,10 @@ module.exports.policies = {
     'find': 'isAuthenticated',
     'findOne': ['isAuthenticated', 'doesUserHaveProductAccess'],
     'remove': ['isAuthenticated', 'doesUserHaveProductAccess'],
-    'update': ['isAuthenticated', 'doesUserHaveProductAccess']
+    'update': ['isAuthenticated', 'doesUserHaveProductAccess'],
+    'getCategories': ['isAuthenticated', 'doesUserHaveProductAccess'],
+    'addCategory': ['isAuthenticated', 'doesUserHaveProductAccess'],
+    'removeCategory': ['isAuthenticated', 'doesUserHaveProductAccess']
   },
 
   'CategoryController': {
@@ -64,7 +67,10 @@ module.exports.policies = {
     'find': 'isAuthenticated',
     'findOne': ['isAuthenticated', 'doesUserHaveCategoryAccess'],
     'remove': ['isAuthenticated', 'doesUserHaveCategoryAccess'],
-    'update': ['isAuthenticated', 'doesUserHaveCategoryAccess']
+    'update': ['isAuthenticated', 'doesUserHaveCategoryAccess'],
+    'getProduct': ['isAuthenticated', 'doesUserHaveCategoryAccess'],
+    'addProduct': ['isAuthenticated', 'doesUserHaveCategoryAccess'],
+    'removeProduct': ['isAuthenticated', 'doesUserHaveCategoryAccess']
   },
 
   'CompanyController': {
