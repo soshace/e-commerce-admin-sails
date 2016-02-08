@@ -59,6 +59,7 @@ module.exports = {
     });
   },
 
+  //TODO: need to add validation for locale
   update: function (request, response) {
     var projectData = request.body || {},
       project = request.project || {};

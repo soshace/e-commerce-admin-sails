@@ -22,10 +22,9 @@ module.exports = {
       enum: ['USD', 'EUR', 'GBR', 'INR'],
       required: true
     },
+    //TODO: need to add validation for update method
     language: {
-      type: 'string',
-      enum: ['en', 'fr', 'de', 'ja', 'zh'],
-      required: true
+      type: 'array'
     },
     company: {
       model: 'company',
