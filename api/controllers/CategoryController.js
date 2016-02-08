@@ -108,9 +108,24 @@ module.exports = {
   },
 
   getProducts: function (request, response) {
-    var categoryId = request.param('id');
+    var categoryId = request.param('id'),
+      requestObj = {},
+      query = request.query || {};
 
-    Category.findOne({id: categoryId}).populate('products').exec(function (error, category) {
+    if (query.page) {
+      requestObj.skip = PaginationService.getSkipNumberByPageAndLimit(query.page, query.limit);
+      sails.log('----skip---', requestObj.skip);
+    }
+
+    if (query.limit) {
+      requestObj.limit = query.limit;
+    }
+
+    if (query.name) {
+      requestObj.name = query.name;
+    }
+
+    Category.findOne({id: categoryId}).populate('products', requestObj).exec(function (error, category) {
       var products;
 
       if (error) {
