@@ -89,6 +89,14 @@ module.exports.policies = {
     'findOne': ['isAuthenticated', 'isTeamOwner'],
     'remove': ['isAuthenticated', 'isTeamOwner'],
     'update': ['isAuthenticated', 'isTeamOwner']
+  },
+
+  'ProductTypeController': {
+    'create': 'isAuthenticated',
+    'find': 'isAuthenticated',
+    'findOne': ['isAuthenticated', 'doesUserHaveProductTypeAccess'],
+    'remove': ['isAuthenticated', 'doesUserHaveProductTypeAccess'],
+    'update': ['isAuthenticated', 'doesUserHaveProductTypeAccess']
   }
 
   // RabbitController: {

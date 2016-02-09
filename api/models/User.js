@@ -48,6 +48,10 @@ module.exports = {
       collection: 'product',
       via: 'owner'
     },
+    productTypes: {
+      collection: 'productType',
+      via: 'owner'
+    },
     toJSON: function () {
       var obj = this.toObject();
       delete obj.password;
@@ -75,22 +79,21 @@ module.exports = {
    * @param afterCallback
    */
   afterCreate: function (user, afterCallback) {
-    var that = this,
-      userName = user.name,
+    var userName = user.name,
       companyName = userName + '\'s Company';
 
 
-    sails.log('--------afterCreate--------', user);
+    sails.log('--------User afterCreate user--------', user);
     async.waterfall([
         function (callback) {
-          sails.log('--------afterCreate1--------', user);
+          sails.log('--------User  afterCreate user--------', user);
           Company.create({
             name: companyName,
             owner: user.id
           }).exec(callback);
         },
         function (company, callback) {
-          sails.log('--------afterCreate2--------', company);
+          sails.log('--------User  afterCreate company--------', company);
           Team.create({
             name: 'Admin',
             company: company.id,

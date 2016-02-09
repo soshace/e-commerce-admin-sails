@@ -25,6 +25,11 @@ module.exports = {
     },
     isSearchable: {
       type: 'boolean'
+    },
+    productType: {
+      model: 'productType',
+      via: 'attributeDefinitions',
+      required: true
     }
   }
 };

@@ -58,7 +58,7 @@ module.exports = {
     response.send(200, {
       code: 'successful',
       message: 'Product was successfully found',
-      project: request.product
+      product: request.product
     });
   },
 

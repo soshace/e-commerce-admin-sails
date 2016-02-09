@@ -31,7 +31,8 @@ module.exports = {
     //TODO: make it required!
     productType: {
       model: 'productType',
-      via: 'products'
+      via: 'products',
+      required: true
     },
     categories: {
       collection: 'category',

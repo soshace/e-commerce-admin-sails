@@ -67,6 +67,30 @@ module.exports = {
       collection: 'permission',
       via: 'project'
     }
+  },
+
+  /**
+   * Method creates default Product Type for new project
+   * @param project
+   * @param callback
+   */
+  afterCreate: function (project, callback) {
+    var projectOwner = project.owner,
+      projectId = project.id;
+
+    sails.log('--------Project afterCreate project--------', project);
+    async.waterfall([
+        function (callback) {
+          sails.log('--------Project afterCreate--------');
+          ProductType.create({
+            owner: projectOwner,
+            name: 'Sample Product Type',
+            description: 'A demo product type',
+            project: projectId
+          }).exec(callback);
+        }
+      ],
+      callback);
   }
 };
 
