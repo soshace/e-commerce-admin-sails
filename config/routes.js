@@ -93,6 +93,7 @@ module.exports.routes = {
   'put /product_types/:id': 'ProductTypeController.update',
   'get /product_types/:id': 'ProductTypeController.findOne',
   'delete /product_types/:id': 'ProductTypeController.remove',
+  'get /product_types/:id/product_attributes': 'ProductTypeController.getProductAttributes',
   'post /product_attributes': 'ProductAttributeController.create',
   'get /product_attributes': 'ProductAttributeController.find',
   'put /product_attributes/:id': 'ProductAttributeController.update',

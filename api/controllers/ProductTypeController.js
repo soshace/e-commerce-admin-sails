@@ -104,6 +104,24 @@ module.exports = {
         productTypes: productTypes
       });
     });
+  },
+
+  getProductAttributes: function (request, response) {
+    var productTypeId = request.productType.id;
+
+    ProductAttribute.find({productType: productTypeId}).exec(function (error, productAttributes) {
+      if (error) {
+        return response.send(500, {
+          code: 'error',
+          message: error
+        });
+      }
+
+      return response.send(200, {
+        code: 'successful',
+        productAttributes: productAttributes
+      });
+    });
   }
 };
 

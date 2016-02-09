@@ -1430,6 +1430,45 @@ PUT /product_types/:id
 }
 ```
 
+###Get one Product Attributes of Product Type
+```
+GET /product_types/:id/product_attributes
+```
+**Example of the API's answer:**
+```
+{
+  "code": "successful",
+  "productAttributes": [
+    {
+      "owner": "56b9d8ffd2c1e9d07e64b8f1",
+      "productType": "56b9d92cd2c1e9d07e64b8f5",
+      "name": "Product Attribute3",
+      "label": "Product Attribute Label",
+      "attributeType": "text",
+      "constraints": "none",
+      "isRequired": false,
+      "isSearchable": true,
+      "createdAt": "2016-02-09T16:36:10.430Z",
+      "updatedAt": "2016-02-09T16:52:44.133Z",
+      "id": "56ba157a1424a5aa07d9a342"
+    },
+    {
+      "owner": "56b9d8ffd2c1e9d07e64b8f1",
+      "productType": "56b9d92cd2c1e9d07e64b8f5",
+      "name": "Product Attribute1",
+      "label": "Product Attribute Label1",
+      "attributeType": "text",
+      "constraints": "none",
+      "isRequired": false,
+      "isSearchable": true,
+      "createdAt": "2016-02-09T16:46:55.529Z",
+      "updatedAt": "2016-02-09T16:46:55.529Z",
+      "id": "56ba17ff1424a5aa07d9a343"
+    }
+  ]
+}
+```
+
 ##ProductAttributes
 
 ###Creating new ProductAttribute
