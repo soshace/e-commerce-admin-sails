@@ -55,10 +55,14 @@ module.exports = {
   },
 
   findOne: function (request, response) {
-    response.send(200, {
-      code: 'successful',
-      message: 'Product was successfully found',
-      product: request.product
+    var productId = request.product.id;
+
+    Product.findOne({id: productId}).populate('categories').exec(function (error, product) {
+      response.send(200, {
+        code: 'successful',
+        message: 'Product was successfully found',
+        product: product
+      });
     });
   },
 

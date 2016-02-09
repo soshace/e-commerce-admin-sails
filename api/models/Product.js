@@ -28,7 +28,6 @@ module.exports = {
       via: 'products',
       required: true
     },
-    //TODO: make it required!
     productType: {
       model: 'productType',
       via: 'products',
