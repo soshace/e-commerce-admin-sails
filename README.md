@@ -1430,6 +1430,29 @@ PUT /product_types/:id
 }
 ```
 
+###Delete Product Type by id
+```
+DELETE /product_types/:id
+```
+**Example of the API's answer:**
+```
+{
+  "code": "successful",
+  "message": "Product type was removed successfully",
+  "productType": [
+    {
+      "owner": "56b9d8ffd2c1e9d07e64b8f1",
+      "name": "Sample Product Type2",
+      "description": "New Product Type2",
+      "project": "56b9d92cd2c1e9d07e64b8f4",
+      "createdAt": "2016-02-09T12:18:52.669Z",
+      "updatedAt": "2016-02-09T12:36:18.427Z",
+      "id": "56b9d92cd2c1e9d07e64b8f5"
+    }
+  ]
+}
+```
+
 ###Get one Product Attributes of Product Type
 ```
 GET /product_types/:id/product_attributes
