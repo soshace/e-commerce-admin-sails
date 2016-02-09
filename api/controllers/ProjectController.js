@@ -222,5 +222,23 @@ module.exports = {
         products: products
       });
     });
+  },
+
+  findProjectProductTypes: function (request, response) {
+    var projectId = request.param('id');
+
+    ProductType.find({project: projectId}).exec(function (error, productTypes) {
+      if (error) {
+        return response.send(500, {
+          code: 'error',
+          message: error
+        });
+      }
+
+      return response.send(200, {
+        code: 'successful',
+        productTypes: productTypes
+      });
+    });
   }
 };

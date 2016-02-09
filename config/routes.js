@@ -58,6 +58,7 @@ module.exports.routes = {
   'get /projects/:id': 'ProjectController.findOne',
   'get /projects/:id/products': 'ProjectController.findProjectProducts',
   'get /projects/:id/categories': 'ProjectController.findProjectCategories',
+  'get /projects/:id/product_types': 'ProjectController.findProjectProductTypes',
   'delete /projects/:id': 'ProjectController.remove',
   'post /companies': 'CompanyController.create',
   'get /companies': 'CompanyController.find',

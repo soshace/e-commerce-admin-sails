@@ -671,6 +671,37 @@ GET /projects/:id/products
 }
 ```
 
+###Get project's Product Types by id
+```
+GET /projects/:id/product_types
+```
+**Example of the API's answer:**
+```
+{
+  "code": "successful",
+  "productTypes": [
+    {
+      "owner": "56b9d8ffd2c1e9d07e64b8f1",
+      "project": "56b9d92cd2c1e9d07e64b8f4",
+      "name": "Sample Product Type2",
+      "description": "New Product Type2",
+      "createdAt": "2016-02-09T12:18:52.669Z",
+      "updatedAt": "2016-02-09T12:36:18.427Z",
+      "id": "56b9d92cd2c1e9d07e64b8f5"
+    },
+    {
+      "owner": "56b9d8ffd2c1e9d07e64b8f1",
+      "project": "56b9d92cd2c1e9d07e64b8f4",
+      "name": "New Product Type",
+      "description": "New Product Type2",
+      "createdAt": "2016-02-09T12:28:52.053Z",
+      "updatedAt": "2016-02-09T12:28:52.053Z",
+      "id": "56b9db84c314585b15856ac6"
+    }
+  ]
+}
+```
+
 ```
 PUT /projects/:id
 ```
