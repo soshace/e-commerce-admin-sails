@@ -1,6 +1,6 @@
 /**
  * TODO: Need to check project permissions + if user is owner
- * TODO: Currently we are checking if he is owner or not
+ * TODO: Currently we are checking only if he is owner or not
  * Checking if user have enough rights access to the project or not
  */
 module.exports = function (request, response, next) {

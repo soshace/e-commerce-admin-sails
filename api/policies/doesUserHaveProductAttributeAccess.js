@@ -1,21 +1,22 @@
 /**
- * TODO: Need to check project permissions + if user is owner
+ * TODO: Need to check attribute permissions + if user is owner
  * TODO: Currently we are checking only if he is owner or not
- * Checking if user have enough rights access to the project or not
+ * Checking if user have enough rights access to the category or not
  */
+
 module.exports = function (request, response, next) {
-  var productTypeId = request.param('id'),
+  var categoryId = request.param('id'),
     profile = request.user,
     profileId = profile.id;
 
-  if (typeof productTypeId === 'undefined') {
+  if (typeof categoryId === 'undefined') {
     return response.send(400, {
       code: 'error',
-      message: 'You should specify product type\'s id'
+      message: 'You should specify category\'s id'
     });
   }
 
-  ProductType.findOne({id: productTypeId}).exec(function (error, productType) {
+  ProductAttribute.findOne({id: categoryId}).exec(function (error, productAttribute) {
     if (error) {
       return response.send(500, {
         code: 'error',
@@ -23,21 +24,21 @@ module.exports = function (request, response, next) {
       });
     }
 
-    if (typeof productType === 'undefined') {
+    if (typeof productAttribute === 'undefined') {
       return response.send(400, {
         code: 'not.found',
-        message: 'ProductType was not found'
+        message: 'category was not found'
       });
     }
 
-    if (profileId !== productType.owner) {
+    if (profileId !== productAttribute.owner) {
       return response.send(403, {
         code: 'no.access',
         message: 'You don\'t have access to the resource'
       });
     }
 
-    request.productType = productType;
+    request.productAttribute = productAttribute;
     next();
   });
 };

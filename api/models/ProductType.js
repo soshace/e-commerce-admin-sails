@@ -21,10 +21,6 @@ module.exports = {
       via: 'productTypes',
       required: true
     },
-    attributeDefinitions: {
-      collection: 'attributeDefinition',
-      via: 'productType'
-    },
     project: {
       model: 'project',
       via: 'productTypes',
@@ -35,6 +31,10 @@ module.exports = {
     },
     products: {
       collection: 'product',
+      via: 'productType'
+    },
+    productAttributes: {
+      collection: 'productAttribute',
       via: 'productType'
     }
   }

@@ -1429,3 +1429,128 @@ PUT /product_types/:id
   }
 }
 ```
+
+##ProductAttributes
+
+###Creating new ProductAttribute
+```
+POST /product_attributes
+```
+**Example of the API's request:**
+```
+{
+    "name": "Product Attribute",
+    "label": "Product Attribute Label",
+    "productType":"56b9d92cd2c1e9d07e64b8f5",
+    "attributeType": "text"
+}
+```
+
+**Example of the API's answer:**
+```
+{
+  "code": "successful",
+  "productAttribute": {
+    "name": "Product Attribute",
+    "label": "Product Attribute Label",
+    "productType": "56b9d92cd2c1e9d07e64b8f5",
+    "attributeType": "text",
+    "owner": "56b9d8ffd2c1e9d07e64b8f1",
+    "constraints": "none",
+    "isRequired": false,
+    "isSearchable": true,
+    "createdAt": "2016-02-09T16:36:10.430Z",
+    "updatedAt": "2016-02-09T16:36:10.430Z",
+    "id": "56ba157a1424a5aa07d9a342"
+  }
+}
+```
+
+###Get full list of current user's ProductTypes
+#####Answer includes products of user as an owner and which he has rights access
+```
+GET /product_attributes
+```
+**Example of the API's answer:**
+```
+{
+  "code": "successful",
+  "productAttributes": [
+    {
+      "owner": "56b9d8ffd2c1e9d07e64b8f1",
+      "productType": "56b9d92cd2c1e9d07e64b8f5",
+      "name": "Product Attribute",
+      "label": "Product Attribute Label",
+      "attributeType": "text",
+      "constraints": "none",
+      "isRequired": false,
+      "isSearchable": true,
+      "createdAt": "2016-02-09T16:36:10.430Z",
+      "updatedAt": "2016-02-09T16:36:10.430Z",
+      "id": "56ba157a1424a5aa07d9a342"
+    },
+    {
+      "owner": "56b9d8ffd2c1e9d07e64b8f1",
+      "productType": "56b9d92cd2c1e9d07e64b8f5",
+      "name": "Product Attribute1",
+      "label": "Product Attribute Label1",
+      "attributeType": "text",
+      "constraints": "none",
+      "isRequired": false,
+      "isSearchable": true,
+      "createdAt": "2016-02-09T16:46:55.529Z",
+      "updatedAt": "2016-02-09T16:46:55.529Z",
+      "id": "56ba17ff1424a5aa07d9a343"
+    }
+  ]
+}
+```
+
+###Get one Product Attribute by id
+```
+GET /product_attributes/:id
+```
+**Example of the API's answer:**
+```
+{
+  "code": "successful",
+  "message": "Product Attribute was successfully found",
+  "productAttribute": {
+    "owner": "56b9d8ffd2c1e9d07e64b8f1",
+    "productType": "56b9d92cd2c1e9d07e64b8f5",
+    "name": "Product Attribute",
+    "label": "Product Attribute Label",
+    "attributeType": "text",
+    "constraints": "none",
+    "isRequired": false,
+    "isSearchable": true,
+    "createdAt": "2016-02-09T16:36:10.430Z",
+    "updatedAt": "2016-02-09T16:36:10.430Z",
+    "id": "56ba157a1424a5aa07d9a342"
+  }
+}
+```
+
+###Update Product Attribute by id
+```
+PUT /product_attribute/:id
+```
+**Example of the API's request:**
+```
+{
+    "name": "Product Attribute3"
+}
+```
+**Example of the API's answer:**
+```
+{
+  "code": "successful",
+  "message": "Product was successfully updated",
+  "productAttribute": {
+    "id": "56ba157a1424a5aa07d9a342",
+    "name": "Product Attribute3",
+    "createdAt": "2016-02-09T16:36:10.430Z",
+    "updatedAt": "2016-02-09T16:52:44.133Z"
+  }
+}
+```
