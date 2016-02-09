@@ -835,7 +835,7 @@ GET /products/:id
 {
   "code": "successful",
   "message": "Product was successfully found",
-  "project": {
+  "product": {
     "owner": "56b4aebb00231f4a0a376ad6",
     "project": "56b4aeff00231f4a0a376ad9",
     "name": "Product",
@@ -1286,6 +1286,115 @@ DELETE /categories/:id/products/:productId
     "createdAt": "2016-02-05T16:16:36.197Z",
     "updatedAt": "2016-02-08T16:05:11.847Z",
     "id": "56b4cae4edc18b7925e6e98c"
+  }
+}
+```
+
+##ProductType
+
+###Creating new ProductType
+```
+POST /product_types
+```
+**Example of the API's request:**
+```
+{
+    "name":"New Product Type",
+    "description": "New Product Type2",
+    "project":"56b9d92cd2c1e9d07e64b8f4"
+}
+```
+
+**Example of the API's answer:**
+```
+{
+  "code": "successful",
+  "productType": {
+    "name": "New Product Type",
+    "description": "New Product Type2",
+    "project": "56b9d92cd2c1e9d07e64b8f4",
+    "owner": "56b9d8ffd2c1e9d07e64b8f1",
+    "createdAt": "2016-02-09T12:28:52.053Z",
+    "updatedAt": "2016-02-09T12:28:52.053Z",
+    "id": "56b9db84c314585b15856ac6"
+  }
+}
+```
+
+###Get full list of current user's ProductTypes
+#####Answer includes products of user as an owner and which he has rights access
+```
+GET /product_types
+```
+**Example of the API's answer:**
+```
+{
+  "code": "successful",
+  "productTypes": [
+    {
+      "owner": "56b9d8ffd2c1e9d07e64b8f1",
+      "project": "56b9d92cd2c1e9d07e64b8f4",
+      "name": "Sample Product Type",
+      "description": "New Product Type2",
+      "createdAt": "2016-02-09T12:18:52.669Z",
+      "updatedAt": "2016-02-09T12:21:34.398Z",
+      "id": "56b9d92cd2c1e9d07e64b8f5"
+    },
+    {
+      "owner": "56b9d8ffd2c1e9d07e64b8f1",
+      "project": "56b9d92cd2c1e9d07e64b8f4",
+      "name": "New Product Type",
+      "description": "New Product Type2",
+      "createdAt": "2016-02-09T12:28:52.053Z",
+      "updatedAt": "2016-02-09T12:28:52.053Z",
+      "id": "56b9db84c314585b15856ac6"
+    }
+  ]
+}
+```
+
+###Get one Product Type by id
+```
+GET /product_types/:id
+```
+**Example of the API's answer:**
+```
+{
+  "code": "successful",
+  "message": "Product was successfully found",
+  "productType": {
+    "owner": "56b9d8ffd2c1e9d07e64b8f1",
+    "project": "56b9d92cd2c1e9d07e64b8f4",
+    "name": "Sample Product Type",
+    "description": "New Product Type2",
+    "createdAt": "2016-02-09T12:18:52.669Z",
+    "updatedAt": "2016-02-09T12:21:34.398Z",
+    "id": "56b9d92cd2c1e9d07e64b8f5"
+  }
+}
+```
+
+###Update Product Type by id
+```
+PUT /product_types/:id
+```
+**Example of the API's request:**
+```
+{
+    "name": "Sample Product Type2"
+}
+```
+**Example of the API's answer:**
+```
+{
+  "code": "successful",
+  "message": "Product was successfully updated",
+  "productType": {
+    "id": "56b9d92cd2c1e9d07e64b8f5",
+    "name": "Sample Product Type2",
+    "description": "New Product Type2",
+    "createdAt": "2016-02-09T12:18:52.669Z",
+    "updatedAt": "2016-02-09T12:36:18.427Z"
   }
 }
 ```
