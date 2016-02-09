@@ -1616,3 +1616,30 @@ PUT /product_attribute/:id
   }
 }
 ```
+
+###Delete Product Attribute by id
+```
+DELETE /product_attribute/:id
+```
+**Example of the API's answer:**
+```
+{
+  "code": "successful",
+  "message": "Product attribute was removed successfully",
+  "productAttribute": [
+    {
+      "name": "Product Attribute3",
+      "label": "Product Attribute Label",
+      "productType": "56b9d92cd2c1e9d07e64b8f5",
+      "attributeType": "text",
+      "owner": "56b9d8ffd2c1e9d07e64b8f1",
+      "constraints": "none",
+      "isRequired": false,
+      "isSearchable": true,
+      "createdAt": "2016-02-09T16:36:10.430Z",
+      "updatedAt": "2016-02-09T16:52:44.133Z",
+      "id": "56ba157a1424a5aa07d9a342"
+    }
+  ]
+}
+```
