@@ -105,4 +105,5 @@ module.exports.routes = {
   'put /variants/:id': 'VariantController.update',
   'get /variants/:id': 'VariantController.findOne',
   'delete /variants/:id': 'VariantController.remove',
+  'put /variant_attributes/:id': 'VariantAttributeController.updateValue',
 };

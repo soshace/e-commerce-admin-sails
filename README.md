@@ -1824,3 +1824,33 @@ DELETE /variants/:id
   ]
 }
 ```
+
+##VariantAttributes
+
+###Update Variant Attribute's Value by id
+```
+PUT /variant_attributes/:id
+```
+**Example of the API's request:**
+```
+{
+    "value": "New Value"
+}
+```
+**Example of the API's answer:**
+```
+{
+  "code": "successful",
+  "message": "Variant attribute was successfully updated",
+  "attribute": [
+    {
+      "productAttribute": "56bb44d1c9f8299171ffb4c0",
+      "variant": "56bb5a8f76b2aabd0b0b3e1e",
+      "createdAt": "2016-02-10T15:43:11.725Z",
+      "updatedAt": "2016-02-10T16:54:11.345Z",
+      "value": "New Value",
+      "id": "56bb5a8f76b2aabd0b0b3e20"
+    }
+  ]
+}
+```
