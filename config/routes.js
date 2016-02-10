@@ -102,7 +102,7 @@ module.exports.routes = {
   'delete /product_attributes/:id': 'ProductAttributeController.remove',
   'post /variants': 'VariantController.create',
   'get /variants': 'VariantController.find',
-  'put /variants/:id': 'VariantController.update',
+  'put /variants/:id': 'VariantController.updateSKU',
   'get /variants/:id': 'VariantController.findOne',
   'delete /variants/:id': 'VariantController.remove',
   'put /variant_attributes/:id': 'VariantAttributeController.updateValue',

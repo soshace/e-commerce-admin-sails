@@ -27,15 +27,14 @@ module.exports = {
     });
   },
 
-  //TODO: we are able to update only sku field
-  update: function (request, response) {
-    var variantData = request.body || {},
+  updateSKU: function (request, response) {
+    var variantSKU = request.body && request.body.sku,
       variant = request.variant || {};
 
-    _.extend(variant, variantData);
+    _.extend(variant, {sku: variantSKU});
 
     variant.save(function (error, variant) {
-      var returnedAttributeDefinition;
+      var returnedVariant;
 
       if (error) {
         return response.send(500, {
@@ -44,11 +43,11 @@ module.exports = {
         });
       }
 
-      returnedAttributeDefinition = _.pick(variant, 'id', 'createdAt', 'updatedAt', 'isMaster', 'productType', 'product', 'sku');
+      returnedVariant = _.pick(variant, 'id', 'createdAt', 'updatedAt', 'isMaster', 'productType', 'product', 'sku');
       response.send(200, {
         code: 'successful',
         message: 'Product was successfully updated',
-        variant: returnedAttributeDefinition
+        variant: returnedVariant
       });
     });
   },

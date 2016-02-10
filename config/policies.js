@@ -115,7 +115,7 @@ module.exports.policies = {
     'find': 'isAuthenticated',
     'findOne': ['isAuthenticated', 'doesUserHaveVariantAccess'],
     'remove': ['isAuthenticated', 'doesUserHaveVariantAccess'],
-    'update': ['isAuthenticated', 'doesUserHaveVariantAccess']
+    'updateSKU': ['isAuthenticated', 'doesUserHaveVariantAccess']
   },
 
   'VariantAttributeController': {
