@@ -107,6 +107,14 @@ module.exports.policies = {
     'findOne': ['isAuthenticated', 'doesUserHaveProductAttributeAccess'],
     'remove': ['isAuthenticated', 'doesUserHaveProductAttributeAccess'],
     'update': ['isAuthenticated', 'doesUserHaveProductAttributeAccess']
+  },
+
+  'VariantController': {
+    'create': 'isAuthenticated',
+    'find': 'isAuthenticated',
+    'findOne': ['isAuthenticated', 'doesUserHaveVariantAccess'],
+    'remove': ['isAuthenticated', 'doesUserHaveVariantAccess'],
+    'update': ['isAuthenticated', 'doesUserHaveVariantAccess']
   }
 
   // RabbitController: {
