@@ -8,15 +8,33 @@
 module.exports = {
 
   attributes: {
-    title: {
+    label: {
       type: 'string'
     },
     uri: {
       type: 'string',
       required: true
     },
-    description: {
-      type: 'string'
+    external: {
+      type: 'boolean',
+      required: true,
+      defaultsTo: false
+    },
+    width: {
+      type: 'integer'
+    },
+    height: {
+      type: 'integer'
+    },
+    product: {
+      model: 'product',
+      via: 'productImages',
+      required: true
+    },
+    variant: {
+      model: variant,
+      via: 'variantImages',
+      required: true
     }
   }
 };

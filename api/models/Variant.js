@@ -40,6 +40,10 @@ module.exports = {
       model: 'product',
       required: true,
       via: 'variants'
+    },
+    variantImages: {
+      collection: 'image',
+      via: 'variant'
     }
   }
 };

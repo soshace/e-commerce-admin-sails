@@ -43,6 +43,10 @@ module.exports = {
     variants: {
       collection: 'variant',
       via: 'product'
+    },
+    'productImages': {
+      collection: 'image',
+      via: 'product'
     }
   },
 
