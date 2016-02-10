@@ -18,7 +18,7 @@ module.exports = {
     },
     owner: {
       model: 'user',
-      via: 'productTypes',
+      via: 'ownProductTypes',
       required: true
     },
     project: {
@@ -35,6 +35,10 @@ module.exports = {
     },
     productAttributes: {
       collection: 'productAttribute',
+      via: 'productType'
+    },
+    variants: {
+      collection: 'variant',
       via: 'productType'
     }
   }

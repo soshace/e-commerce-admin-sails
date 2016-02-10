@@ -8,25 +8,38 @@
 module.exports = {
 
   attributes: {
-    name: {
-      type: 'string',
-      required: true
+    sku: {
+      type: 'string'
     },
-    description: {
-      type: 'string',
-      required: true,
-      unique: true
-    },
-    //TODO: need to change this fields as said at documentation AttributeDefinition
     attributes: {
-      type: 'string',
-      required: true
+      collection: 'variantAttribute',
+      via: 'variant'
     },
     images: {
       collection: 'image'
     },
     prices: {
       collection: 'price'
+    },
+    isMaster: {
+      type: 'boolean',
+      defaultsTo: false,
+      required: true
+    },
+    owner: {
+      model: 'user',
+      required: true,
+      via: 'variants'
+    },
+    productType: {
+      model: 'productType',
+      required: true,
+      via: 'variants'
+    },
+    product: {
+      model: 'product',
+      required: true,
+      via: 'variants'
     }
   }
 };

@@ -18,7 +18,7 @@ module.exports = {
     },
     owner: {
       model: 'user',
-      via: 'productAttributes',
+      via: 'ownProductAttributes',
       required: true
     },
     constraints: {

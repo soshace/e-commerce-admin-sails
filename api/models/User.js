@@ -48,11 +48,11 @@ module.exports = {
       collection: 'product',
       via: 'owner'
     },
-    productTypes: {
+    ownProductTypes: {
       collection: 'productType',
       via: 'owner'
     },
-    productAttributes: {
+    ownProductAttributes: {
       collection: 'productAttribute',
       via: 'owner'
     },
@@ -63,16 +63,16 @@ module.exports = {
     }
   },
 
-  beforeCreate: function (user, beforeCallback) {
+  beforeCreate: function (user, callback) {
     bcrypt.genSalt(10, function (error, salt) {
       bcrypt.hash(user.password, salt, function (error, hash) {
         if (error) {
           console.log(error);
-          return beforeCallback(error);
+          return callback(error);
         }
 
         user.password = hash;
-        beforeCallback(null, user);
+        callback(null, user);
       });
     });
   },
@@ -80,9 +80,9 @@ module.exports = {
   /**
    * Method creates Company and team 'Admin' associated with registered user
    * @param user
-   * @param afterCallback
+   * @param callback
    */
-  afterCreate: function (user, afterCallback) {
+  afterCreate: function (user, callback) {
     var userName = user.name,
       companyName = userName + '\'s Company';
 
@@ -105,7 +105,7 @@ module.exports = {
           }).exec(callback);
         }
       ],
-      afterCallback);
+      callback);
   }
 };
 
