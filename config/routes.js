@@ -78,6 +78,7 @@ module.exports.routes = {
   'get /products/:id': 'ProductController.findOne',
   'delete /products/:id': 'ProductController.remove',
   'get /products/:id/categories': 'ProductController.getCategories',
+  'get /products/:id/variants': 'ProductController.getVariants',
   'post /products/:id/categories/:categoryId': 'ProductController.addCategory',
   'delete /products/:id/categories/:categoryId': 'ProductController.removeCategory',
   'post /categories': 'CategoryController.create',

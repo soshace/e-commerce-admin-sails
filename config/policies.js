@@ -59,6 +59,7 @@ module.exports.policies = {
     'remove': ['isAuthenticated', 'doesUserHaveProductAccess'],
     'update': ['isAuthenticated', 'doesUserHaveProductAccess'],
     'getCategories': ['isAuthenticated', 'doesUserHaveProductAccess'],
+    'getVariants': ['isAuthenticated', 'doesUserHaveProductAccess'],
     'addCategory': ['isAuthenticated', 'doesUserHaveProductAccess'],
     'removeCategory': ['isAuthenticated', 'doesUserHaveProductAccess']
   },

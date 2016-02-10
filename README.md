@@ -945,6 +945,44 @@ GET /products/:id/categories
 }
 ```
 
+###Get variants by product
+```
+GET /products/:id/variants
+```
+**Example of the API's answer:**
+```
+{
+  "code": "successful",
+  "variants": [
+    {
+      "attributes": [
+        {
+          "productAttribute": "56bb40cb9ad54c174c616204",
+          "variant": "56bb5a8f76b2aabd0b0b3e1e",
+          "createdAt": "2016-02-10T15:43:11.723Z",
+          "updatedAt": "2016-02-10T15:43:11.723Z",
+          "id": "56bb5a8f76b2aabd0b0b3e1f"
+        },
+        {
+          "productAttribute": "56bb44d1c9f8299171ffb4c0",
+          "variant": "56bb5a8f76b2aabd0b0b3e1e",
+          "createdAt": "2016-02-10T15:43:11.725Z",
+          "updatedAt": "2016-02-10T15:43:11.725Z",
+          "id": "56bb5a8f76b2aabd0b0b3e20"
+        }
+      ],
+      "owner": "56bb2c1684dfb5cf1d49e2c7",
+      "productType": "56bb3bd62d2e92ba1e9551dc",
+      "product": "56bb5a8f76b2aabd0b0b3e1d",
+      "isMaster": true,
+      "createdAt": "2016-02-10T15:43:11.675Z",
+      "updatedAt": "2016-02-10T15:43:11.675Z",
+      "id": "56bb5a8f76b2aabd0b0b3e1e"
+    }
+  ]
+}
+```
+
 ###Add relation between category and product
 ```
 POST /products/:id/categories/:categoryId

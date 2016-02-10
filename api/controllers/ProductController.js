@@ -63,13 +63,16 @@ module.exports = {
   findOne: function (request, response) {
     var productId = request.product.id;
 
-    Product.findOne({id: productId}).populate('categories').exec(function (error, product) {
-      response.send(200, {
-        code: 'successful',
-        message: 'Product was successfully found',
-        product: product
+    Product.findOne({id: productId})
+      .populate('categories')
+      .populate('variants')
+      .exec(function (error, product) {
+        response.send(200, {
+          code: 'successful',
+          message: 'Product was successfully found',
+          product: product
+        });
       });
-    });
   },
 
   remove: function (request, response) {
@@ -160,6 +163,26 @@ module.exports = {
         categories: categories
       });
     });
+  },
+
+  getVariants: function (request, response) {
+    var productId = request.param('id');
+
+    Variant.find({product: productId})
+      .populate('attributes')
+      .exec(function (error, variants) {
+        if (error) {
+          return response.send(500, {
+            code: 'error',
+            message: error
+          });
+        }
+
+        return response.send(200, {
+          code: 'successful',
+          variants: variants
+        });
+      });
   },
 
   addCategory: function (request, response) {
