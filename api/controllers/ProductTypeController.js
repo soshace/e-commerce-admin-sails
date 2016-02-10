@@ -6,6 +6,9 @@
  */
 
 module.exports = {
+
+  //TODO: need to check that Project exists
+  //TODO: need to check permissions to Project
   create: function (request, response) {
     var productTypeData = request.body,
       profile = request.user;
@@ -26,6 +29,8 @@ module.exports = {
     });
   },
 
+  //TODO: need to check that Project exists
+  //TODO: need to check permissions to Project
   update: function (request, response) {
     var productTypeData = request.body || {},
       productType = request.productType || {};

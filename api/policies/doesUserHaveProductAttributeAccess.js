@@ -12,7 +12,7 @@ module.exports = function (request, response, next) {
   if (typeof categoryId === 'undefined') {
     return response.send(400, {
       code: 'error',
-      message: 'You should specify category\'s id'
+      message: 'You should specify product attribute\'s id'
     });
   }
 
@@ -27,7 +27,7 @@ module.exports = function (request, response, next) {
     if (typeof productAttribute === 'undefined') {
       return response.send(400, {
         code: 'not.found',
-        message: 'category was not found'
+        message: 'Product Attribute was not found'
       });
     }
 

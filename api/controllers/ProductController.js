@@ -9,6 +9,9 @@ var _ = require('underscore');
 
 module.exports = {
 
+  //TODO: need to check that ProductType and Project exist
+  //TODO: need to check that productType is tied with Project
+  //TODO: user should have access to project
   create: function (request, response) {
     var productData = request.body,
       profile = request.user;
@@ -29,6 +32,9 @@ module.exports = {
     });
   },
 
+  //TODO: need to check that ProductType and Project exist
+  //TODO: need to check that productType is tied with Project
+  //TODO: user should have access to project
   update: function (request, response) {
     var productData = request.body || {},
       product = request.product || {};

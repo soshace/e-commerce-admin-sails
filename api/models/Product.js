@@ -42,13 +42,13 @@ module.exports = {
     },
     variants: {
       collection: 'variant',
-      via: 'product',
-      required: true
+      via: 'product'
     }
   },
 
   /**
    * Method creates Master Variant for new product
+   *
    * @param product
    * @param callback
    */
@@ -76,7 +76,7 @@ module.exports = {
           var productAttributes = productType.productAttributes;
 
           async.each(productAttributes, function (attribute, callback) {
-            VariantAttribute.attribute.create({
+            VariantAttribute.create({
               productAttribute: attribute.id,
               variant: variant.id
             }).exec(callback)
