@@ -1529,7 +1529,7 @@ POST /product_attributes
 ```
 
 ###Get full list of current user's ProductTypes
-#####Answer includes products of user as an owner and which he has rights access
+#####Answer includes product attributes of user as an owner and which he has rights access
 ```
 GET /product_attributes
 ```
@@ -1595,7 +1595,7 @@ GET /product_attributes/:id
 
 ###Update Product Attribute by id
 ```
-PUT /product_attribute/:id
+PUT /product_attributes/:id
 ```
 **Example of the API's request:**
 ```
@@ -1619,7 +1619,7 @@ PUT /product_attribute/:id
 
 ###Delete Product Attribute by id
 ```
-DELETE /product_attribute/:id
+DELETE /product_attributes/:id
 ```
 **Example of the API's answer:**
 ```
@@ -1639,6 +1639,149 @@ DELETE /product_attribute/:id
       "createdAt": "2016-02-09T16:36:10.430Z",
       "updatedAt": "2016-02-09T16:52:44.133Z",
       "id": "56ba157a1424a5aa07d9a342"
+    }
+  ]
+}
+```
+
+
+##Variants
+
+###Creating new Variant
+```
+POST /variants
+```
+**Example of the API's request:**
+```
+{
+    "product": "56bb3cf2cd1f58942d64b46c",
+    "productType": "56bb3bd62d2e92ba1e9551dc"
+}
+```
+
+**Example of the API's answer:**
+```
+{
+  "code": "successful",
+  "variant": {
+    "product": "56bb3cf2cd1f58942d64b46c",
+    "productType": "56bb3bd62d2e92ba1e9551dc",
+    "owner": "56bb2c1684dfb5cf1d49e2c7",
+    "isMaster": false,
+    "createdAt": "2016-02-10T15:29:25.049Z",
+    "updatedAt": "2016-02-10T15:29:25.050Z",
+    "id": "56bb575576b2aabd0b0b3e1c"
+  }
+}
+```
+
+###Get full list of current user's Variants
+#####Answer includes variants of user as an owner and which he has rights access
+```
+GET /variants
+```
+**Example of the API's answer:**
+```
+{
+  "code": "successful",
+  "variants": [
+    {
+      "owner": "56bb2c1684dfb5cf1d49e2c7",
+      "productType": "56bb3bd62d2e92ba1e9551dc",
+      "product": "56bb3cf2cd1f58942d64b46c",
+      "isMaster": true,
+      "createdAt": "2016-02-10T13:36:51.042Z",
+      "updatedAt": "2016-02-10T13:36:51.042Z",
+      "id": "56bb3cf3cd1f58942d64b46d"
+    },
+    {
+      "owner": "56bb2c1684dfb5cf1d49e2c7",
+      "productType": "56bb3bd62d2e92ba1e9551dc",
+      "product": "56bb3cf2cd1f58942d64b46c",
+      "isMaster": false,
+      "createdAt": "2016-02-10T15:29:25.049Z",
+      "updatedAt": "2016-02-10T15:29:25.050Z",
+      "id": "56bb575576b2aabd0b0b3e1c"
+    }
+  ]
+}
+```
+
+###Get one Variant by id
+```
+GET /variants/:id
+```
+**Example of the API's answer:**
+```
+{
+  "code": "successful",
+  "message": "Variant was successfully found",
+  "variant": {
+    "attributes": [],
+    "owner": "56bb2c1684dfb5cf1d49e2c7",
+    "productType": "56bb3bd62d2e92ba1e9551dc",
+    "product": "56bb3cf2cd1f58942d64b46c",
+    "isMaster": false,
+    "createdAt": "2016-02-10T15:29:25.049Z",
+    "updatedAt": "2016-02-10T15:29:25.050Z",
+    "id": "56bb575576b2aabd0b0b3e1c"
+  }
+}
+```
+
+###Update Product Attribute by id
+```
+PUT /variants/:id
+```
+**Example of the API's request:**
+```
+{
+    "sku": "Hello"
+}
+```
+**Example of the API's answer:**
+```
+{
+  "code": "successful",
+  "message": "Product was successfully updated",
+  "variant": {
+    "id": "56bb575576b2aabd0b0b3e1c",
+    "createdAt": "2016-02-10T15:29:25.049Z",
+    "updatedAt": "2016-02-10T15:48:05.264Z",
+    "isMaster": false,
+    "productType": {
+      "owner": "56bb2c1684dfb5cf1d49e2c7",
+      "name": "Sample Product Type",
+      "description": "A demo product type",
+      "project": "56bb3bd62d2e92ba1e9551db",
+      "createdAt": "2016-02-10T13:32:06.717Z",
+      "updatedAt": "2016-02-10T13:32:06.717Z",
+      "id": "56bb3bd62d2e92ba1e9551dc"
+    },
+    "sku": "Hello"
+  }
+}
+```
+
+###Delete Product Attribute by id
+```
+DELETE /variants/:id
+```
+**Example of the API's answer:**
+```
+{
+  "code": "successful",
+  "message": "Variant was removed successfully",
+  "variant": [
+    {
+      "product": "56bb3bd62d2e92ba1e9551db",
+      "productType": "56bb3bd62d2e92ba1e9551dc",
+      "owner": "56bb2c1684dfb5cf1d49e2c7",
+      "isMaster": false,
+      "createdAt": "2016-02-10T15:29:25.049Z",
+      "updatedAt": "2016-02-10T15:48:05.264Z",
+      "sku": "Hello",
+      "id": "56bb575576b2aabd0b0b3e1c"
     }
   ]
 }

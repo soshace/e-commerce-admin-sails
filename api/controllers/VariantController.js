@@ -27,6 +27,7 @@ module.exports = {
     });
   },
 
+  //TODO: we are able to update only sku field
   update: function (request, response) {
     var variantData = request.body || {},
       variant = request.variant || {};
@@ -43,7 +44,7 @@ module.exports = {
         });
       }
 
-      returnedAttributeDefinition = _.pick(variant, 'id', 'name', 'createdAt', 'updatedAt', 'isMaster', 'productType', 'product');
+      returnedAttributeDefinition = _.pick(variant, 'id', 'createdAt', 'updatedAt', 'isMaster', 'productType', 'product', 'sku');
       response.send(200, {
         code: 'successful',
         message: 'Product was successfully updated',
