@@ -20,17 +20,14 @@ module.exports = {
     },
     owner: {
       model: 'user',
-      required: true,
       via: 'ownProducts'
     },
     project: {
       model: 'project',
-      via: 'products',
       required: true
     },
     productType: {
       model: 'productType',
-      via: 'products',
       required: true
     },
     categories: {
@@ -44,8 +41,12 @@ module.exports = {
       collection: 'variant',
       via: 'product'
     },
-    'productImages': {
+    'images': {
       collection: 'image',
+      via: 'product'
+    },
+    prices: {
+      collection: 'price',
       via: 'product'
     }
   },

@@ -18,12 +18,10 @@ module.exports = {
     },
     owner: {
       model: 'user',
-      via: 'ownProductTypes',
       required: true
     },
     project: {
       model: 'project',
-      via: 'productTypes',
       required: true
     },
     image: {

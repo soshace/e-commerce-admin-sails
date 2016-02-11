@@ -60,6 +60,10 @@ module.exports = {
       collection: 'image',
       via: 'owner'
     },
+    ownPrices: {
+      collection: 'image',
+      via: 'owner'
+    },
     toJSON: function () {
       var obj = this.toObject();
       delete obj.password;

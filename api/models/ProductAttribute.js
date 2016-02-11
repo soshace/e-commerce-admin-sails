@@ -18,7 +18,6 @@ module.exports = {
     },
     owner: {
       model: 'user',
-      via: 'ownProductAttributes',
       required: true
     },
     constraints: {
@@ -39,7 +38,6 @@ module.exports = {
     },
     productType: {
       model: 'productType',
-      via: 'productAttributes',
       required: true
     },
     attributeType: {

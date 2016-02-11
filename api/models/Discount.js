@@ -13,7 +13,6 @@ module.exports = {
     },
     project: {
       model: 'project',
-      via: 'discounts',
       required: true
     }
   }

@@ -16,10 +16,12 @@ module.exports = {
       via: 'variant'
     },
     images: {
-      collection: 'image'
+      collection: 'image',
+      via: 'variant'
     },
     prices: {
-      collection: 'price'
+      collection: 'price',
+      via: 'variant'
     },
     isMaster: {
       type: 'boolean',
@@ -28,22 +30,15 @@ module.exports = {
     },
     owner: {
       model: 'user',
-      required: true,
-      via: 'variants'
+      required: true
     },
     productType: {
       model: 'productType',
-      required: true,
-      via: 'variants'
+      required: true
     },
     product: {
       model: 'product',
-      required: true,
-      via: 'variants'
-    },
-    variantImages: {
-      collection: 'image',
-      via: 'variant'
+      required: true
     }
   }
 };

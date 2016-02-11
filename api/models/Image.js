@@ -33,12 +33,10 @@ module.exports = {
     },
     product: {
       model: 'product',
-      via: 'productImages',
       required: true
     },
     variant: {
       model: 'variant',
-      via: 'variantImages',
       required: true
     }
   }

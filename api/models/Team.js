@@ -18,7 +18,6 @@ module.exports = {
     },
     company: {
       model: 'company',
-      via: 'teams',
       required: true
     },
     permissions: {
@@ -27,7 +26,6 @@ module.exports = {
     },
     owner: {
       model: 'user',
-      via: 'ownTeams',
       required: true
     }
   }

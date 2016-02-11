@@ -31,12 +31,10 @@ module.exports = {
     },
     company: {
       model: 'company',
-      via: 'projects',
       required: true
     },
     owner: {
       model: 'user',
-      via: 'ownProjects',
       required: true
     },
     products: {

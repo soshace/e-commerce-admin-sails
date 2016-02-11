@@ -13,12 +13,10 @@ module.exports = {
     },
     productAttribute: {
       model: 'productAttribute',
-      via: 'variantAttributes',
       required: true
     },
     variant: {
       model: 'variant',
-      via: 'attributes',
       required: true
     }
   }

@@ -17,7 +17,6 @@ module.exports = {
     },
     project: {
       model: 'project',
-      via: 'categories',
       required: true
     },
     products: {
