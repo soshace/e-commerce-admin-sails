@@ -107,20 +107,6 @@ module.exports = {
       variantId = requestData.variantId,
       productId = requestData.productId;
 
-    if (typeof variantId === 'undefined') {
-      return response.send(400, {
-        code: 'error',
-        message: 'Need to specify variant\'s Id'
-      });
-    }
-
-    if (typeof productId === 'undefined') {
-      return response.send(400, {
-        code: 'error',
-        message: 'Need to specify product\'s Id'
-      });
-    }
-
     async.waterfall([
       function (callback) {
         request.file('avatar').upload({

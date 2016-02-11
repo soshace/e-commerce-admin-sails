@@ -55,20 +55,22 @@ module.exports = {
   findOne: function (request, response) {
     var variantId = request.variant.id;
 
-    Variant.findOne({id: variantId}).populate('attributes').exec(function (error, variant) {
-      if (error) {
-        return response.send(500, {
-          code: 'error',
-          message: error
-        });
-      }
+    Variant.findOne({id: variantId})
+      .populate('attributes')
+      .exec(function (error, variant) {
+        if (error) {
+          return response.send(500, {
+            code: 'error',
+            message: error
+          });
+        }
 
-      response.send(200, {
-        code: 'successful',
-        message: 'Variant was successfully found',
-        variant: variant
+        response.send(200, {
+          code: 'successful',
+          message: 'Variant was successfully found',
+          variant: variant
+        });
       });
-    });
   },
 
   remove: function (request, response) {
@@ -114,6 +116,21 @@ module.exports = {
       return response.send(200, {
         code: 'successful',
         variants: variants
+      });
+    });
+  },
+
+  getImages: function (request, response) {
+    var variantId = request.param('id');
+
+    Image.find({variant: variantId}).exec(function (error, images) {
+      if (error) {
+        return response.serverError(error);
+      }
+
+      return response.send(200, {
+        code: 'successful',
+        images: images
       });
     });
   }

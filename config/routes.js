@@ -51,6 +51,8 @@ module.exports.routes = {
   'post /users/login': 'UserController.login',
   'get /users/logout': 'UserController.logout',
   'get /users/profile': 'UserController.getProfile',
+
+
   'get /projects/slug/check/:slugName': 'ProjectController.checkSlug',
   'post /projects': 'ProjectController.create',
   'get /projects': 'ProjectController.find',
@@ -60,6 +62,8 @@ module.exports.routes = {
   'get /projects/:id/categories': 'ProjectController.findProjectCategories',
   'get /projects/:id/product_types': 'ProjectController.findProjectProductTypes',
   'delete /projects/:id': 'ProjectController.remove',
+
+
   'post /companies': 'CompanyController.create',
   'get /companies': 'CompanyController.find',
   'put /companies/:id': 'CompanyController.update',
@@ -67,11 +71,15 @@ module.exports.routes = {
   'delete /companies/:id': 'CompanyController.remove',
   'get /companies/:id/teams': 'CompanyController.findTeams',
   'get /companies/:id/projects': 'CompanyController.findProjects',
+
+
   'post /teams': 'TeamController.create',
   'get /teams': 'TeamController.find',
   'get /teams/:id': 'TeamController.findOne',
   'delete /teams/:id': 'TeamController.remove',
   'put /teams/:id': 'TeamController.update',
+
+
   'post /products': 'ProductController.create',
   'get /products': 'ProductController.find',
   'put /products/:id': 'ProductController.update',
@@ -79,8 +87,11 @@ module.exports.routes = {
   'delete /products/:id': 'ProductController.remove',
   'get /products/:id/categories': 'ProductController.getCategories',
   'get /products/:id/variants': 'ProductController.getVariants',
+  'get /products/:id/images': 'ProductController.getImages',
   'post /products/:id/categories/:categoryId': 'ProductController.addCategory',
   'delete /products/:id/categories/:categoryId': 'ProductController.removeCategory',
+
+
   'post /categories': 'CategoryController.create',
   'get /categories': 'CategoryController.find',
   'put /categories/:id': 'CategoryController.update',
@@ -89,23 +100,32 @@ module.exports.routes = {
   'get /categories/:id/products': 'CategoryController.getProducts',
   'post /categories/:id/products/:productId': 'CategoryController.addProduct',
   'delete /categories/:id/products/:productId': 'CategoryController.removeProduct',
+
+
   'post /product_types': 'ProductTypeController.create',
   'get /product_types': 'ProductTypeController.find',
   'put /product_types/:id': 'ProductTypeController.update',
   'get /product_types/:id': 'ProductTypeController.findOne',
   'delete /product_types/:id': 'ProductTypeController.remove',
   'get /product_types/:id/product_attributes': 'ProductTypeController.getProductAttributes',
+
+
   'post /product_attributes': 'ProductAttributeController.create',
   'get /product_attributes': 'ProductAttributeController.find',
   'put /product_attributes/:id': 'ProductAttributeController.update',
   'get /product_attributes/:id': 'ProductAttributeController.findOne',
   'delete /product_attributes/:id': 'ProductAttributeController.remove',
+
+
   'post /variants': 'VariantController.create',
   'get /variants': 'VariantController.find',
   'put /variants/:id': 'VariantController.updateSKU',
   'get /variants/:id': 'VariantController.findOne',
+  'get /variants/:id/images': 'VariantController.getImages',
   'delete /variants/:id': 'VariantController.remove',
   'put /variant_attributes/:id': 'VariantAttributeController.updateValue',
+
+
   'post /images': 'ImageController.create',
   'post /images/upload': 'ImageController.upload',
   'get /images': 'ImageController.find',

@@ -223,6 +223,21 @@ module.exports = {
         product: product
       });
     });
+  },
+
+  getImages: function (request, response) {
+    var productId = request.param('id');
+
+    Image.find({product: productId}).exec(function (error, images) {
+      if (error) {
+        return response.serverError(error);
+      }
+
+      return response.send(200, {
+        code: 'successful',
+        images: images
+      });
+    });
   }
 };
 

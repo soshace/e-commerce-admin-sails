@@ -983,6 +983,38 @@ GET /products/:id/variants
 }
 ```
 
+###Get images by product
+```
+GET /products/:id/images
+```
+**Example of the API's answer:**
+```
+{
+  "code": "successful",
+  "images": [
+    {
+      "product": "56bca47b61a92b870f3e2567",
+      "variant": "56bca47b61a92b870f3e2568",
+      "uri": "http://45.55.60.139/de719f7b-9a50-464e-bbd8-4cda10e72272.jpg",
+      "external": false,
+      "createdAt": "2016-02-11T15:29:49.810Z",
+      "updatedAt": "2016-02-11T15:29:49.810Z",
+      "id": "56bca8eddfcee6d642b0a87c"
+    },
+    {
+      "owner": "56bca31261a92b870f3e2561",
+      "product": "56bca47b61a92b870f3e2567",
+      "variant": "56bca47b61a92b870f3e2568",
+      "uri": "https://writeitdown31days.files.wordpress.com/2015/13/hello-picture.gif",
+      "external": true,
+      "createdAt": "2016-02-11T15:54:18.821Z",
+      "updatedAt": "2016-02-11T15:54:18.822Z",
+      "id": "56bcaeaaa512b145550febe1"
+    }
+  ]
+}
+```
+
 ###Add relation between category and product
 ```
 POST /products/:id/categories/:categoryId
@@ -1825,8 +1857,39 @@ DELETE /variants/:id
 }
 ```
 
-##VariantAttributes
+###Get one Variant's images by id
+```
+GET /variants/:id/images
+```
+**Example of the API's answer:**
+```
+{
+  "code": "successful",
+  "images": [
+    {
+      "product": "56bca47b61a92b870f3e2567",
+      "variant": "56bca47b61a92b870f3e2568",
+      "uri": "http://45.55.60.139/de719f7b-9a50-464e-bbd8-4cda10e72272.jpg",
+      "external": false,
+      "createdAt": "2016-02-11T15:29:49.810Z",
+      "updatedAt": "2016-02-11T15:29:49.810Z",
+      "id": "56bca8eddfcee6d642b0a87c"
+    },
+    {
+      "owner": "56bca31261a92b870f3e2561",
+      "product": "56bca47b61a92b870f3e2567",
+      "variant": "56bca47b61a92b870f3e2568",
+      "uri": "https://writeitdown31days.files.wordpress.com/2015/13/hello-picture.gif",
+      "external": true,
+      "createdAt": "2016-02-11T15:54:18.821Z",
+      "updatedAt": "2016-02-11T15:54:18.822Z",
+      "id": "56bcaeaaa512b145550febe1"
+    }
+  ]
+}
+```
 
+##VariantAttributes
 ###Update Variant Attribute's Value by id
 ```
 PUT /variant_attributes/:id

@@ -59,6 +59,7 @@ module.exports.policies = {
     'remove': ['isAuthenticated', 'doesUserHaveProductAccess'],
     'update': ['isAuthenticated', 'doesUserHaveProductAccess'],
     'getCategories': ['isAuthenticated', 'doesUserHaveProductAccess'],
+    'getImages': ['isAuthenticated', 'doesUserHaveProductAccess'],
     'getVariants': ['isAuthenticated', 'doesUserHaveProductAccess'],
     'addCategory': ['isAuthenticated', 'doesUserHaveProductAccess'],
     'removeCategory': ['isAuthenticated', 'doesUserHaveProductAccess']
@@ -114,6 +115,7 @@ module.exports.policies = {
     'create': 'isAuthenticated',
     'find': 'isAuthenticated',
     'findOne': ['isAuthenticated', 'doesUserHaveVariantAccess'],
+    'getImages': ['isAuthenticated', 'doesUserHaveVariantAccess'],
     'remove': ['isAuthenticated', 'doesUserHaveVariantAccess'],
     'updateSKU': ['isAuthenticated', 'doesUserHaveVariantAccess']
   },
