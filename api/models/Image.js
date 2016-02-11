@@ -32,7 +32,7 @@ module.exports = {
       required: true
     },
     variant: {
-      model: variant,
+      model: 'variant',
       via: 'variantImages',
       required: true
     }

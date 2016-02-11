@@ -106,4 +106,10 @@ module.exports.routes = {
   'get /variants/:id': 'VariantController.findOne',
   'delete /variants/:id': 'VariantController.remove',
   'put /variant_attributes/:id': 'VariantAttributeController.updateValue',
+  'post /images': 'ImageController.create',
+  'post /images/upload': 'ImageController.upload',
+  'get /images': 'ImageController.find',
+  'put /images/:id': 'ImageController.update',
+  'get /images/:id': 'ImageController.findOne',
+  'delete /images/:id': 'ImageController.remove',
 };

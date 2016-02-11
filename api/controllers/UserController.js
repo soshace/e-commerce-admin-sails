@@ -32,10 +32,7 @@ module.exports = {
           .populate('ownTeams')
           .exec(function (error, userPopulated) {
             if (error) {
-              return response.send(500, {
-                code: 'error',
-                message: error
-              });
+              return response.serverError(error);
             }
 
             response.send(200, {
@@ -59,10 +56,7 @@ module.exports = {
 
     User.create(usersData).exec(_.bind(function (error) {
       if (error) {
-        return response.send(500, {
-          code: 'error',
-          message: error
-        });
+        return response.serverError(error);
       }
 
       this.login(request, response);
@@ -86,10 +80,7 @@ module.exports = {
       var returnedUser;
 
       if (error) {
-        return response.send(500, {
-          code: 'error',
-          message: error
-        });
+        return response.serverError(error);
       }
 
       returnedUser = _.pick(user, 'email', 'name', 'createdAt', 'updateAt', 'id');
@@ -102,5 +93,6 @@ module.exports = {
       });
     });
   }
+
 };
 

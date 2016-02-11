@@ -1854,3 +1854,15 @@ PUT /variant_attributes/:id
   ]
 }
 ```
+
+
+**Example of the form for testing file uploading API:**
+```
+<form action="http://45.55.60.139:1337/images/upload" enctype="multipart/form-data" method="post">
+  <input type="text" name="title"><br>
+  <input type="hidden" name="variantId" value="56bca47b61a92b870f3e2568"><br>
+  <input type="hidden" name="productId" value="56bca47b61a92b870f3e2567"><br>
+  <input type="file" name="avatar"><br>
+  <input type="submit" value="Upload">
+</form>
+```
