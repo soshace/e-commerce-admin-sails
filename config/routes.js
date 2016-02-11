@@ -132,4 +132,11 @@ module.exports.routes = {
   'put /images/:id': 'ImageController.update',
   'get /images/:id': 'ImageController.findOne',
   'delete /images/:id': 'ImageController.remove',
+
+
+  'post /prices': 'PriceController.create',
+  'get /prices': 'PriceController.find',
+  'put /prices/:id': 'PriceController.update',
+  'get /prices/:id': 'PriceController.findOne',
+  'delete /prices/:id': 'PriceController.remove',
 };

@@ -131,6 +131,14 @@ module.exports.policies = {
     'remove': ['isAuthenticated', 'doesUserHaveImageAccess'],
     'update': ['isAuthenticated', 'doesUserHaveImageAccess'],
     'upload': ['isAuthenticated']
+  },
+
+  'PriceController': {
+    'create': 'isAuthenticated',
+    'find': 'isAuthenticated',
+    'findOne': ['isAuthenticated', 'doesUserHavePriceAccess'],
+    'remove': ['isAuthenticated', 'doesUserHavePriceAccess'],
+    'update': ['isAuthenticated', 'doesUserHavePriceAccess']
   }
 
   // RabbitController: {

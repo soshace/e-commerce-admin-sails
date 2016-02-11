@@ -84,7 +84,7 @@ module.exports = {
       });
   },
 
-  //TODO: need to include products which user has rights access
+  //TODO: need to include images which user has rights access
   find: function (request, response) {
     var user = request.user,
       userId = user.id;

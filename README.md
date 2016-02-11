@@ -1918,8 +1918,8 @@ PUT /variant_attributes/:id
 }
 ```
 
-##Images
 
+##Images
 ###Creating new Image
 ```
 POST /images
@@ -2107,5 +2107,151 @@ DELETE /images/:id
         updatedAt: "2016-02-11T15:29:49.810Z",
         id: "56bca8eddfcee6d642b0a87c"
     }
+}
+```
+
+##Prices
+###Creating new Price
+```
+POST /prices
+```
+**Example of the API's request:**
+```
+{
+    "product": "56bca47b61a92b870f3e2567",
+    "variant": "56bca47b61a92b870f3e2568"
+}
+```
+
+**Example of the API's answer:**
+```
+{
+  "code": "successful",
+  "price": {
+    "product": "56bca47b61a92b870f3e2567",
+    "variant": "56bca47b61a92b870f3e2568",
+    "owner": "56bca31261a92b870f3e2561",
+    "createdAt": "2016-02-11T18:03:13.563Z",
+    "updatedAt": "2016-02-11T18:03:13.563Z",
+    "id": "56bccce11382453873aadf73"
+  }
+}
+```
+
+###Get full list of current user's prices
+#####Answer includes prices of user as an owner and which he has rights access
+```
+GET /prices
+```
+**Example of the API's answer:**
+```
+{
+  "code": "successful",
+  "prices": [
+    {
+      "product": "56bca47b61a92b870f3e2567",
+      "variant": "56bca47b61a92b870f3e2568",
+      "owner": "56bca31261a92b870f3e2561",
+      "uri": "soshace.com/image1.jpg",
+      "createdAt": "2016-02-11T18:25:42.358Z",
+      "updatedAt": "2016-02-11T18:25:42.358Z",
+      "id": "56bcd226d542d6a3252334cb"
+    }
+  ]
+}
+```
+
+###Get one Price by id
+```
+GET /prices/:id
+```
+**Example of the API's answer:**
+```
+{
+  "code": "successful",
+  "message": "Price was successfully found",
+  "price": {
+    "product": "56bca47b61a92b870f3e2567",
+    "variant": "56bca47b61a92b870f3e2568",
+    "owner": "56bca31261a92b870f3e2561",
+    "uri": "soshace.com/image1.jpg",
+    "createdAt": "2016-02-11T18:25:42.358Z",
+    "updatedAt": "2016-02-11T18:25:42.358Z",
+    "id": "56bcd226d542d6a3252334cb"
+  }
+}
+```
+
+###Update Price by id
+```
+PUT /price/:id
+```
+**Example of the API's request:**
+```
+{
+    "price": "12.12"
+}
+```
+**Example of the API's answer:**
+```
+{
+  "code": "successful",
+  "message": "Price was successfully updated",
+  "price": {
+    "product": {
+      "project": "56bca3dc61a92b870f3e2565",
+      "name": "product1",
+      "productType": "56bca3dc61a92b870f3e2566",
+      "owner": "56bca31261a92b870f3e2561",
+      "createdAt": "2016-02-11T15:10:51.013Z",
+      "updatedAt": "2016-02-11T15:10:51.013Z",
+      "id": "56bca47b61a92b870f3e2567"
+    },
+    "variant": {
+      "productType": "56bca3dc61a92b870f3e2566",
+      "owner": "56bca31261a92b870f3e2561",
+      "product": "56bca47b61a92b870f3e2567",
+      "isMaster": true,
+      "createdAt": "2016-02-11T15:10:51.025Z",
+      "updatedAt": "2016-02-11T15:10:51.025Z",
+      "id": "56bca47b61a92b870f3e2568"
+    },
+    "owner": {
+      "email": "user@mail.com",
+      "name": "nikita",
+      "createdAt": "2016-02-11T15:04:50.541Z",
+      "updatedAt": "2016-02-11T15:04:50.541Z",
+      "id": "56bca31261a92b870f3e2561"
+    },
+    "uri": "soshace.com/image1.jpg",
+    "createdAt": "2016-02-11T18:25:42.358Z",
+    "updatedAt": "2016-02-11T18:34:19.412Z",
+    "price": 12.12,
+    "id": "56bcd226d542d6a3252334cb"
+  }
+}
+```
+
+###Delete Price by id
+```
+DELETE /prices/:id
+```
+**Example of the API's answer:**
+```
+{
+  "code": "successful",
+  "message": "Price was removed successfully",
+  "price": [
+    {
+      "product": "56bca47b61a92b870f3e2567",
+      "variant": "56bca47b61a92b870f3e2568",
+      "uri": "soshace.com/image1.jpg",
+      "owner": "56bca31261a92b870f3e2561",
+      "createdAt": "2016-02-11T18:25:42.358Z",
+      "updatedAt": "2016-02-11T18:34:19.412Z",
+      "price": 12.12,
+      "id": "56bcd226d542d6a3252334cb"
+    }
+  ]
 }
 ```
