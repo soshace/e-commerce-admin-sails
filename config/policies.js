@@ -120,6 +120,15 @@ module.exports.policies = {
 
   'VariantAttributeController': {
     'updateValue': 'isAuthenticated'
+  },
+
+  'ImageController': {
+    'create': 'isAuthenticated',
+    'find': 'isAuthenticated',
+    'findOne': ['isAuthenticated', 'doesUserHaveImageAccess'],
+    'remove': ['isAuthenticated', 'doesUserHaveImageAccess'],
+    'update': ['isAuthenticated', 'doesUserHaveImageAccess'],
+    'upload': ['isAuthenticated']
   }
 
   // RabbitController: {

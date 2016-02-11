@@ -1767,7 +1767,7 @@ GET /variants/:id
 }
 ```
 
-###Update Product Attribute by id
+###Update Variant by id
 ```
 PUT /variants/:id
 ```
@@ -1801,7 +1801,7 @@ PUT /variants/:id
 }
 ```
 
-###Delete Product Attribute by id
+###Delete Variant by id
 ```
 DELETE /variants/:id
 ```
@@ -1855,7 +1855,171 @@ PUT /variant_attributes/:id
 }
 ```
 
+##Images
 
+###Creating new Image
+```
+POST /images
+```
+**Example of the API's request:**
+```
+{
+    "uri": "https://writeitdown31days.files.wordpress.com/2015/12/hello-picture.gif",
+    "product": "56bca47b61a92b870f3e2567",
+    "variant": "56bca47b61a92b870f3e2568"
+}
+```
+
+**Example of the API's answer:**
+```
+{
+  "code": "successful",
+  "image": {
+    "uri": "https://writeitdown31days.files.wordpress.com/2015/12/hello-picture.gif",
+    "product": "56bca47b61a92b870f3e2567",
+    "variant": "56bca47b61a92b870f3e2568",
+    "owner": "56bca31261a92b870f3e2561",
+    "external": true,
+    "createdAt": "2016-02-11T15:47:14.574Z",
+    "updatedAt": "2016-02-11T15:47:14.574Z",
+    "id": "56bcad02a512b145550febe0"
+  }
+}
+```
+
+###Get full list of current user's Images
+#####Answer includes imagesof user as an owner and which he has rights access
+```
+GET /images
+```
+**Example of the API's answer:**
+```
+{
+  "code": "successful",
+  "images": [
+    {
+      "owner": "56bca31261a92b870f3e2561",
+      "product": "56bca47b61a92b870f3e2567",
+      "variant": "56bca47b61a92b870f3e2568",
+      "uri": "https://writeitdown31days.files.wordpress.com/2015/12/hello-picture.gif",
+      "external": true,
+      "createdAt": "2016-02-11T15:47:14.574Z",
+      "updatedAt": "2016-02-11T15:47:14.574Z",
+      "id": "56bcad02a512b145550febe0"
+    },
+    {
+      "owner": "56bca31261a92b870f3e2561",
+      "product": "56bca47b61a92b870f3e2567",
+      "variant": "56bca47b61a92b870f3e2568",
+      "uri": "https://writeitdown31days.files.wordpress.com/2015/13/hello-picture.gif",
+      "external": true,
+      "createdAt": "2016-02-11T15:54:18.821Z",
+      "updatedAt": "2016-02-11T15:54:18.822Z",
+      "id": "56bcaeaaa512b145550febe1"
+    }
+  ]
+}
+```
+
+###Get one Image by id
+```
+GET /images/:id
+```
+**Example of the API's answer:**
+```
+{
+  "code": "successful",
+  "message": "Image was successfully found",
+  "image": {
+    "owner": "56bca31261a92b870f3e2561",
+    "product": "56bca47b61a92b870f3e2567",
+    "variant": "56bca47b61a92b870f3e2568",
+    "uri": "https://writeitdown31days.files.wordpress.com/2015/12/hello-picture.gif",
+    "external": true,
+    "createdAt": "2016-02-11T15:47:14.574Z",
+    "updatedAt": "2016-02-11T15:47:14.574Z",
+    "id": "56bcad02a512b145550febe0"
+  }
+}
+```
+
+###Update Image by id
+```
+PUT /images/:id
+```
+**Example of the API's request:**
+```
+{
+    "label": "new image"
+}
+```
+**Example of the API's answer:**
+```
+{
+  "code": "successful",
+  "message": "Image was successfully updated",
+  "image": {
+    "owner": {
+      "email": "user@mail.com",
+      "name": "nikita",
+      "createdAt": "2016-02-11T15:04:50.541Z",
+      "updatedAt": "2016-02-11T15:04:50.541Z",
+      "id": "56bca31261a92b870f3e2561"
+    },
+    "product": {
+      "project": "56bca3dc61a92b870f3e2565",
+      "name": "product1",
+      "productType": "56bca3dc61a92b870f3e2566",
+      "owner": "56bca31261a92b870f3e2561",
+      "createdAt": "2016-02-11T15:10:51.013Z",
+      "updatedAt": "2016-02-11T15:10:51.013Z",
+      "id": "56bca47b61a92b870f3e2567"
+    },
+    "variant": {
+      "productType": "56bca3dc61a92b870f3e2566",
+      "owner": "56bca31261a92b870f3e2561",
+      "product": "56bca47b61a92b870f3e2567",
+      "isMaster": true,
+      "createdAt": "2016-02-11T15:10:51.025Z",
+      "updatedAt": "2016-02-11T15:10:51.025Z",
+      "id": "56bca47b61a92b870f3e2568"
+    },
+    "uri": "https://writeitdown31days.files.wordpress.com/2015/12/hello-picture.gif",
+    "external": true,
+    "createdAt": "2016-02-11T15:47:14.574Z",
+    "updatedAt": "2016-02-11T15:59:19.573Z",
+    "label": "new image",
+    "id": "56bcad02a512b145550febe0"
+  }
+}
+```
+
+###Delete Image by id
+```
+DELETE /images/:id
+```
+**Example of the API's answer:**
+```
+{
+  "code": "successful",
+  "message": "Image was removed successfully",
+  "image": [
+    {
+      "uri": "https://writeitdown31days.files.wordpress.com/2015/12/hello-picture.gif",
+      "product": "56bca47b61a92b870f3e2567",
+      "variant": "56bca47b61a92b870f3e2568",
+      "owner": "56bca31261a92b870f3e2561",
+      "external": true,
+      "createdAt": "2016-02-11T15:47:14.574Z",
+      "updatedAt": "2016-02-11T15:59:19.573Z",
+      "label": "new image",
+      "id": "56bcad02a512b145550febe0"
+    }
+  ]
+}
+```
+
+###Upload Image
 **Example of the form for testing file uploading API:**
 ```
 <form action="http://45.55.60.139:1337/images/upload" enctype="multipart/form-data" method="post">
@@ -1865,4 +2029,20 @@ PUT /variant_attributes/:id
   <input type="file" name="avatar"><br>
   <input type="submit" value="Upload">
 </form>
+```
+
+**Example of the API's answer:**
+```
+{
+  message: "successful",
+    image: {
+        uri: "http://45.55.60.139/de719f7b-9a50-464e-bbd8-4cda10e72272.jpg",
+        product: "56bca47b61a92b870f3e2567",
+        variant: "56bca47b61a92b870f3e2568",
+        external: false,
+        createdAt: "2016-02-11T15:29:49.810Z",
+        updatedAt: "2016-02-11T15:29:49.810Z",
+        id: "56bca8eddfcee6d642b0a87c"
+    }
+}
 ```

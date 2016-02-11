@@ -12,6 +12,7 @@ module.exports = {
       profile = request.user;
 
     imageData.owner = profile.id;
+    imageData.external = true;
     Image.create(imageData).exec(function (error, image) {
       if (error) {
         return response.serverError(error);
@@ -31,17 +32,14 @@ module.exports = {
     _.extend(image, imageData);
 
     image.save(function (error, image) {
-      var returnedImage;
-
       if (error) {
         return response.serverError(error);
       }
 
-      returnedImage = _.pick(image, 'id', 'createdAt', 'updatedAt', 'isMaster', 'productType', 'product', 'sku');
       response.send(200, {
         code: 'successful',
         message: 'Image was successfully updated',
-        image: returnedImage
+        image: image
       });
     });
   },
@@ -49,7 +47,7 @@ module.exports = {
   findOne: function (request, response) {
     var imageId = request.image.id;
 
-    Image.findOne({id: imageId}).populate('attributes').exec(function (error, image) {
+    Image.findOne({id: imageId}).exec(function (error, image) {
       if (error) {
         return response.serverError(error);
       }
@@ -103,6 +101,7 @@ module.exports = {
     });
   },
 
+  //TODO: need to check if user have access to product and variant
   upload: function (request, response) {
     var requestData = request.body,
       variantId = requestData.variantId,
@@ -146,7 +145,8 @@ module.exports = {
         Image.create({
           uri: fileURI,
           product: productId,
-          variant: variantId
+          variant: variantId,
+          owner: request.user.id
         }).exec(callback);
       }
     ], function (error, image) {

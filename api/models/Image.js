@@ -11,6 +11,11 @@ module.exports = {
     label: {
       type: 'string'
     },
+    owner: {
+      model: 'user',
+      via: 'ownImages',
+      required: true
+    },
     uri: {
       type: 'string',
       required: true
