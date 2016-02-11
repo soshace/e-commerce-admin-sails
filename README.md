@@ -1015,6 +1015,37 @@ GET /products/:id/images
 }
 ```
 
+###Get prices by product
+```
+GET /products/:id/prices
+```
+**Example of the API's answer:**
+```
+{
+  "code": "successful",
+  "prices": [
+    {
+      "product": "56bca47b61a92b870f3e2567",
+      "variant": "56bca47b61a92b870f3e2568",
+      "owner": "56bca31261a92b870f3e2561",
+      "price": 12.12,
+      "createdAt": "2016-02-11T18:42:48.671Z",
+      "updatedAt": "2016-02-11T18:42:48.671Z",
+      "id": "56bcd628b6ef43c946c15f43"
+    },
+    {
+      "product": "56bca47b61a92b870f3e2567",
+      "variant": "56bca47b61a92b870f3e2568",
+      "owner": "56bca31261a92b870f3e2561",
+      "price": 12.13,
+      "createdAt": "2016-02-11T18:42:59.281Z",
+      "updatedAt": "2016-02-11T18:42:59.281Z",
+      "id": "56bcd633b6ef43c946c15f44"
+    }
+  ]
+}
+```
+
 ###Add relation between category and product
 ```
 POST /products/:id/categories/:categoryId
@@ -1857,7 +1888,7 @@ DELETE /variants/:id
 }
 ```
 
-###Get one Variant's images by id
+###Get images by variant
 ```
 GET /variants/:id/images
 ```
@@ -1884,6 +1915,37 @@ GET /variants/:id/images
       "createdAt": "2016-02-11T15:54:18.821Z",
       "updatedAt": "2016-02-11T15:54:18.822Z",
       "id": "56bcaeaaa512b145550febe1"
+    }
+  ]
+}
+```
+
+###Get prices by variant
+```
+GET /variants/:id/prices
+```
+**Example of the API's answer:**
+```
+{
+  "code": "successful",
+  "prices": [
+    {
+      "product": "56bca47b61a92b870f3e2567",
+      "variant": "56bca47b61a92b870f3e2568",
+      "owner": "56bca31261a92b870f3e2561",
+      "price": 12.12,
+      "createdAt": "2016-02-11T18:42:48.671Z",
+      "updatedAt": "2016-02-11T18:42:48.671Z",
+      "id": "56bcd628b6ef43c946c15f43"
+    },
+    {
+      "product": "56bca47b61a92b870f3e2567",
+      "variant": "56bca47b61a92b870f3e2568",
+      "owner": "56bca31261a92b870f3e2561",
+      "price": 12.13,
+      "createdAt": "2016-02-11T18:42:59.281Z",
+      "updatedAt": "2016-02-11T18:42:59.281Z",
+      "id": "56bcd633b6ef43c946c15f44"
     }
   ]
 }

@@ -238,6 +238,21 @@ module.exports = {
         images: images
       });
     });
+  },
+
+  getPrices: function (request, response) {
+    var productId = request.param('id');
+
+    Price.find({product: productId}).exec(function (error, prices) {
+      if (error) {
+        return response.serverError(error);
+      }
+
+      return response.send(200, {
+        code: 'successful',
+        prices: prices
+      });
+    });
   }
 };
 

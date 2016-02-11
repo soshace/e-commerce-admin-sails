@@ -88,6 +88,7 @@ module.exports.routes = {
   'get /products/:id/categories': 'ProductController.getCategories',
   'get /products/:id/variants': 'ProductController.getVariants',
   'get /products/:id/images': 'ProductController.getImages',
+  'get /products/:id/prices': 'ProductController.getPrices',
   'post /products/:id/categories/:categoryId': 'ProductController.addCategory',
   'delete /products/:id/categories/:categoryId': 'ProductController.removeCategory',
 
@@ -122,6 +123,7 @@ module.exports.routes = {
   'put /variants/:id': 'VariantController.updateSKU',
   'get /variants/:id': 'VariantController.findOne',
   'get /variants/:id/images': 'VariantController.getImages',
+  'get /variants/:id/prices': 'VariantController.getPrices',
   'delete /variants/:id': 'VariantController.remove',
   'put /variant_attributes/:id': 'VariantAttributeController.updateValue',
 

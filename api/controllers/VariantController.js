@@ -133,6 +133,21 @@ module.exports = {
         images: images
       });
     });
+  },
+
+  getPrices: function (request, response) {
+    var variantId = request.param('id');
+
+    Price.find({variant: variantId}).exec(function (error, prices) {
+      if (error) {
+        return response.serverError(error);
+      }
+
+      return response.send(200, {
+        code: 'successful',
+        prices: prices
+      });
+    });
   }
 };
 
