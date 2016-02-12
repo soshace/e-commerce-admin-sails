@@ -18,15 +18,18 @@ module.exports = {
     },
     productsPermission: {
       type: 'string',
-      enum: ['view', 'manage']
+      enum: ['none', 'view', 'manage'],
+      defaultsTo: 'none'
     },
     ordersPermission: {
       type: 'string',
-      enum: ['view', 'manage']
+      enum: ['none', 'view', 'manage'],
+      defaultsTo: 'none'
     },
     customersPermission: {
       type: 'string',
-      enum: ['view', 'manage']
+      enum: ['none', 'view', 'manage'],
+      defaultsTo: 'none'
     }
   }
 };
