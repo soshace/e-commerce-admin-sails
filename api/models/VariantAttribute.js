@@ -18,6 +18,10 @@ module.exports = {
     variant: {
       model: 'variant',
       required: true
+    },
+    owner: {
+      model: 'user',
+      required: true
     }
   }
 };

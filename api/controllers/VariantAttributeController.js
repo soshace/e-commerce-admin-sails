@@ -10,10 +10,12 @@ var _ = require('underscore');
 module.exports = {
   //TODO: need to check that user have enough rights access to Attribute
   updateValue: function (request, response) {
-    var attributeId = request.param('id'),
+    var attribute = request.variantAttribute,
       value = request.body && request.body.value;
 
-    VariantAttribute.update({id: attributeId}, {value: value}).exec(function (error, attribute) {
+    _.extend(attribute, {value: value});
+
+    attribute.save(function (error, attribute) {
       if (error) {
         return response.send(500, {
           code: 'error',
@@ -21,6 +23,9 @@ module.exports = {
         });
       }
 
+      attribute.productAttribute = attribute.productAttribute.id;
+      attribute.owner = attribute.owner.id;
+      attribute.variant = attribute.variant.id;
       response.send(200, {
         code: 'successful',
         message: 'Variant attribute was successfully updated',

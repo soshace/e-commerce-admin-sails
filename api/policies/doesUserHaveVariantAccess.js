@@ -5,18 +5,18 @@
  */
 
 module.exports = function (request, response, next) {
-  var categoryId = request.param('id'),
+  var variantId = request.param('id'),
     profile = request.user,
     profileId = profile.id;
 
-  if (typeof categoryId === 'undefined') {
+  if (typeof variantId === 'undefined') {
     return response.send(400, {
       code: 'error',
       message: 'You should specify variant\'s id'
     });
   }
 
-  Variant.findOne({id: categoryId}).exec(function (error, variant) {
+  Variant.findOne({id: variantId}).exec(function (error, variant) {
     if (error) {
       return response.send(500, {
         code: 'error',

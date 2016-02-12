@@ -123,7 +123,7 @@ module.exports.policies = {
   },
 
   'VariantAttributeController': {
-    'updateValue': 'isAuthenticated'
+    'updateValue': ['isAuthenticated','doesUserHaveVariantAttributeAccess']
   },
 
   'ImageController': {

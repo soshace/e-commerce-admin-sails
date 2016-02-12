@@ -60,6 +60,7 @@ module.exports = {
         function (variants, callback) {
           async.each(variants, function (variant, callback) {
             VariantAttribute.create({
+              owner: attribute.owner,
               productAttribute: attribute.id,
               variant: variant.id
             }).exec(callback)
