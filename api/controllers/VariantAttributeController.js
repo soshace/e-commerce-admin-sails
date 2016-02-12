@@ -5,6 +5,8 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
+var _ = require('underscore');
+
 module.exports = {
   //TODO: need to check that user have enough rights access to Attribute
   updateValue: function (request, response) {

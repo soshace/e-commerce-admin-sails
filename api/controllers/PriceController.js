@@ -5,6 +5,8 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
+var _ = require('underscore');
+
 module.exports = {
   create: function (request, response) {
     var priceData = request.body,
