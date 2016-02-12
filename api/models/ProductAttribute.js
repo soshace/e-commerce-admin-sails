@@ -70,7 +70,7 @@ module.exports = {
       callback);
   },
 
-  afterDestroy: function (attributes, callaback) {
+  afterDestroy: function (attributes, callback) {
     async.each(attributes, function (attribute, callback) {
       Variant.find({productType: attribute.productType}).exec(function (error, variants) {
         if (error) {
@@ -84,7 +84,7 @@ module.exports = {
           }).exec(callback)
         }, callback);
       });
-    }, callaback);
+    }, callback);
   }
 };
 
