@@ -141,4 +141,8 @@ module.exports.routes = {
   'put /prices/:id': 'PriceController.update',
   'get /prices/:id': 'PriceController.findOne',
   'delete /prices/:id': 'PriceController.remove',
+
+
+  'post /invitations': 'InvitationController.create',
+
 };

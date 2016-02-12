@@ -116,7 +116,7 @@ npm-debug.log
 nbproject
 .idea
 .node_history
-views
+views/index.html
 tasks
 Gruntfile.js
 assets

@@ -51,6 +51,8 @@ module.exports = {
       message: 'Logout is successful'
     });
   },
+
+  //TODO: need to check invitations!
   create: function (request, response) {
     var usersData = request.body;
 
