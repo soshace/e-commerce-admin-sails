@@ -52,7 +52,7 @@ module.exports = {
         VariantAttribute.create({
           owner: attribute.owner,
           productAttribute: attribute.id,
-          variant: attribute.id
+          variant: variant.id
         }).exec(callback)
       }, callback);
     });
