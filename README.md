@@ -500,8 +500,43 @@ DELETE /teams/:id
 }
 ```
 
-##Projects
+###Get team's permissions by id
+```
+GET /teams/:id/permissions
+```
 
+**Example of the API's answer:**
+```
+{
+  "code": "successful",
+  "permissions": [
+    {
+      "project": "56bf26dda7d22db31f282771",
+      "team": "56bf2e0070e8b19272eaa385",
+      "owner": "56bca31261a92b870f3e2561",
+      "productsPermission": "manage",
+      "ordersPermission": "view",
+      "customersPermission": "view",
+      "createdAt": "2016-02-13T13:22:08.435Z",
+      "updatedAt": "2016-02-13T13:31:56.263Z",
+      "id": "56bf2e0070e8b19272eaa386"
+    },
+    {
+      "project": "56bf272bf428323e3cbabf4d",
+      "team": "56bf2e0070e8b19272eaa385",
+      "owner": "56bca31261a92b870f3e2561",
+      "productsPermission": "none",
+      "ordersPermission": "none",
+      "customersPermission": "none",
+      "createdAt": "2016-02-13T13:22:08.439Z",
+      "updatedAt": "2016-02-13T13:22:08.439Z",
+      "id": "56bf2e0070e8b19272eaa387"
+    }
+  ]
+}
+```
+
+##Projects
 ###Checking if slug is available or not
 ```
 GET /projects/slug/check/:slugName
@@ -672,35 +707,35 @@ GET /projects/:id/products
 ```
 
 ###Get project's Product Types by id
-```
-GET /projects/:id/product_types
-```
-**Example of the API's answer:**
-```
-{
-  "code": "successful",
-  "productTypes": [
-    {
-      "owner": "56b9d8ffd2c1e9d07e64b8f1",
-      "project": "56b9d92cd2c1e9d07e64b8f4",
-      "name": "Sample Product Type2",
-      "description": "New Product Type2",
-      "createdAt": "2016-02-09T12:18:52.669Z",
-      "updatedAt": "2016-02-09T12:36:18.427Z",
-      "id": "56b9d92cd2c1e9d07e64b8f5"
-    },
-    {
-      "owner": "56b9d8ffd2c1e9d07e64b8f1",
-      "project": "56b9d92cd2c1e9d07e64b8f4",
-      "name": "New Product Type",
-      "description": "New Product Type2",
-      "createdAt": "2016-02-09T12:28:52.053Z",
-      "updatedAt": "2016-02-09T12:28:52.053Z",
-      "id": "56b9db84c314585b15856ac6"
-    }
-  ]
-}
-```
+   ```
+   GET /projects/:id/product_types
+   ```
+   **Example of the API's answer:**
+   ```
+   {
+     "code": "successful",
+     "productTypes": [
+       {
+         "owner": "56b9d8ffd2c1e9d07e64b8f1",
+         "project": "56b9d92cd2c1e9d07e64b8f4",
+         "name": "Sample Product Type2",
+         "description": "New Product Type2",
+         "createdAt": "2016-02-09T12:18:52.669Z",
+         "updatedAt": "2016-02-09T12:36:18.427Z",
+         "id": "56b9d92cd2c1e9d07e64b8f5"
+       },
+       {
+         "owner": "56b9d8ffd2c1e9d07e64b8f1",
+         "project": "56b9d92cd2c1e9d07e64b8f4",
+         "name": "New Product Type",
+         "description": "New Product Type2",
+         "createdAt": "2016-02-09T12:28:52.053Z",
+         "updatedAt": "2016-02-09T12:28:52.053Z",
+         "id": "56b9db84c314585b15856ac6"
+       }
+     ]
+   }
+   ```
 
 ```
 PUT /projects/:id
@@ -727,6 +762,40 @@ PUT /projects/:id
 }
 ```
 
+###Get project's permissions by id
+```
+GET /projects/:id/permissions
+```
+**Example of the API's answer:**
+```
+{
+  "code": "successful",
+  "permissions": [
+    {
+      "project": "56bf26dda7d22db31f282771",
+      "team": "56bf2e0070e8b19272eaa385",
+      "owner": "56bca31261a92b870f3e2561",
+      "productsPermission": "manage",
+      "ordersPermission": "view",
+      "customersPermission": "view",
+      "createdAt": "2016-02-13T13:22:08.435Z",
+      "updatedAt": "2016-02-13T13:31:56.263Z",
+      "id": "56bf2e0070e8b19272eaa386"
+    },
+    {
+      "project": "56bf26dda7d22db31f282771",
+      "team": "56bf2e5470e8b19272eaa389",
+      "owner": "56bca31261a92b870f3e2561",
+      "productsPermission": "none",
+      "ordersPermission": "none",
+      "customersPermission": "none",
+      "createdAt": "2016-02-13T13:23:32.999Z",
+      "updatedAt": "2016-02-13T13:23:32.999Z",
+      "id": "56bf2e5570e8b19272eaa38a"
+    }
+  ]
+}
+```
 
 ```
 DELETE /projects/:id
