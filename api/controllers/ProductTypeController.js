@@ -5,6 +5,8 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
+var _ = require('underscore');
+
 module.exports = {
 
   //TODO: need to check that Project exists
@@ -57,10 +59,20 @@ module.exports = {
   },
 
   findOne: function (request, response) {
-    response.send(200, {
-      code: 'successful',
-      message: 'Product was successfully found',
-      productType: request.productType
+    var productTypeId = request.param('id');
+
+    ProductType.findOne({id: productTypeId})
+      .populate('productAttributes')
+      .exec(function(error, productType){
+      if(error){
+        return response.serverError(error);
+      }
+
+      response.send(200, {
+        code: 'successful',
+        message: 'Product was successfully found',
+        productType: productType
+      });
     });
   },
 

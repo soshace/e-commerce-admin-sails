@@ -40,6 +40,32 @@ module.exports = {
       model: 'product',
       required: true
     }
+  },
+
+  afterCreate: function (variant, callback) {
+    ProductAttribute.find({productType: variant.productType}).exec(function (error, attributes) {
+      if (error) {
+        return callback(error);
+      }
+
+      async.each(attributes, function (attribute, callback) {
+        VariantAttribute.create({
+          owner: attribute.owner,
+          productAttribute: attribute.id,
+          variant: variant.id
+        }).exec(callback)
+      }, callback);
+    });
+  },
+
+
+  afterDestroy: function (variants, callback) {
+    async.each(variants, function (variant, callback) {
+          VariantAttribute.destroy({
+            productAttribute: variant.id,
+            variant: variant.id
+          }).exec(callback)
+    }, callback);
   }
 };
 

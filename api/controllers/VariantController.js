@@ -5,6 +5,8 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
+var _ = require('underscore');
+
 module.exports = {
   //TODO: need to check if user have access to variant by project access
   create: function (request, response) {

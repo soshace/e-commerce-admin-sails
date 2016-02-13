@@ -65,6 +65,14 @@ module.exports = {
       collection: 'image',
       via: 'owner'
     },
+    ownVariants: {
+      collection: 'variant',
+      via: 'owner'
+    },
+    ownVariantAttributes: {
+      collection: 'variantAttribute',
+      via: 'owner'
+    },
     toJSON: function () {
       var obj = this.toObject();
       delete obj.password;

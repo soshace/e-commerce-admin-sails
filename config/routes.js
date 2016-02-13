@@ -125,6 +125,8 @@ module.exports.routes = {
   'get /variants/:id/images': 'VariantController.getImages',
   'get /variants/:id/prices': 'VariantController.getPrices',
   'delete /variants/:id': 'VariantController.remove',
+
+
   'put /variant_attributes/:id': 'VariantAttributeController.updateValue',
 
 

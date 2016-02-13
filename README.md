@@ -1967,16 +1967,15 @@ PUT /variant_attributes/:id
 {
   "code": "successful",
   "message": "Variant attribute was successfully updated",
-  "attribute": [
-    {
-      "productAttribute": "56bb44d1c9f8299171ffb4c0",
-      "variant": "56bb5a8f76b2aabd0b0b3e1e",
-      "createdAt": "2016-02-10T15:43:11.725Z",
-      "updatedAt": "2016-02-10T16:54:11.345Z",
-      "value": "New Value",
-      "id": "56bb5a8f76b2aabd0b0b3e20"
-    }
-  ]
+  "attribute": {
+    "productAttribute": "56bdc1418fc116c20895dbcc",
+    "variant": "56bca47b61a92b870f3e2568",
+    "owner": "56bca31261a92b870f3e2561",
+    "createdAt": "2016-02-12T11:25:53.253Z",
+    "updatedAt": "2016-02-12T11:30:42.201Z",
+    "value": "New Value",
+    "id": "56bdc1418fc116c20895dbcd"
+  }
 }
 ```
 
