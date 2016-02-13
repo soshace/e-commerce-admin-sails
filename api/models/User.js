@@ -120,6 +120,25 @@ module.exports = {
             company: company.id,
             owner: user.id
           }).exec(callback);
+        },
+        function (team, callback) {
+          sails.log('-----User  afterCreate user----', user);
+          Invitation.destroy({email: user.email}).exec(function (error, invitations) {
+            callback(error, user, invitations);
+          });
+        },
+        function (user, invitations, callback) {
+          sails.log('-----User  afterCreate invitations----', invitations);
+          async.each(invitations, function (invitation, callback) {
+            Team.findOne({id: invitation.team}).exec(function (error, team) {
+              if (error) {
+                return callback(error);
+              }
+
+              team.members.add(user.id);
+              team.save(callback);
+            });
+          }, callback);
         }
       ],
       callback);
