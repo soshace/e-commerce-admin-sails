@@ -94,7 +94,7 @@ module.exports = {
         },
         function (teams, callback) {
           async.each(teams, function (team, callback) {
-            Permission.crate({
+            Permission.create({
               project: project.id,
               team: team.id
             }).exec(callback);
