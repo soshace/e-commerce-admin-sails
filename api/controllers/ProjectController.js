@@ -20,10 +20,7 @@ module.exports = {
 
     Project.findOne({slug: slug}).exec(function (error, project) {
       if (error) {
-        return response.send(500, {
-          code: 'error',
-          message: error
-        });
+        return response.serverError(error);
       }
 
       if (project) {
@@ -46,10 +43,7 @@ module.exports = {
     projectData.owner = profile.id;
     Project.create(projectData).exec(function (error, project) {
       if (error) {
-        return response.send(500, {
-          code: 'error',
-          message: error
-        });
+        return response.serverError(error);
       }
 
       response.send(200, {
@@ -72,10 +66,7 @@ module.exports = {
         owner;
 
       if (error) {
-        return response.send(500, {
-          code: 'error',
-          message: error
-        });
+        return response.serverError(error);
       }
 
       returnedProject = _.clone(project);
@@ -99,10 +90,7 @@ module.exports = {
       .populate('permissions')
       .exec(function (error, project) {
         if (error) {
-          return response.send(500, {
-            code: 'error',
-            message: error
-          });
+          return response.serverError(error);
         }
 
         if (typeof project === 'undefined') {
@@ -127,10 +115,7 @@ module.exports = {
     Project.destroy({id: projectId})
       .exec(function (error, project) {
         if (error) {
-          return response.send(500, {
-            code: 'error',
-            message: error
-          });
+          return response.serverError(error);
         }
 
         if (typeof project === 'undefined') {
@@ -175,10 +160,7 @@ module.exports = {
       ],
       function (error, fullListOfProjects) {
         if (error) {
-          return response.send(500, {
-            code: 'error',
-            message: error
-          });
+          return response.serverError(error);
         }
 
         return response.send(200, {
@@ -193,10 +175,7 @@ module.exports = {
 
     Category.find({project: projectId}).exec(function (error, categories) {
       if (error) {
-        return response.send(500, {
-          code: 'error',
-          message: error
-        });
+        return response.serverError(error);
       }
 
       return response.send(200, {
@@ -211,10 +190,7 @@ module.exports = {
 
     Product.find({project: projectId}).exec(function (error, products) {
       if (error) {
-        return response.send(500, {
-          code: 'error',
-          message: error
-        });
+        return response.serverError(error);
       }
 
       return response.send(200, {
@@ -229,10 +205,7 @@ module.exports = {
 
     ProductType.find({project: projectId}).exec(function (error, productTypes) {
       if (error) {
-        return response.send(500, {
-          code: 'error',
-          message: error
-        });
+        return response.serverError(error);
       }
 
       return response.send(200, {
@@ -240,5 +213,20 @@ module.exports = {
         productTypes: productTypes
       });
     });
-  }
+  },
+
+  findPermissions: function (request, response) {
+  var projectId = request.param('id');
+
+  Permissions.find({project: projectId}).exec(function (error, permission) {
+    if (error) {
+      return response.serverError(error);
+    }
+
+    return response.send(200, {
+      code: 'successful',
+      permission: permission
+    });
+  });
+}
 };

@@ -69,6 +69,8 @@ module.exports = {
 
   /**
    * Method creates default Product Type for new project
+   * Method creates permission objects, which needed for
+   *
    * @param project
    * @param callback
    */
@@ -86,9 +88,33 @@ module.exports = {
             description: 'A demo product type',
             project: projectId
           }).exec(callback);
+        },
+        function (productType, callback) {
+          Team.find({company: project.company}).exec(callback);
+        },
+        function (teams, callback) {
+          async.each(teams, function (team, callback) {
+            Permission.crate({
+              project: project.id,
+              team: team.id
+            }).exec(callback);
+          }, callback)
         }
       ],
       callback);
+  },
+
+  /**
+   * Method removes all permissions tied with project
+   * @param projects
+   * @param callback
+   */
+  afterDestroy: function (projects, callback) {
+    async.each(projects, function (project, callback) {
+      Permission.destroy({
+        project: project.id
+      }).exec(callback)
+    }, callback);
   }
 };
 

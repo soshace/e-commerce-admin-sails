@@ -61,6 +61,7 @@ module.exports.routes = {
   'get /projects/:id/products': 'ProjectController.findProjectProducts',
   'get /projects/:id/categories': 'ProjectController.findProjectCategories',
   'get /projects/:id/product_types': 'ProjectController.findProjectProductTypes',
+  'get /projects/:id/permissions': 'ProjectController.findPermissions',
   'delete /projects/:id': 'ProjectController.remove',
 
 
@@ -76,6 +77,7 @@ module.exports.routes = {
   'post /teams': 'TeamController.create',
   'get /teams': 'TeamController.find',
   'get /teams/:id': 'TeamController.findOne',
+  'get /teams/:id/permissions': 'TeamController.findPermissions',
   'delete /teams/:id': 'TeamController.remove',
   'put /teams/:id': 'TeamController.update',
 

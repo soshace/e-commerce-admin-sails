@@ -133,8 +133,19 @@ module.exports = {
       });
   },
 
-  inviteByEmail: function (request, response) {
+  findPermissions: function (request, response) {
+    var teamId = request.param('id');
 
+    Permissions.find({team: teamId}).exec(function (error, permission) {
+      if (error) {
+
+      }
+
+      return response.send(200, {
+        code: 'successful',
+        permission: permission
+      });
+    });
   }
 };
 

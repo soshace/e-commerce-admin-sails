@@ -48,6 +48,7 @@ module.exports.policies = {
     'findProjectCategories': ['isAuthenticated', 'doesUserHaveProjectAccess'],
     'findProjectProducts': ['isAuthenticated', 'doesUserHaveProjectAccess'],
     'findProjectProductTypes': ['isAuthenticated', 'doesUserHaveProjectAccess'],
+    'findPermissions': ['isAuthenticated', 'doesUserHaveProjectAccess'],
     'remove': ['isAuthenticated', 'doesUserHaveProjectAccess'],
     'update': ['isAuthenticated', 'doesUserHaveProjectAccess']
   },
@@ -91,6 +92,7 @@ module.exports.policies = {
     'create': 'isAuthenticated',
     'find': 'isAuthenticated',
     'findOne': ['isAuthenticated', 'isTeamOwner'],
+    'findPermissions': ['isAuthenticated', 'isTeamOwner'],
     'remove': ['isAuthenticated', 'isTeamOwner'],
     'update': ['isAuthenticated', 'isTeamOwner']
   },
