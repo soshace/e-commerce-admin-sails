@@ -2316,3 +2316,76 @@ DELETE /prices/:id
   ]
 }
 ```
+
+##Invitations
+```
+POST /invitations/:id
+```
+**Example of the API's request:**
+```
+{
+    "email": "user@mail.com",
+    "team": "56bca31261a92b870f3e2563"
+}
+```
+**Examples of the API's answer:**
+```
+{
+  "code": "invitation.sent",
+  "message": "Invitation was sent"
+}
+```
+```
+{
+  "code": "user.added.to.team",
+  "message": "user was added to team",
+  "team": {
+    "members": [
+      {
+        "email": "user@mail.com",
+        "name": "nikita",
+        "createdAt": "2016-02-11T15:04:50.541Z",
+        "updatedAt": "2016-02-12T14:55:32.086Z",
+        "teams": "56bca31261a92b870f3e2563",
+        "id": "56bca31261a92b870f3e2561"
+      },
+      {
+        "name": "Nikita",
+        "email": "user1@mail.ru",
+        "createdAt": "2016-02-13T10:13:44.370Z",
+        "updatedAt": "2016-02-13T10:50:45.904Z",
+        "teams": "56bca31261a92b870f3e2563",
+        "id": "56bf01d89d75f27f5a65c1a9"
+      },
+      {
+        "name": "Nikita",
+        "email": "user2@mail.ru",
+        "createdAt": "2016-02-13T10:21:51.028Z",
+        "updatedAt": "2016-02-13T10:21:51.153Z",
+        "teams": "56bca31261a92b870f3e2563",
+        "id": "56bf03bfa169642a190500aa"
+      }
+    ],
+    "permissions": [],
+    "company": {
+      "name": "nikita's Company",
+      "owner": "56bca31261a92b870f3e2561",
+      "createdAt": "2016-02-11T15:04:50.601Z",
+      "updatedAt": "2016-02-11T15:04:50.601Z",
+      "id": "56bca31261a92b870f3e2562"
+    },
+    "owner": {
+      "email": "user@mail.com",
+      "name": "nikita",
+      "createdAt": "2016-02-11T15:04:50.541Z",
+      "updatedAt": "2016-02-12T14:55:32.086Z",
+      "teams": "56bca31261a92b870f3e2563",
+      "id": "56bca31261a92b870f3e2561"
+    },
+    "name": "Admin",
+    "createdAt": "2016-02-11T15:04:50.619Z",
+    "updatedAt": "2016-02-13T10:50:45.893Z",
+    "id": "56bca31261a92b870f3e2563"
+  }
+}
+```
