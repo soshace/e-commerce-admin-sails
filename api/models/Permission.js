@@ -30,6 +30,10 @@ module.exports = {
       type: 'string',
       enum: ['none', 'view', 'manage'],
       defaultsTo: 'none'
+    },
+    owner: {
+      model: 'user',
+      required: true
     }
   }
 };

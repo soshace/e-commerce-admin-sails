@@ -2389,3 +2389,72 @@ POST /invitations/:id
   }
 }
 ```
+
+##Permissions
+
+###Get full list of current user's permissions
+#####Answer includes permissions of user as an owner and which he has rights access
+```
+GET /permissions
+```
+**Example of the API's answer:**
+```
+{
+  "code": "successful",
+  "permissions": [
+    {
+      "project": "56bf26dda7d22db31f282771",
+      "team": "56bf2e0070e8b19272eaa385",
+      "owner": "56bca31261a92b870f3e2561",
+      "productsPermission": "none",
+      "ordersPermission": "none",
+      "customersPermission": "none",
+      "createdAt": "2016-02-13T13:22:08.435Z",
+      "updatedAt": "2016-02-13T13:22:08.435Z",
+      "id": "56bf2e0070e8b19272eaa386"
+    },
+    {
+      "project": "56bf272bf428323e3cbabf4d",
+      "team": "56bf2e0070e8b19272eaa385",
+      "owner": "56bca31261a92b870f3e2561",
+      "productsPermission": "none",
+      "ordersPermission": "none",
+      "customersPermission": "none",
+      "createdAt": "2016-02-13T13:22:08.439Z",
+      "updatedAt": "2016-02-13T13:22:08.439Z",
+      "id": "56bf2e0070e8b19272eaa387"
+    }
+  ]
+}
+```
+
+###Update Permission by id
+```
+PUT /permissions/:id
+```
+**Example of the API's request:**
+```
+{
+    "productsPermission": "manage",
+    "ordersPermission": "view",
+    "customersPermission": "view"
+}
+```
+**Example of the API's answer:**
+```
+{
+  "code": "successful",
+  "message": "Permission was successfully updated",
+  "permission": {
+    "project": "56bf26dda7d22db31f282771",
+    "team": "56bf2e0070e8b19272eaa385",
+    "owner": "56bca31261a92b870f3e2561",
+    "productsPermission": "manage",
+    "ordersPermission": "view",
+    "customersPermission": "view",
+    "createdAt": "2016-02-13T13:22:08.435Z",
+    "updatedAt": "2016-02-13T13:31:56.263Z",
+    "id": "56bf2e0070e8b19272eaa386"
+  }
+}
+```

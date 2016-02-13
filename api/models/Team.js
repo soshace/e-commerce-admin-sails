@@ -47,7 +47,8 @@ module.exports = {
         async.each(projects, function (project, callback) {
           Permission.create({
             project: project.id,
-            team: team.id
+            team: team.id,
+            owner: team.owner
           }).exec(callback);
         }, callback);
       }

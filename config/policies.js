@@ -143,6 +143,11 @@ module.exports.policies = {
     'findOne': ['isAuthenticated', 'doesUserHavePriceAccess'],
     'remove': ['isAuthenticated', 'doesUserHavePriceAccess'],
     'update': ['isAuthenticated', 'doesUserHavePriceAccess']
+  },
+
+  'PermissionController': {
+    'find': 'isAuthenticated',
+    'update': ['isAuthenticated', 'doesUserHavePermissionAccess']
   }
 
   // RabbitController: {

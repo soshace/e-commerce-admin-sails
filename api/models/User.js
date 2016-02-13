@@ -73,6 +73,10 @@ module.exports = {
       collection: 'variantAttribute',
       via: 'owner'
     },
+    ownPermissions: {
+      collection: 'permission',
+      via: 'owner'
+    },
     toJSON: function () {
       var obj = this.toObject();
       delete obj.password;

@@ -147,6 +147,10 @@ module.exports.routes = {
   'delete /prices/:id': 'PriceController.remove',
 
 
+  //TODO: need to add checking permissions for sending invitations
   'post /invitations': 'InvitationController.create',
+
+  'put /permissions/:id': 'PermissionController.update',
+  'get /permissions': 'PermissionController.find',
 
 };
