@@ -218,14 +218,14 @@ module.exports = {
   findPermissions: function (request, response) {
   var projectId = request.param('id');
 
-  Permissions.find({project: projectId}).exec(function (error, permission) {
+  Permission.find({project: projectId}).exec(function (error, permission) {
     if (error) {
       return response.serverError(error);
     }
 
     return response.send(200, {
       code: 'successful',
-      permission: permission
+      permissions: permission
     });
   });
 }
