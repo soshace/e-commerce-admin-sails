@@ -60,10 +60,10 @@ module.exports = {
    * @param teams
    * @param callback
    */
-  beforeDestroy: function (teams, callback) {
+  afterDestroy: function (teams, callback) {
     async.each(teams, function (team, callback) {
       Permission.destroy({
-        project: team.id
+        team: team.id
       }).exec(callback)
     }, callback);
   }
