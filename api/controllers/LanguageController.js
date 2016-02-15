@@ -16,7 +16,7 @@ module.exports = {
     translatedLanguages = languages[locale] || null;
     response.send(200, {
       code: 'success',
-      countries: translatedLanguages
+      languages: translatedLanguages
     });
   }
 };
