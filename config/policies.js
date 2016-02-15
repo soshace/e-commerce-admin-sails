@@ -151,11 +151,15 @@ module.exports.policies = {
   },
 
   'CountryController': {
-    'find': ['isAuthenticated', 'isLocaleSpecified']
+    'find': 'isAuthenticated'
   },
 
   'LanguageController': {
-    'find': ['isAuthenticated', 'isLocaleSpecified']
+    'find': 'isAuthenticated'
+  },
+
+  'CurrencyController': {
+    'find': 'isAuthenticated'
   }
 
   // RabbitController: {

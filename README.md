@@ -2602,3 +2602,47 @@ GET /languages/:locale
   ]
 }
 ```
+
+
+###Get Currencies by locale
+```
+GET /currencies/:locale
+```
+
+**Example of the API's answer:**
+```
+{
+  "code": "success",
+  "countries": [
+    {
+      "isoCode": "ab",
+      "name": "Abkhazian"
+    },
+    {
+      "isoCode": "aa",
+      "name": "Afar"
+    },
+    {
+      "isoCode": "af",
+      "name": "Afrikaans"
+    },
+    {
+      "isoCode": "ak",
+      "name": "Akan"
+    },
+    {
+      "isoCode": "sq",
+      "name": "Albanian"
+    },
+    {
+      "isoCode": "sq-AL",
+      "name": "Albanian (Albania)"
+    },
+    {
+      "isoCode": "am",
+      "name": "Amharic"
+    },
+    ...
+  ]
+}
+```

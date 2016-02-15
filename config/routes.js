@@ -156,4 +156,6 @@ module.exports.routes = {
   'get /countries/:locale': 'CountryController.find',
 
   'get /languages/:locale': 'LanguageController.find',
+
+  'get /currencies/:locale': 'CurrencyController.find',
 };
