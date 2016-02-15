@@ -122,7 +122,8 @@ module.exports = {
           Team.create({
             name: 'Administrators',
             company: company.id,
-            owner: user.id
+            owner: user.id,
+            admin: true
           }).exec(callback);
         },
         function (team, callback) {

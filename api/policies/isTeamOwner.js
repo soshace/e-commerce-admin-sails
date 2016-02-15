@@ -3,8 +3,10 @@
  */
 module.exports = function (request, response, next) {
   var teamId = request.param('id'),
+    memberId = request.param('memberId'),
     profile = request.user,
-    profileId = profile && profile.id;
+    profileId = profile && profile.id,
+    teamPromise;
 
   if (typeof teamId === 'undefined') {
     return response.send(400, {
@@ -13,7 +15,13 @@ module.exports = function (request, response, next) {
     });
   }
 
-  Team.findOne({id: teamId}).exec(function (error, team) {
+  teamPromise = Team.findOne({id: teamId});
+
+  if (memberId) {
+    teamPromise = teamPromise.populate('members');
+  }
+
+  teamPromise.exec(function (error, team) {
     if (error) {
       return response.send(500, {
         code: 'error',

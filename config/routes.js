@@ -80,6 +80,7 @@ module.exports.routes = {
   'get /teams/:id/permissions': 'TeamController.findPermissions',
   'delete /teams/:id': 'TeamController.remove',
   'put /teams/:id': 'TeamController.update',
+  'delete /teams/:id/members/:memberId': 'TeamController.removeMember',
 
 
   'post /products': 'ProductController.create',

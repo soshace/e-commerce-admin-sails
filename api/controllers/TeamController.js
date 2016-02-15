@@ -28,6 +28,7 @@ module.exports = {
     });
   },
 
+  //TODO: need to close access to change team to administrators
   update: function (request, response) {
     var teamData = request.body || {},
       team = request.team || {};
@@ -103,7 +104,16 @@ module.exports = {
 
 
   remove: function (request, response) {
-    var teamId = request.param('id');
+    var teamId = request.param('id'),
+      team = request.team,
+      adminTeam = team.admin;
+
+    if (adminTeam) {
+      return response.send(403, {
+        code: 'forbidden',
+        message: 'You are not able to delete Administrator\'s team'
+      });
+    }
 
     Team.destroy({id: teamId})
       .exec(function (error, team) {
@@ -140,6 +150,35 @@ module.exports = {
       return response.send(200, {
         code: 'successful',
         permissions: permission
+      });
+    });
+  },
+
+  removeMember: function (request, response) {
+    var memberId = request.param('memberId'),
+      team = request.team,
+      adminTeam = team.admin,
+      onlyOneMember = team.members.length === 1;
+
+
+    sails.log('----TeamController RemoveMember team onlyOneMember----', team, team.members);
+    if (adminTeam && onlyOneMember) {
+      return response.send(403, {
+        code: 'forbidden',
+        message: 'You are not able to delete last user in Administrator\'s team'
+      });
+    }
+
+    team.members.remove(memberId);
+    team.save(function (error, team) {
+      if (error) {
+        return response.serverError(error);
+      }
+
+      return response.send(200, {
+        code: 'successful',
+        message: 'Team member was removed successfully',
+        team: team
       });
     });
   }

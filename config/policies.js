@@ -94,7 +94,8 @@ module.exports.policies = {
     'findOne': ['isAuthenticated', 'isTeamOwner'],
     'findPermissions': ['isAuthenticated', 'isTeamOwner'],
     'remove': ['isAuthenticated', 'isTeamOwner'],
-    'update': ['isAuthenticated', 'isTeamOwner']
+    'update': ['isAuthenticated', 'isTeamOwner'],
+    'removeMember': ['isAuthenticated', 'isTeamOwner']
   },
 
   'ProductTypeController': {

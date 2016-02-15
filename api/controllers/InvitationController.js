@@ -6,6 +6,7 @@
  */
 
 module.exports = {
+  //TODO: need to close ability to invite owners to the team
   create: function (request, response) {
     var requestData = request.body;
 
