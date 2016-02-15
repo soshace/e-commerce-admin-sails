@@ -11,16 +11,7 @@ var countries = require('../../data/countries.js'),
 module.exports = {
   find: function (request, response) {
     var locale = request.param('locale'),
-      translatedCountries,
-      isFilledString = _.isString(locale) && locale.length;
-
-    if (!isFilledString) {
-      return response.send(400, {
-          code: 'error',
-          messages: 'You haven\'t specified locale'
-        }
-      );
-    }
+      translatedCountries;
 
     translatedCountries = countries[locale] || null;
     response.send(200, {
