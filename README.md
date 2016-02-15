@@ -516,8 +516,8 @@ PUT /teams/:id
 ```
 DELETE /teams/:id
 ```
-**Example of the API's answer:**
-**Danger Zone | TODO: need to check Permissions before moving**
+**Examples of the API's answers:**
+**Danger Zone | TODO: need to check Permissions before moving ahead**
 ```
 {
   "code": "successful",
@@ -532,6 +532,13 @@ DELETE /teams/:id
       "id": "56b343e718c168b564c98df7"
     }
   ]
+}
+```
+
+```
+{
+  "code": "forbidden",
+  "message": "You are not able to delete Administrator's team"
 }
 ```
 
@@ -568,6 +575,50 @@ GET /teams/:id/permissions
       "id": "56bf2e0070e8b19272eaa387"
     }
   ]
+}
+```
+
+
+###Delete team's members by id
+```
+GET /teams/:id/members/:memberId
+```
+
+**Examples of the API's answers:**
+```
+{
+  "code": "successful",
+  "message": "Team member was removed successfully",
+  "team": {
+    "members": [],
+    "permissions": [],
+    "company": {
+      "name": "Niki's Company",
+      "owner": "56c1e3b896f2c5b67b4cee93",
+      "createdAt": "2016-02-15T14:42:00.811Z",
+      "updatedAt": "2016-02-15T14:42:00.811Z",
+      "id": "56c1e3b896f2c5b67b4cee94"
+    },
+    "owner": {
+      "email": "niki5@mail.ru",
+      "name": "Niki",
+      "createdAt": "2016-02-15T14:42:00.755Z",
+      "updatedAt": "2016-02-15T14:42:00.755Z",
+      "id": "56c1e3b896f2c5b67b4cee93"
+    },
+    "name": "Administrators",
+    "admin": true,
+    "createdAt": "2016-02-15T14:42:00.827Z",
+    "updatedAt": "2016-02-15T15:03:49.465Z",
+    "id": "56c1e3b896f2c5b67b4cee95"
+  }
+}
+```
+
+```
+{
+  "code": "forbidden",
+  "message": "You are not able to delete last user in Administrator's team"
 }
 ```
 
