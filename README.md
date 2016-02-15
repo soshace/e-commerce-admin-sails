@@ -305,20 +305,35 @@ GET /companies/:id/teams
   "message": "Company's teams were successfully found",
   "teams": [
     {
-      "name": "New Team",
-      "company": "56b34e932d62407e669fdd0c",
-      "owner": "56b343e718c168b564c98df5",
-      "createdAt": "2016-02-04T13:18:22.614Z",
-      "updatedAt": "2016-02-04T13:18:22.614Z",
-      "id": "56b34f9e2d62407e669fdd0d"
-    },
-    {
-      "name": "New Team 2",
-      "company": "56b34e932d62407e669fdd0c",
-      "owner": "56b343e718c168b564c98df5",
-      "createdAt": "2016-02-04T13:22:34.579Z",
-      "updatedAt": "2016-02-04T13:22:34.579Z",
-      "id": "56b3509a2d62407e669fdd10"
+      "members": [],
+      "permissions": [
+        {
+          "project": "56bf272bf428323e3cbabf4d",
+          "team": "56bf203f694dbab301612773",
+          "productsPermission": "none",
+          "ordersPermission": "none",
+          "customersPermission": "none",
+          "createdAt": "2016-02-13T12:52:59.323Z",
+          "updatedAt": "2016-02-13T12:52:59.323Z",
+          "id": "56bf272bf428323e3cbabf51"
+        },
+        {
+          "project": "56bf2738f428323e3cbabf56",
+          "team": "56bf203f694dbab301612773",
+          "productsPermission": "none",
+          "ordersPermission": "none",
+          "customersPermission": "none",
+          "createdAt": "2016-02-13T12:53:12.518Z",
+          "updatedAt": "2016-02-13T12:53:12.518Z",
+          "id": "56bf2738f428323e3cbabf5a"
+        }
+      ],
+      "company": "56bca31261a92b870f3e2562",
+      "owner": "56bca31261a92b870f3e2561",
+      "name": "New team",
+      "createdAt": "2016-02-13T12:23:27.783Z",
+      "updatedAt": "2016-02-13T12:23:27.783Z",
+      "id": "56bf203f694dbab301612773"
     }
   ]
 }
@@ -2388,7 +2403,7 @@ DELETE /prices/:id
 
 ##Invitations
 ```
-POST /invitations/:id
+POST /invitations/
 ```
 **Example of the API's request:**
 ```
