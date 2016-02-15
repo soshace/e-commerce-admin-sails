@@ -30,6 +30,7 @@ module.exports = {
         User.findOne({id: user.id})
           .populate('ownCompanies')
           .populate('ownTeams')
+          .populate('teams')
           .exec(function (error, userPopulated) {
             if (error) {
               return response.serverError(error);
@@ -44,6 +45,7 @@ module.exports = {
       });
     })(request, response);
   },
+
   logout: function (request, response) {
     request.logout();
     response.send(200, {
@@ -64,6 +66,7 @@ module.exports = {
       this.login(request, response);
     }, this));
   },
+
   getProfile: function (request, response) {
     response.send(200, {
       code: 'successful',

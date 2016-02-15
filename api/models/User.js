@@ -26,7 +26,7 @@ module.exports = {
       required: true
     },
     teams: {
-      model: 'team',
+      collection: 'team',
       via: 'members'
     },
     language: {
@@ -120,10 +120,14 @@ module.exports = {
         function (company, callback) {
           sails.log('--------User  afterCreate company--------', company);
           Team.create({
-            name: 'Admin',
+            name: 'Administrators',
             company: company.id,
             owner: user.id
           }).exec(callback);
+        },
+        function (team, callback) {
+          team.members.add(user.id);
+          team.save(callback);
         },
         function (team, callback) {
           sails.log('-----User  afterCreate user----', user);

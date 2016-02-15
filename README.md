@@ -27,30 +27,40 @@ POST /users
   "code": "successful",
   "message": "Logged In Successfully",
   "user": {
+    "teams": [
+      {
+        "name": "Administrators",
+        "company": "56c1da12dd5e18762e6ad2b1",
+        "owner": "56c1da12dd5e18762e6ad2b0",
+        "createdAt": "2016-02-15T14:00:50.487Z",
+        "updatedAt": "2016-02-15T14:00:50.532Z",
+        "id": "56c1da12dd5e18762e6ad2b2"
+      }
+    ],
     "ownTeams": [
       {
-        "name": "Admin",
-        "company": "56b343e718c168b564c98df6",
-        "owner": "56b343e718c168b564c98df5",
-        "createdAt": "2016-02-04T12:28:23.116Z",
-        "updatedAt": "2016-02-04T12:28:23.116Z",
-        "id": "56b343e718c168b564c98df7"
+        "name": "Administrators",
+        "company": "56c1da12dd5e18762e6ad2b1",
+        "owner": "56c1da12dd5e18762e6ad2b0",
+        "createdAt": "2016-02-15T14:00:50.487Z",
+        "updatedAt": "2016-02-15T14:00:50.532Z",
+        "id": "56c1da12dd5e18762e6ad2b2"
       }
     ],
     "ownCompanies": [
       {
-        "name": "UsersName's Company",
-        "owner": "56b343e718c168b564c98df5",
-        "createdAt": "2016-02-04T12:28:23.112Z",
-        "updatedAt": "2016-02-04T12:28:23.112Z",
-        "id": "56b343e718c168b564c98df6"
+        "name": "UserName's Company",
+        "owner": "56c1da12dd5e18762e6ad2b0",
+        "createdAt": "2016-02-15T14:00:50.472Z",
+        "updatedAt": "2016-02-15T14:00:50.472Z",
+        "id": "56c1da12dd5e18762e6ad2b1"
       }
     ],
     "email": "user@mail.com",
-    "name": "UsersName",
-    "createdAt": "2016-02-04T12:28:23.103Z",
-    "updatedAt": "2016-02-04T12:28:23.103Z",
-    "id": "56b343e718c168b564c98df5"
+    "name": "UserName",
+    "createdAt": "2016-02-15T14:00:50.391Z",
+    "updatedAt": "2016-02-15T14:00:50.391Z",
+    "id": "56c1da12dd5e18762e6ad2b0"
   }
 }
 ```
@@ -100,30 +110,40 @@ POST /users/login
   "code": "successful",
   "message": "Logged In Successfully",
   "user": {
+    "teams": [
+      {
+        "name": "Administrators",
+        "company": "56c1da12dd5e18762e6ad2b1",
+        "owner": "56c1da12dd5e18762e6ad2b0",
+        "createdAt": "2016-02-15T14:00:50.487Z",
+        "updatedAt": "2016-02-15T14:00:50.532Z",
+        "id": "56c1da12dd5e18762e6ad2b2"
+      }
+    ],
     "ownTeams": [
       {
-        "name": "Admin",
-        "company": "56b343e718c168b564c98df6",
-        "owner": "56b343e718c168b564c98df5",
-        "createdAt": "2016-02-04T12:28:23.116Z",
-        "updatedAt": "2016-02-04T12:28:23.116Z",
-        "id": "56b343e718c168b564c98df7"
+        "name": "Administrators",
+        "company": "56c1da12dd5e18762e6ad2b1",
+        "owner": "56c1da12dd5e18762e6ad2b0",
+        "createdAt": "2016-02-15T14:00:50.487Z",
+        "updatedAt": "2016-02-15T14:00:50.532Z",
+        "id": "56c1da12dd5e18762e6ad2b2"
       }
     ],
     "ownCompanies": [
       {
-        "name": "UsersName's Company",
-        "owner": "56b343e718c168b564c98df5",
-        "createdAt": "2016-02-04T12:28:23.112Z",
-        "updatedAt": "2016-02-04T12:28:23.112Z",
-        "id": "56b343e718c168b564c98df6"
+        "name": "UserName's Company",
+        "owner": "56c1da12dd5e18762e6ad2b0",
+        "createdAt": "2016-02-15T14:00:50.472Z",
+        "updatedAt": "2016-02-15T14:00:50.472Z",
+        "id": "56c1da12dd5e18762e6ad2b1"
       }
     ],
     "email": "user@mail.com",
-    "name": "UsersName",
-    "createdAt": "2016-02-04T12:28:23.103Z",
-    "updatedAt": "2016-02-04T12:28:23.103Z",
-    "id": "56b343e718c168b564c98df5"
+    "name": "UserName",
+    "createdAt": "2016-02-15T14:00:50.391Z",
+    "updatedAt": "2016-02-15T14:00:50.391Z",
+    "id": "56c1da12dd5e18762e6ad2b0"
   }
 }
 ```
