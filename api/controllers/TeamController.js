@@ -57,8 +57,6 @@ module.exports = {
     var user = request.user;
 
     Team.find({owner: user.id})
-      .populate('members')
-      .populate('permissions')
       .exec(function (error, teams) {
         if (error) {
           return response.send(500, {
