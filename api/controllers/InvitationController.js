@@ -6,6 +6,7 @@
  */
 
 module.exports = {
+  //TODO: need to remove user from another teams of current company
   create: function (request, response) {
     var requestData = request.body;
 
