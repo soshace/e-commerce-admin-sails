@@ -133,24 +133,23 @@ module.exports = {
   findTeams: function (request, response) {
     var companyId = request.param('id');
 
-    Company.findOne({id: companyId}).populate('teams').exec(function (error, company) {
-      var teams;
+    Team.find({company: companyId})
+      .populate('members')
+      .populate('permissions')
+      .exec(function (error, teams) {
+        if (error) {
+          return response.send(500, {
+            code: 'error',
+            message: error
+          });
+        }
 
-      if (error) {
-        return response.send(500, {
-          code: 'error',
-          message: error
+        return response.send(200, {
+          code: 'successful',
+          message: 'Company\'s teams were successfully found',
+          teams: teams
         });
-      }
-
-
-      teams = company.teams || [];
-      return response.send(200, {
-        code: 'successful',
-        message: 'Company\'s teams were successfully found',
-        teams: teams
       });
-    });
   },
 
   findProjects: function (request, response) {
