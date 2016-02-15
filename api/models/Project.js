@@ -61,9 +61,33 @@ module.exports = {
       collection: 'productType',
       via: 'project'
     },
+    currencies: {
+      type: 'array',
+      currencies: true
+    },
+    languages: {
+      type: 'array',
+      languages: true
+    },
+    countries: {
+      type: 'array',
+      countries: true
+    },
     permissions: {
       collection: 'permission',
       via: 'project'
+    }
+  },
+
+  types: {
+    currencies: function (value) {
+      return CurrencyService.areCurrencyAliasesExist(value);
+    },
+    countries: function (value) {
+      return CountryService.areCountryAliasesExist(value);
+    },
+    languages: function (value) {
+      return LanfuageService.areLanguageAliasesExist(value);
     }
   },
 
