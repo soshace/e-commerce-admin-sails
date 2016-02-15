@@ -54,26 +54,24 @@ module.exports = {
   },
 
   find: function (request, response) {
-    var user = request.user,
-      userId = user.id;
+    var user = request.user;
 
+    Team.find({owner: user.id})
+      .populate('members')
+      .populate('permissions')
+      .exec(function (error, teams) {
+        if (error) {
+          return response.send(500, {
+            code: 'error',
+            message: error
+          });
+        }
 
-    User.findOne({id: userId}).populate('ownTeams').exec(function (error, userWithOwnTeams) {
-      var teams;
-
-      if (error) {
-        return response.send(500, {
-          code: 'error',
-          message: error
+        return response.send(200, {
+          code: 'successful',
+          teams: teams
         });
-      }
-
-      teams = userWithOwnTeams.ownTeams || [];
-      return response.send(200, {
-        code: 'successful',
-        teams: teams
       });
-    });
   },
 
   findOne: function (request, response) {
