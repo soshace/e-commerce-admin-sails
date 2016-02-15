@@ -125,7 +125,7 @@ module.exports.policies = {
   },
 
   'VariantAttributeController': {
-    'updateValue': ['isAuthenticated','doesUserHaveVariantAttributeAccess']
+    'updateValue': ['isAuthenticated', 'doesUserHaveVariantAttributeAccess']
   },
 
   'ImageController': {
@@ -148,6 +148,10 @@ module.exports.policies = {
   'PermissionController': {
     'find': 'isAuthenticated',
     'update': ['isAuthenticated', 'doesUserHavePermissionAccess']
+  },
+
+  'CountryController': {
+    'find': 'isAuthenticated'
   }
 
   // RabbitController: {
