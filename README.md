@@ -2527,3 +2527,35 @@ PUT /permissions/:id
   }
 }
 ```
+
+###Get Countries by locale
+```
+GET /countries/:locale
+```
+
+**Example of the API's answer:**
+```
+{
+  "code": "success",
+  "countries": [
+    {
+      "isoCode": "AF",
+      "name": "Afghanistan"
+    },
+    {
+      "isoCode": "AL",
+      "name": "Albania"
+    },
+    {
+      "isoCode": "DZ",
+      "name": "Algeria"
+    },
+    {
+      "isoCode": "AS",
+      "name": "American Samoa"
+    },
+   ...
+  ]
+}
+```
+
