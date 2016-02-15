@@ -154,4 +154,6 @@ module.exports.routes = {
   'get /permissions': 'PermissionController.find',
 
   'get /countries/:locale': 'CountryController.find',
+
+  'get /languages/:locale': 'LanguageController.find',
 };
