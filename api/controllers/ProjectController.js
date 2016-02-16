@@ -53,10 +53,14 @@ module.exports = {
     });
   },
 
-  //TODO: need to add validation for locale
   update: function (request, response) {
-    var projectData = request.body || {},
+    var projectData = {},
+      projectName = request.body && request.body.name,
       project = request.project || {};
+
+    if (_.isString(projectName) && projectName.length) {
+      projectData.name = projectName;
+    }
 
     _.extend(project, projectData);
 
