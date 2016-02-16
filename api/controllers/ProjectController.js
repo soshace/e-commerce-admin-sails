@@ -216,17 +216,17 @@ module.exports = {
   },
 
   findPermissions: function (request, response) {
-  var projectId = request.param('id');
+    var projectId = request.param('id');
 
-  Permission.find({project: projectId}).exec(function (error, permission) {
-    if (error) {
-      return response.serverError(error);
-    }
+    Permission.find({project: projectId}).exec(function (error, permission) {
+      if (error) {
+        return response.serverError(error);
+      }
 
-    return response.send(200, {
-      code: 'successful',
-      permissions: permission
+      return response.send(200, {
+        code: 'successful',
+        permissions: permission
+      });
     });
-  });
-}
+  }
 };
