@@ -31,7 +31,9 @@ module.exports = {
     },
     language: {
       type: 'string',
-      enum: ['en', 'de', 'it', 'ru', 'zh']
+      enum: ['en', 'de', 'it', 'ru', 'zh'],
+      required: true,
+      defaultsTo: 'en'
     },
     ownTeams: {
       collection: 'team',

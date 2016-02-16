@@ -7,6 +7,7 @@
 
 module.exports = {
   //TODO: need to close ability to invite owners to the team
+  //TODO: need to remove user from another teams of current company
   create: function (request, response) {
     var requestData = request.body;
 

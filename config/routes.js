@@ -154,4 +154,9 @@ module.exports.routes = {
   'put /permissions/:id': 'PermissionController.update',
   'get /permissions': 'PermissionController.find',
 
+  'get /countries/:locale': 'CountryController.find',
+
+  'get /languages/:locale': 'LanguageController.find',
+
+  'get /currencies/:locale': 'CurrencyController.find',
 };
