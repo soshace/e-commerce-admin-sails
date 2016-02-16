@@ -44,7 +44,7 @@ module.exports.policies = {
   'ProjectController': {
     'create': ['isAuthenticated', 'isCompanyOwner'],
     'find': 'isAuthenticated',
-    'findOne': ['isAuthenticated', 'isUserOwnerOfProject'],
+    'findOne': 'isAuthenticated',
     'findProjectCategories': ['isAuthenticated', 'isUserOwnerOfProject'],
     'findProjectProducts': ['isAuthenticated', 'isUserOwnerOfProject'],
     'findProjectProductTypes': ['isAuthenticated', 'isUserOwnerOfProject'],

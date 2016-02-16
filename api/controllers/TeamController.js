@@ -170,10 +170,24 @@ module.exports = {
     }
 
     team.members.remove(memberId);
-    team.save(function (error, team) {
+    async.waterfall([
+      function (callback) {
+        team.save(callback);
+      },
+      function (team, callback) {
+        Permission.find({team: team.id}).exec(callback);
+      },
+      function (permissions, callback) {
+        async.each(permissions, function(permission, callback){
+
+        }, callback);
+      }
+    ], function (error) {
       if (error) {
         return response.serverError(error);
       }
+    });
+    team.save(function (error, team) {
 
       return response.send(200, {
         code: 'successful',
