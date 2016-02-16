@@ -581,7 +581,7 @@ GET /teams/:id/permissions
 
 ###Delete team's members by id
 ```
-GET /teams/:id/members/:memberId
+DELETE /teams/:id/members/:memberId
 ```
 
 **Examples of the API's answers:**
