@@ -17,17 +17,22 @@ module.exports = {
       unique: true,
       required: true
     },
-    //TODO: need to add validation for update method
-    currency: {
+    currencies: {
       type: 'array',
       defaultsTo: ['USD'],
-      required: true
+      required: true,
+      currencies: true
     },
-    //TODO: need to add validation for update method
-    language: {
+    languages: {
       type: 'array',
       defaultsTo: ['en'],
-      required: true
+      required: true,
+      languages: true
+    },
+    countries: {
+      type: 'array',
+      defaultsTo: ['US', 'DE'],
+      countries: true
     },
     company: {
       model: 'company',
@@ -61,18 +66,6 @@ module.exports = {
       collection: 'productType',
       via: 'project'
     },
-    currencies: {
-      type: 'array',
-      currencies: true
-    },
-    languages: {
-      type: 'array',
-      languages: true
-    },
-    countries: {
-      type: 'array',
-      countries: true
-    },
     permissions: {
       collection: 'permission',
       via: 'project'
@@ -87,7 +80,7 @@ module.exports = {
       return CountryService.areCountryAliasesExist(value);
     },
     languages: function (value) {
-      return LanfuageService.areLanguageAliasesExist(value);
+      return LanguageService.areLanguageAliasesExist(value);
     }
   },
 

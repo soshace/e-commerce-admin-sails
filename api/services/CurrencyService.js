@@ -14,14 +14,14 @@ module.exports = {
 
   areCurrencyAliasesExist: function (aliases) {
     var currencies = this.getCurrenciesByLocale(),
-      areExist = true;
+      numberOfMatching = 0;
 
-    _.each(aliases, function (alias) {
-      if (!currencies[alias]) {
-        areExist = false;
+    _.each(currencies, function (currency) {
+      if (aliases.indexOf(currency.isoCode) !== -1) {
+        numberOfMatching++;
       }
     });
 
-    return areExist;
+    return aliases.length === numberOfMatching;
   }
 };

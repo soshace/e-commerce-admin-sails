@@ -14,14 +14,14 @@ module.exports = {
 
   areLanguageAliasesExist: function (aliases) {
     var languages = this.getLanguagesByLocale(),
-      areExist = true;
+      numberOfMatching = 0;
 
-    _.each(aliases, function (alias) {
-      if (!languages[alias]) {
-        areExist = false;
+    _.each(languages, function (language) {
+      if (aliases.indexOf(language.isoCode) !== -1) {
+        numberOfMatching++;
       }
     });
 
-    return areExist;
+    return aliases.length === numberOfMatching;
   }
 };
