@@ -170,6 +170,8 @@ module.exports = {
 
     Variant.find({product: productId})
       .populate('attributes')
+      .populate('images')
+      .populate('prices')
       .exec(function (error, variants) {
         if (error) {
           return response.send(500, {
