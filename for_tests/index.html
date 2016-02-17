@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script src="js/jquery-2.2.0.min.js"></script>
+  <title></title>
+</head>
+<body>
+<form action="http://45.55.60.139:1337/images/upload" enctype="multipart/form-data" method="post">
+  <input type="text" name="title"><br>
+  <input type="file" name="image"><br>
+  <input type="submit" value="Upload">
+  <input type="submit" value="Upload AJAX" class="js-ajax-upload">
+</form>
+
+<script>
+  $(function () {
+    $('.js-ajax-upload').on('click', function (event) {
+      event.preventDefault();
+
+      var formData = new FormData();
+      formData.append('image', $('input[type=file]')[0].files[0]);
+
+      $.ajax({
+        url: 'http://45.55.60.139:1337/images/upload',
+        data: formData,
+        type: 'POST',
+        contentType: false,
+        processData: false,
+        success: function (data) {
+          alert(data);
+        }
+      })
+    });
+  });
+</script>
+</body>
+</html>

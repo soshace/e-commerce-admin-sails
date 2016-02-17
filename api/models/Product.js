@@ -20,7 +20,7 @@ module.exports = {
     },
     owner: {
       model: 'user',
-      via: 'ownProducts'
+      required: true
     },
     project: {
       model: 'project',
@@ -83,7 +83,8 @@ module.exports = {
           async.each(productAttributes, function (attribute, callback) {
             VariantAttribute.create({
               productAttribute: attribute.id,
-              variant: variant.id
+              variant: variant.id,
+              owner: product.owner
             }).exec(callback)
           }, callback);
         }
