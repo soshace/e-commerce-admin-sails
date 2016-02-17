@@ -2303,26 +2303,19 @@ DELETE /images/:id
 ```
 <form action="http://45.55.60.139:1337/images/upload" enctype="multipart/form-data" method="post">
   <input type="text" name="title"><br>
-  <input type="hidden" name="variantId" value="56bca47b61a92b870f3e2568"><br>
-  <input type="hidden" name="productId" value="56bca47b61a92b870f3e2567"><br>
-  <input type="file" name="avatar"><br>
+  <input type="file" name="image"><br>
   <input type="submit" value="Upload">
+  <input type="submit" value="Upload AJAX" class="js-ajax-upload">
 </form>
 ```
 
 **Example of the API's answer:**
 ```
 {
-  message: "successful",
-    image: {
-        uri: "http://45.55.60.139/de719f7b-9a50-464e-bbd8-4cda10e72272.jpg",
-        product: "56bca47b61a92b870f3e2567",
-        variant: "56bca47b61a92b870f3e2568",
-        external: false,
-        createdAt: "2016-02-11T15:29:49.810Z",
-        updatedAt: "2016-02-11T15:29:49.810Z",
-        id: "56bca8eddfcee6d642b0a87c"
-    }
+  "message": "successful",
+  "image": {
+    "uri": "hello/7717c2b6-2620-4a76-9c09-3f62bfc0dd59.jpg"
+  }
 }
 ```
 

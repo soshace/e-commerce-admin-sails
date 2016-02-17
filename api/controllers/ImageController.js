@@ -105,46 +105,35 @@ module.exports = {
 
   //TODO: need to check if user have access to product and variant
   upload: function (request, response) {
-    var requestData = request.body,
-      variantId = requestData.variantId,
-      productId = requestData.productId;
+    request.file('image').upload({
+      dirname: sails.config.images.uploadFolder,
+      maxBytes: 5000000
+    }, function (error, files) {
+      var fileName,
+        fileURI,
+        filePath,
+        image;
 
-    async.waterfall([
-      function (callback) {
-        request.file('avatar').upload({
-          dirname: sails.config.images.uploadFolder,
-          maxBytes: 5000000
-        }, callback);
-      },
-      function (files, callback) {
-        var fileName,
-          fileURI,
-          filePath,
-          image = files && files[0];
-
-        if (!image) {
-          return callback('File wasn\'t found');
-        }
-
-        filePath = image.fd;
-        fileName = filePath.replace(sails.config.images.uploadFolder, '');
-        fileURI = sails.config.images.imagesRootURI + fileName;
-
-        Image.create({
-          uri: fileURI,
-          product: productId,
-          variant: variantId,
-          owner: request.user.id
-        }).exec(callback);
-      }
-    ], function (error, image) {
       if (error) {
         return response.serverError(error);
       }
 
-      return response.send(200, {
+      image = files && files[0];
+      if (!image) {
+        return callback('File wasn\'t found');
+      }
+
+
+      sails.log('ImageController upload image', image);
+      filePath = image.fd;
+      fileName = filePath.replace(sails.config.images.uploadFolder, '');
+      fileURI = sails.config.images.imagesRootURI + fileName;
+
+      response.send(200, {
         message: 'successful',
-        image: image
+        image: {
+          uri: fileURI
+        }
       });
     });
   }
