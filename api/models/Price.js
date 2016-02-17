@@ -1,9 +1,9 @@
 /**
-* Price.js
-*
-* @description :: TODO: You might write a short summary of how this model works and what it represents here.
-* @docs        :: http://sailsjs.org/#!documentation/models
-*/
+ * Price.js
+ *
+ * @description :: TODO: You might write a short summary of how this model works and what it represents here.
+ * @docs        :: http://sailsjs.org/#!documentation/models
+ */
 
 module.exports = {
 
@@ -36,7 +36,22 @@ module.exports = {
     owner: {
       model: 'user',
       required: true
+    },
+    //Additional field which helps to optimise permission requests
+    project: {
+      model: 'project'
     }
+  },
+
+  beforeCreate: function (price, callback) {
+    Variant.find({id: price.variant}).exec(function (error, variant) {
+      if (error) {
+        return callback(error);
+      }
+
+      price.project = variant.project;
+      callback(null, price);
+    });
   }
 };
 

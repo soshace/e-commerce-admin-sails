@@ -41,7 +41,7 @@ module.exports = {
       collection: 'variant',
       via: 'product'
     },
-    'images': {
+    images: {
       collection: 'image',
       via: 'product'
     },
@@ -65,28 +65,9 @@ module.exports = {
             productType: product.productType,
             owner: product.owner,
             product: product.id,
-            isMaster: true
+            isMaster: true,
+            project: product.project
           }).exec(callback);
-        },
-        function (variant, callback) {
-          sails.log('--------Product  afterCreate variant--------', variant);
-          ProductType.findOne({id: variant.productType})
-            .populate('productAttributes')
-            .exec(function (error, productType) {
-              callback(error, variant, productType);
-            });
-        },
-        function (variant, productType, callback) {
-          sails.log('--------Product afterCreate productType--------', productType);
-          var productAttributes = productType.productAttributes;
-
-          async.each(productAttributes, function (attribute, callback) {
-            VariantAttribute.create({
-              productAttribute: attribute.id,
-              variant: variant.id,
-              owner: product.owner
-            }).exec(callback)
-          }, callback);
         }
       ],
       callback);
