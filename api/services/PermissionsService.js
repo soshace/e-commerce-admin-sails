@@ -32,5 +32,24 @@ module.exports = {
     });
 
     return permissionByUser;
+  },
+
+  /**
+   * We are checking permissions of the project
+   * Does user has access to the project by one permission?
+   *
+   * @returns {boolean}
+   */
+  accessByOnePermission: function (userId, permissions) {
+    var permission = this.getPermissionByUser.call(arguments);
+
+    if (typeof permission === 'undefined') {
+      return false;
+    }
+
+    return permission.owner ||
+      permission.productsPermission !== 'none' ||
+      permission.ordersPermission !== 'none' ||
+      permission.customersPermission !== 'none';
   }
 };
