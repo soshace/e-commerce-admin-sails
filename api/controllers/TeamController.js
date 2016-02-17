@@ -169,17 +169,18 @@ module.exports = {
       });
     }
 
-    team.members.remove(memberId);
     async.waterfall([
       function (callback) {
+        team.members.remove(memberId);
         team.save(callback);
       },
       function (team, callback) {
         Permission.find({team: team.id}).exec(callback);
       },
       function (permissions, callback) {
-        async.each(permissions, function(permission, callback){
-
+        async.each(permissions, function (permission, callback) {
+          permission.members.remove(memberId);
+          permission.save(callback);
         }, callback);
       }
     ], function (error) {
