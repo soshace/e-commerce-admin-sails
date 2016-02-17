@@ -20,5 +20,17 @@ module.exports = {
 
       callback(null, projectPermission);
     })
+  },
+
+  getPermissionByUser: function (userId, permissions) {
+    var permissionByUser;
+
+    _.each(permissions, function (permission) {
+      if (permission.members.indexOf(userId) !== -1) {
+        permissionByUser = permission;
+      }
+    });
+
+    return permissionByUser;
   }
 };
