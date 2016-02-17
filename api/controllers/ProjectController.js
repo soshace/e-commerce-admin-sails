@@ -5,7 +5,8 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
-var _ = require('underscore');
+var _ = require('underscore'),
+  async = require('async');
 
 module.exports = {
   checkSlug: function (request, response) {
@@ -88,7 +89,8 @@ module.exports = {
   },
 
   findOne: function (request, response) {
-    var projectId = request.param('id');
+    var userId = request.user.id,
+      projectId = request.param('id');
 
     Project.findOne({id: projectId})
       .populate('permissions')
@@ -101,6 +103,13 @@ module.exports = {
           return response.send(400, {
             code: 'not.found',
             message: 'Project was not found'
+          });
+        }
+
+        if (!PermissionsService.accessByOnePermission(userId, project.permissions)) {
+          return response(403, {
+            code: 'access.denied',
+            message: 'Access denied'
           });
         }
 
@@ -143,23 +152,22 @@ module.exports = {
 
     async.waterfall([
         function (callback) {
-          User.findOne({id: userId}).populate('teams').populate('ownProjects').exec(callback);
+          User.findOne({id: userId}).populate('permissions').exec(callback);
         },
         function (userPopulated, callback) {
-          sails.log('--------projectController.find userPopulated----------', userPopulated);
-          var ownProjects = userPopulated.ownProjects,
-            teams = userPopulated.teams,
-            pluckPermissions = _.pluck(teams, 'permissions'),
-            permissions = _.flatten(pluckPermissions),
-            userInvitedProjects = _.pluck(permissions, 'project'),
-            fullListOfProjects = ownProjects.concat(userInvitedProjects);
+          var projects = [],
+            permissions = userPopulated.permissions;
 
-          sails.log('--------projectController.find ownProjects----------', ownProjects);
-          sails.log('--------projectController.find pluckPermissions----------', pluckPermissions);
-          sails.log('--------projectController.find permissions----------', permissions);
-          sails.log('--------projectController.find userInvitedProjects----------', userInvitedProjects);
+          async.each(permissions, function (permission, callback) {
+            Project.find({id: permission.project}).exec(function (error, project) {
+              if(error){
+                return callback(error);
+              }
 
-          callback(null, fullListOfProjects);
+              projects.push(project);
+              callback(null, projects);
+            });
+          }, callback);
         }
       ],
       function (error, fullListOfProjects) {
