@@ -142,7 +142,9 @@ module.exports = {
   findPermissions: function (request, response) {
     var teamId = request.param('id');
 
-    Permission.find({team: teamId}).exec(function (error, permission) {
+    Permission.find({team: teamId})
+      .populate('members')
+      .exec(function (error, permission) {
       if (error) {
         return response.serverError(error);
       }
