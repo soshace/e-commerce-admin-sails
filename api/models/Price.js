@@ -11,10 +11,15 @@ module.exports = {
     price: {
       type: 'float'
     },
-    //TODO: need to redevelop to currency reference
+    //TODO: need to check project's currencies
     currency: {
       type: 'string',
-      enum: ['EUR', 'USD', 'RUR']
+      currency: true
+    },
+    //TODO: need to check project's countries
+    country: {
+      type: 'string',
+      country: true
     },
     //TODO: need to redevelop to group reference
     customerGroup: {
@@ -36,6 +41,15 @@ module.exports = {
     owner: {
       model: 'user',
       required: true
+    }
+  },
+
+  types: {
+    currency: function (value) {
+      return CurrencyService.isCurrencyAliasExists(value);
+    },
+    country: function (value) {
+      return CountryService.isCountryAliasExists(value);
     }
   }
 };
