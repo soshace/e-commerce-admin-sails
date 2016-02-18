@@ -5,29 +5,67 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
-var _ = require('underscore');
+var _ = require('underscore'),
+  async = require('async');
 
 module.exports = {
 
-  //TODO: need to check that ProductType and Project exist
-  //TODO: need to check that productType is tied with Project
-  //TODO: user should have access to project
   create: function (request, response) {
-    var productData = request.body,
-      profile = request.user;
+    var user = request.user,
+      userId = user.id,
+      productData = request.body,
+      profile = request.user,
+      productTypeId = productData.productType,
+      projectId = productData.project;
 
-    productData.owner = profile.id;
-    Product.create(productData).exec(function (error, product) {
+    PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
+      var isOwner,
+        managerOfProducts;
+
       if (error) {
-        return response.send(500, {
-          code: 'error',
-          message: error
+        return response.serverError(error);
+      }
+
+      isOwner = permission.isOwner;
+      managerOfProducts = permission.productsPermission === 'manage';
+      if (!isOwner && !managerOfProducts) {
+        return response.send(403, {
+          code: 'access.denied',
+          message: 'Access denied'
         });
       }
 
-      response.send(200, {
-        code: 'successful',
-        product: product
+      ProductType.findOne({id: productTypeId}).exec(function (error, productType) {
+        if (error) {
+          return response.serverError(error);
+        }
+
+        if (typeof productType === 'undefined') {
+          return response.send(404, {
+            code: 'not.found',
+            message: 'Product Type with current id was not found'
+          });
+        }
+
+        if (productType.project !== projectId) {
+          return response.send(403, {
+            code: 'permission denied',
+            message: 'Product Type doesn\'t belong to the project'
+          });
+        }
+
+        sails.log('-----------Product Controller productType 2----------');
+        productData.owner = profile.id;
+        Product.create(productData).exec(function (error, product) {
+          if (error) {
+            return response.serverError(error);
+          }
+
+          response.send(200, {
+            code: 'successful',
+            product: product
+          });
+        });
       });
     });
   },
@@ -237,6 +275,7 @@ module.exports = {
 
       return response.send(200, {
         code: 'successful',
+
         images: images
       });
     });

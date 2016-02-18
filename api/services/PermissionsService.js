@@ -5,11 +5,25 @@ module.exports = {
   getPermissionsByProject: function (userId, projectId, callback) {
     async.waterfall([
       function (callback) {
-        Project.findOne({id: projectId}).exec(callback);
+        Project.findOne({id: projectId}).exec(function (error, project) {
+          if (error) {
+            return callback(error);
+          }
+
+          if (typeof project === 'undefined') {
+            return callback({
+              code: 'not.found',
+              message: 'project not found'
+            });
+          }
+
+          callback(null, project);
+        });
       },
       function (project, callback) {
         var isOwner = project.owner = userId;
 
+        sails.log('---------PermissionService project------', project);
         if (isOwner) {
           return callback(null, {
             isOwner: true
