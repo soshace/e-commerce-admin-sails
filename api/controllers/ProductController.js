@@ -70,30 +70,66 @@ module.exports = {
     });
   },
 
-  //TODO: need to check that ProductType and Project exist
-  //TODO: need to check that productType is tied with Project
-  //TODO: user should have access to project
   update: function (request, response) {
-    var productData = request.body || {},
-      product = request.product || {};
+    var user = request.user,
+      userId = user.id,
+      productData = request.body || {},
+      productId = request.param('id');
 
-    _.extend(product, productData);
 
-    product.save(function (error, product) {
-      var returnedProduct;
+    Product.findOne({id: productId}).exec(function (error, product) {
+      var projectId;
 
       if (error) {
-        return response.send(500, {
-          code: 'error',
-          message: error
+        return response.serverError(error);
+      }
+
+      if (typeof  product === 'undefined') {
+        return response.send(404, {
+          code: 'not.found',
+          message: 'Product not found'
         });
       }
 
-      returnedProduct = _.pick(product, 'id', 'name', 'createdAt', 'updatedAt');
-      response.send(200, {
-        code: 'successful',
-        message: 'Product was successfully updated',
-        product: returnedProduct
+      projectId = product.project;
+      PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
+        var isOwner,
+          managerOfProducts;
+
+        if (error) {
+          return response.serverError(error);
+        }
+
+        isOwner = permission.isOwner;
+        managerOfProducts = permission.productsPermission === 'manage';
+        if (!isOwner && !managerOfProducts) {
+          return response.send(403, {
+            code: 'access.denied',
+            message: 'Access denied'
+          });
+        }
+
+      });
+
+      productData = _.pick(productData, 'name', 'description');
+      _.extend(product, productData);
+
+      product.save(function (error, product) {
+        var returnedProduct;
+
+        if (error) {
+          return response.send(500, {
+            code: 'error',
+            message: error
+          });
+        }
+
+        returnedProduct = _.pick(product, 'id', 'name', 'createdAt', 'updatedAt');
+        response.send(200, {
+          code: 'successful',
+          message: 'Product was successfully updated',
+          product: returnedProduct
+        });
       });
     });
   },
