@@ -217,18 +217,17 @@ module.exports = {
           hasAccessToProducts = permission.productsPermission !== 'none';
 
         if (isOwner || hasAccessToProducts) {
-          Category.find({project: projectId}).exec(function (error, categories) {
+          return Category.find({project: projectId}).exec(function (error, categories) {
             if (error) {
-              return response.serverError(error);
+              return callback(error);
             }
 
-            return response.send(200, {
+            response.send(200, {
               code: 'successful',
               categories: categories
             });
+            return callback(null);
           });
-
-          return callback(null);
         }
 
         response.send(403, {
@@ -248,15 +247,31 @@ module.exports = {
   findProjectProducts: function (request, response) {
     var projectId = request.param('id');
 
-    Product.find({project: projectId}).exec(function (error, products) {
+    async.waterfall([
+      function (callback) {
+        PermissionsService.getPermissionsByProject(userId, projectId, callback);
+      },
+      function (permission, callback) {
+        var isOwner = permission.isOwner,
+          hasAccessToProducts = permission.productsPermission !== 'none';
+
+        if (isOwner || hasAccessToProducts) {
+          return Product.find({project: projectId}).exec(function (error, products) {
+            if (error) {
+              callback(error);
+            }
+
+            response.send(200, {
+              code: 'successful',
+              products: products
+            });
+            callback(null);
+          });
+        }
+      }], function (error) {
       if (error) {
         return response.serverError(error);
       }
-
-      return response.send(200, {
-        code: 'successful',
-        products: products
-      });
     });
   },
 
