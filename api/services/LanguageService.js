@@ -9,7 +9,16 @@ module.exports = {
   },
 
   isLanguageAliasExists: function (alias) {
-    return !!this.getLanguagesByLocale()[alias];
+    var isExists = false,
+      languages = this.getLanguagesByLocale();
+
+    _.each(languages, function (language) {
+      if (alias === language.isoCode) {
+        isExists = true;
+      }
+    });
+
+    return isExists;
   },
 
   areLanguageAliasesExist: function (aliases) {

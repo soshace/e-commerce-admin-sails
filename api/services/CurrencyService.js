@@ -9,7 +9,16 @@ module.exports = {
   },
 
   isCurrencyAliasExists: function (alias) {
-    return !!this.getCurrenciesByLocale()[alias];
+    var isExists = false,
+      currencies = this.getCurrenciesByLocale();
+
+    _.each(currencies, function (currency) {
+      if (alias === currency.isoCode) {
+        isExists = true;
+      }
+    });
+
+    return isExists;
   },
 
   areCurrencyAliasesExist: function (aliases) {

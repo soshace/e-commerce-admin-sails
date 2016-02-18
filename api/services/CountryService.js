@@ -9,7 +9,16 @@ module.exports = {
   },
 
   isCountryAliasExists: function (alias) {
-    return !!this.getCountryByLocale()[alias];
+    var isExists = false,
+      countries = this.getCountryByLocale();
+
+    _.each(countries, function (country) {
+      if (alias === country.isoCode) {
+        isExists = true;
+      }
+    });
+
+    return isExists;
   },
 
   areCountryAliasesExist: function (aliases) {
