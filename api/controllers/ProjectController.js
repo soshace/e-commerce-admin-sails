@@ -95,6 +95,9 @@ module.exports = {
     Project.findOne({id: projectId})
       .populate('permissions')
       .exec(function (error, project) {
+        var isOwner,
+          hasAccessByPermissions;
+
         if (error) {
           return response.serverError(error);
         }
@@ -106,17 +109,20 @@ module.exports = {
           });
         }
 
-        if (!PermissionsService.accessByOnePermission(userId, project.permissions)) {
-          return response(403, {
-            code: 'access.denied',
-            message: 'Access denied'
+
+        isOwner = project.owner = userId;
+        hasAccessByPermissions = PermissionsService.accessByOnePermission(userId, project.permissions);
+        if (isOwner || hasAccessByPermissions) {
+          return response.send(200, {
+            code: 'successful',
+            message: 'Project was successfully found',
+            project: project
           });
         }
 
-        response.send(200, {
-          code: 'successful',
-          message: 'Project was successfully found',
-          project: project
+        response(403, {
+          code: 'access.denied',
+          message: 'Access denied'
         });
       });
   },
@@ -198,17 +204,44 @@ module.exports = {
   },
 
   findProjectCategories: function (request, response) {
-    var projectId = request.param('id');
+    var user = request.user,
+      userId = user.id,
+      projectId = request.param('id');
 
-    Category.find({project: projectId}).exec(function (error, categories) {
+    async.waterfall([
+      function (callback) {
+        PermissionsService.getPermissionsByProject(userId, projectId, callback);
+      },
+      function (permission, callback) {
+        var isOwner = permission.isOwner,
+          hasAccessToProducts = permission.productsPermission !== 'none';
+
+        if (isOwner || hasAccessToProducts) {
+          Category.find({project: projectId}).exec(function (error, categories) {
+            if (error) {
+              return response.serverError(error);
+            }
+
+            return response.send(200, {
+              code: 'successful',
+              categories: categories
+            });
+          });
+
+          return callback(null);
+        }
+
+        response.send(403, {
+          code: 'access.denied',
+          message: 'Access denied'
+        });
+
+        callback(null);
+      }
+    ], function (error) {
       if (error) {
         return response.serverError(error);
       }
-
-      return response.send(200, {
-        code: 'successful',
-        categories: categories
-      });
     });
   },
 
