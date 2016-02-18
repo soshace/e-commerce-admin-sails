@@ -160,14 +160,29 @@ module.exports = {
 
           async.each(permissions, function (permission, callback) {
             Project.find({id: permission.project}).exec(function (error, project) {
-              if(error){
+              if (error) {
                 return callback(error);
               }
 
               projects.push(project);
               callback(null, projects);
             });
-          }, callback);
+          }, function (error) {
+            callback(error, projects);
+          });
+        },
+        function (projectsByPermissions, callback) {
+          sails.log('--------ProjectController find----------', projectsByPermissions);
+
+          Project.find({owner: userId}).exec(function (error, ownProjects) {
+            ownProjects = ownProjects || [];
+            callback(error, ownProjects, projectsByPermissions);
+          });
+        },
+        function (ownProjects, projectsByPermissions, callback) {
+
+          var projects = projectsByPermissions.concat(ownProjects);
+          callback(null, projects);
         }
       ],
       function (error, fullListOfProjects) {
