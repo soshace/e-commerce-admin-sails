@@ -245,7 +245,9 @@ module.exports = {
   },
 
   findProjectProducts: function (request, response) {
-    var projectId = request.param('id');
+    var user = request.user,
+      userId = user.id,
+      projectId = request.param('id');
 
     async.waterfall([
       function (callback) {
