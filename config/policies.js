@@ -60,11 +60,12 @@ module.exports.policies = {
     'findOne': 'isAuthenticated',
     'remove': 'isAuthenticated',
     'update': 'isAuthenticated',
-    'getCategories': 'isAuthenticated',
-    'getImages': ['isAuthenticated', 'isUserOwnerOfProduct'],
-    'getPrices': ['isAuthenticated', 'isUserOwnerOfProduct'],
-    'getVariants': 'isAuthenticated',
-    'addCategory': ['isAuthenticated', 'isUserOwnerOfProduct'],
+    //DEPRECATED
+    //'getCategories': 'isAuthenticated',
+    //'getImages': ['isAuthenticated', 'isUserOwnerOfProduct'],
+    //'getPrices': ['isAuthenticated', 'isUserOwnerOfProduct'],
+    //'getVariants': 'isAuthenticated',
+    'addCategory': 'isAuthenticated',
     'removeCategory': ['isAuthenticated', 'isUserOwnerOfProduct']
   },
 

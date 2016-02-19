@@ -276,6 +276,12 @@ module.exports = {
     });
   },
 
+  /**
+   * @deprecated
+   *
+   * @param request
+   * @param response
+   */
   getCategories: function (request, response) {
     var user = request.user,
       userId = user.id,
@@ -314,6 +320,12 @@ module.exports = {
       });
   },
 
+  /**
+   * @deprecated
+   *
+   * @param request
+   * @param response
+   */
   getVariants: function (request, response) {
     var user = request.user,
       userId = user.id,
@@ -362,48 +374,138 @@ module.exports = {
       });
   },
 
+  /**
+   * @deprecated
+   *
+   * @param request
+   * @param response
+   */
   addCategory: function (request, response) {
-    var categoryId = request.param('categoryId'),
-      product = request.product;
+    var user = request.user,
+      userId = user.id,
+      productId = request.param('id'),
+      categoryId = request.param('categoryId');
 
-    product.categories.add(categoryId);
-    product.save(function (error, product) {
-      if (error) {
-        return response.send(500, {
-          code: 'error',
-          message: error
+    Product.findOne({id: productId})
+      .populate('categories')
+      .populate('variants')
+      .exec(function (error, product) {
+        var projectId;
+
+        if (typeof product === 'undefined') {
+          return response.send(400, {
+            code: 'not.found',
+            message: 'Product was not found'
+          });
+        }
+
+        projectId = product.project;
+
+        sails.log('-------- Product Controller product--------', product);
+        PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
+          var isOwner,
+            managerOfProducts;
+
+          if (error) {
+            return response.serverError(error);
+          }
+
+          isOwner = permission.isOwner;
+          managerOfProducts = permission.productsPermission === 'manage';
+          if (!isOwner && !managerOfProducts) {
+            return response.send(403, {
+              code: 'access.denied',
+              message: 'Access denied'
+            });
+          }
+
+          product.categories.add(categoryId);
+          product.save(function (error, product) {
+            if (error) {
+              return response.send(500, {
+                code: 'error',
+                message: error
+              });
+            }
+
+            return response.send(200, {
+              code: 'successful',
+              product: product
+            });
+          });
         });
-      }
-
-      return response.send(200, {
-        code: 'successful',
-        product: product
       });
-    });
-  }
-  ,
+  },
 
+  /**
+   * @deprecated
+   *
+   * @param request
+   * @param response
+   */
   removeCategory: function (request, response) {
-    var categoryId = request.param('categoryId'),
-      product = request.product;
+    var user = request.user,
+      userId = user.id,
+      productId = request.param('id'),
+      categoryId = request.param('categoryId');
 
-    product.categories.remove(categoryId);
-    product.save(function (error, product) {
-      if (error) {
-        return response.send(500, {
-          code: 'error',
-          message: error
+    Product.findOne({id: productId})
+      .populate('categories')
+      .populate('variants')
+      .exec(function (error, product) {
+        var projectId;
+
+        if (typeof product === 'undefined') {
+          return response.send(400, {
+            code: 'not.found',
+            message: 'Product was not found'
+          });
+        }
+
+        projectId = product.project;
+
+        sails.log('-------- Product Controller product--------', product);
+        PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
+          var isOwner,
+            managerOfProducts;
+
+          if (error) {
+            return response.serverError(error);
+          }
+
+          isOwner = permission.isOwner;
+          managerOfProducts = permission.productsPermission === 'manage';
+          if (!isOwner && !managerOfProducts) {
+            return response.send(403, {
+              code: 'access.denied',
+              message: 'Access denied'
+            });
+          }
+
+          product.categories.remove(categoryId);
+          product.save(function (error, product) {
+            if (error) {
+              return response.send(500, {
+                code: 'error',
+                message: error
+              });
+            }
+
+            return response.send(200, {
+              code: 'successful',
+              product: product
+            });
+          });
         });
-      }
-
-      return response.send(200, {
-        code: 'successful',
-        product: product
       });
-    });
-  }
-  ,
+  },
 
+  /**
+   * @deprecated
+   *
+   * @param request
+   * @param response
+   */
   getImages: function (request, response) {
     var productId = request.param('id');
 
@@ -418,9 +520,15 @@ module.exports = {
         images: images
       });
     });
-  }
-  ,
+  },
 
+
+  /**
+   * @deprecated
+   *
+   * @param request
+   * @param response
+   */
   getPrices: function (request, response) {
     var productId = request.param('id');
 
