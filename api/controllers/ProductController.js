@@ -109,26 +109,25 @@ module.exports = {
           });
         }
 
-      });
+        productData = _.pick(productData, 'name', 'description');
+        _.extend(product, productData);
 
-      productData = _.pick(productData, 'name', 'description');
-      _.extend(product, productData);
+        product.save(function (error, product) {
+          var returnedProduct;
 
-      product.save(function (error, product) {
-        var returnedProduct;
+          if (error) {
+            return response.send(500, {
+              code: 'error',
+              message: error
+            });
+          }
 
-        if (error) {
-          return response.send(500, {
-            code: 'error',
-            message: error
+          returnedProduct = _.pick(product, 'id', 'name', 'createdAt', 'updatedAt');
+          response.send(200, {
+            code: 'successful',
+            message: 'Product was successfully updated',
+            product: returnedProduct
           });
-        }
-
-        returnedProduct = _.pick(product, 'id', 'name', 'createdAt', 'updatedAt');
-        response.send(200, {
-          code: 'successful',
-          message: 'Product was successfully updated',
-          product: returnedProduct
         });
       });
     });
