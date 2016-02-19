@@ -46,6 +46,12 @@ module.exports = {
     });
   },
 
+  /**
+   * @deprecated
+   *
+   * @param request
+   * @param response
+   */
   findOne: function (request, response) {
     var imageId = request.image.id;
 
@@ -86,6 +92,12 @@ module.exports = {
       });
   },
 
+  /**
+   * @deprecated
+   *
+   * @param request
+   * @param response
+   */
   //TODO: need to include images which user has rights access
   find: function (request, response) {
     var user = request.user,

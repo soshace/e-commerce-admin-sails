@@ -139,17 +139,21 @@ module.exports.routes = {
 
   'post /images': 'ImageController.create',
   'post /images/upload': 'ImageController.upload',
-  'get /images': 'ImageController.find',
   'put /images/:id': 'ImageController.update',
-  'get /images/:id': 'ImageController.findOne',
   'delete /images/:id': 'ImageController.remove',
+
+  //DEPRECATED
+  //'get /images': 'ImageController.find',
+  //'get /images/:id': 'ImageController.findOne',
 
 
   'post /prices': 'PriceController.create',
-  'get /prices': 'PriceController.find',
   'put /prices/:id': 'PriceController.update',
-  'get /prices/:id': 'PriceController.findOne',
   'delete /prices/:id': 'PriceController.remove',
+
+  //DEPRECATED
+  //'get /prices/:id': 'PriceController.findOne',
+  //'get /prices': 'PriceController.find',
 
 
   //TODO: need to add checking permissions for sending invitations

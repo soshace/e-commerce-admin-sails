@@ -50,6 +50,12 @@ module.exports = {
     });
   },
 
+  /**
+   * @deprecated
+   *
+   * @param request
+   * @param response
+   */
   //TODO: need to include prices which user has rights access
   find: function (request, response) {
     var user = request.user,
@@ -67,6 +73,12 @@ module.exports = {
     });
   },
 
+  /**
+   * @deprecated
+   *
+   * @param request
+   * @param response
+   */
   findOne: function (request, response) {
     response.send(200, {
       code: 'successful',

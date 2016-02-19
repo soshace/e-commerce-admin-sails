@@ -133,9 +133,10 @@ module.exports.policies = {
   },
 
   'ImageController': {
+    //DEPRECATED
+    //'find': 'isAuthenticated',
+    //'findOne': ['isAuthenticated', 'isUserOwnerOfImage'],
     'create': 'isAuthenticated',
-    'find': 'isAuthenticated',
-    'findOne': ['isAuthenticated', 'isUserOwnerOfImage'],
     'remove': ['isAuthenticated', 'isUserOwnerOfImage'],
     'update': ['isAuthenticated', 'isUserOwnerOfImage'],
 
@@ -143,9 +144,10 @@ module.exports.policies = {
   },
 
   'PriceController': {
+    //DEPRECATED
+    //'find': 'isAuthenticated',
+    //'findOne': ['isAuthenticated', 'isUserOwnerOfProduct'],
     'create': 'isAuthenticated',
-    'find': 'isAuthenticated',
-    'findOne': ['isAuthenticated', 'isUserOwnerOfProduct'],
     'remove': ['isAuthenticated', 'isUserOwnerOfProduct'],
     'update': ['isAuthenticated', 'isUserOwnerOfProduct']
   },
