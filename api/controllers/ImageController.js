@@ -11,37 +11,95 @@ module.exports = {
   //TODO: need to check if user have access to image by project access
   create: function (request, response) {
     var imageData = request.body,
-      profile = request.user;
+      variantId = imageData.variant,
+      user = request.user,
+      userId = user.id;
 
-    imageData.owner = profile.id;
-    imageData.external = true;
-    Image.create(imageData).exec(function (error, image) {
+    Variant.findOne({id: variantId}).exec(function (error, variant) {
+      var projectId;
+
       if (error) {
         return response.serverError(error);
       }
 
-      response.send(200, {
-        code: 'successful',
-        image: image
+      projectId = variant.project;
+      PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
+        var isOwner,
+          managerOfProducts;
+
+        if (error) {
+          return response.serverError(error);
+        }
+
+        isOwner = permission.isOwner;
+        managerOfProducts = permission.productsPermission === 'manage';
+        if (!isOwner && !managerOfProducts) {
+          return response.send(403, {
+            code: 'access.denied',
+            message: 'Access denied'
+          });
+        }
+
+        imageData.owner = userId;
+        imageData.external = true;
+        Image.create(imageData).exec(function (error, image) {
+          if (error) {
+            return response.serverError(error);
+          }
+
+          response.send(200, {
+            code: 'successful',
+            image: image
+          });
+        });
       });
     });
   },
 
   update: function (request, response) {
     var imageData = request.body,
-      image = request.image || {};
+      variantId = imageData.variant,
+      user = request.user,
+      userId = user.id;
 
-    _.extend(image, imageData);
+    Image.findOne({id: variantId}).exec(function (error, image) {
+      var projectId;
 
-    image.save(function (error, image) {
       if (error) {
         return response.serverError(error);
       }
 
-      response.send(200, {
-        code: 'successful',
-        message: 'Image was successfully updated',
-        image: image
+      projectId = image.project;
+      PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
+        var isOwner,
+          managerOfProducts;
+
+        if (error) {
+          return response.serverError(error);
+        }
+
+        isOwner = permission.isOwner;
+        managerOfProducts = permission.productsPermission === 'manage';
+        if (!isOwner && !managerOfProducts) {
+          return response.send(403, {
+            code: 'access.denied',
+            message: 'Access denied'
+          });
+        }
+
+        _.extend(image, imageData);
+
+        image.save(function (error, image) {
+          if (error) {
+            return response.serverError(error);
+          }
+
+          response.send(200, {
+            code: 'successful',
+            message: 'Image was successfully updated',
+            image: image
+          });
+        });
       });
     });
   },
@@ -69,27 +127,56 @@ module.exports = {
   },
 
   remove: function (request, response) {
-    var imageId = request.param('id');
+    var imageId = request.param('id'),
+      user = request.user,
+      userId = user.id;
 
-    Image.destroy({id: imageId})
-      .exec(function (error, image) {
+    Image.findOne({id: imageId}).exec(function (error, image) {
+      var projectId;
+
+      if (error) {
+        return response.serverError(error);
+      }
+
+      projectId = image.project;
+      PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
+        var isOwner,
+          managerOfProducts;
+
         if (error) {
           return response.serverError(error);
         }
 
-        if (typeof image === 'undefined') {
-          return response.send(400, {
-            code: 'not.found',
-            message: 'Image was not found'
+        isOwner = permission.isOwner;
+        managerOfProducts = permission.productsPermission === 'manage';
+        if (!isOwner && !managerOfProducts) {
+          return response.send(403, {
+            code: 'access.denied',
+            message: 'Access denied'
           });
         }
 
-        response.send(200, {
-          code: 'successful',
-          message: 'Image was removed successfully',
-          image: image
-        });
+        Image.destroy({id: imageId})
+          .exec(function (error, image) {
+            if (error) {
+              return response.serverError(error);
+            }
+
+            if (typeof image === 'undefined') {
+              return response.send(400, {
+                code: 'not.found',
+                message: 'Image was not found'
+              });
+            }
+
+            response.send(200, {
+              code: 'successful',
+              message: 'Image was removed successfully',
+              image: image
+            });
+          });
       });
+    });
   },
 
   /**

@@ -32,8 +32,7 @@ module.exports = {
       type: 'integer'
     },
     product: {
-      model: 'product',
-      required: true
+      model: 'product'
     },
     variant: {
       model: 'variant',
