@@ -33,8 +33,7 @@ module.exports = {
       required: true
     },
     productType: {
-      model: 'productType',
-      required: true
+      model: 'productType'
     },
     product: {
       model: 'product',
@@ -42,8 +41,7 @@ module.exports = {
     },
     //Additional field which helps to optimise permission requests
     project: {
-      model: 'project',
-      required: true
+      model: 'project'
     }
   },
 

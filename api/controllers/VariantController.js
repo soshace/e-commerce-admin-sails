@@ -11,20 +11,52 @@ module.exports = {
   //TODO: need to check if user have access to variant by project access
   create: function (request, response) {
     var variantData = request.body,
-      profile = request.user;
+      productId = variantData.product,
+      user = request.user,
+      userId = user.id;
 
-    variantData.owner = profile.id;
-    Variant.create(variantData).exec(function (error, variant) {
+    Product.findOne({id: productId}).exec(function (error, product) {
+      var projectId;
+
       if (error) {
-        return response.send(500, {
-          code: 'error',
-          message: error
-        });
+        return response.serverError(error);
       }
 
-      response.send(200, {
-        code: 'successful',
-        variant: variant
+      projectId = product.project;
+      PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
+        var isOwner,
+          managerOfProducts;
+
+        if (error) {
+          return response.serverError(error);
+        }
+
+        isOwner = permission.isOwner;
+        managerOfProducts = permission.productsPermission === 'manage';
+        if (!isOwner && !managerOfProducts) {
+          return response.send(403, {
+            code: 'access.denied',
+            message: 'Access denied'
+          });
+        }
+
+        variantData.owner = userId;
+        variantData.project = projectId;
+        variantData.product = productId;
+        variantData.productType = product.productType;
+        Variant.create(variantData).exec(function (error, variant) {
+          if (error) {
+            return response.send(500, {
+              code: 'error',
+              message: error
+            });
+          }
+
+          response.send(200, {
+            code: 'successful',
+            variant: variant
+          });
+        });
       });
     });
   },
