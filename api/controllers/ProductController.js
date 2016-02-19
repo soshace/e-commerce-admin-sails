@@ -315,28 +315,52 @@ module.exports = {
   },
 
   getVariants: function (request, response) {
-    var productId = request.param('id');
+    var user = request.user,
+      userId = user.id,
+      productId = request.product.id;
 
-    Variant.find({product: productId})
-      .populate('attributes')
-      .populate('images')
-      .populate('prices')
-      .exec(function (error, variants) {
-        if (error) {
-          return response.send(500, {
-            code: 'error',
-            message: error
-          });
-        }
+    Product.findOne({id: productId})
+      .exec(function (error, product) {
+        var projectId = product.project;
 
-        return response.send(200, {
-          code: 'successful',
-          variants: variants
+        sails.log('-------- Product Controller product--------', product);
+        PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
+          var isOwner,
+            hasAccessToProduct;
+
+          if (error) {
+            return response.serverError(error);
+          }
+
+          isOwner = permission.isOwner;
+          hasAccessToProduct = permission.productsPermission !== 'none';
+          if (!isOwner && !hasAccessToProduct) {
+            return response.send(403, {
+              code: 'access.denied',
+              message: 'Access denied'
+            });
+          }
+
+          Variant.find({product: productId})
+            .populate('attributes')
+            .populate('images')
+            .populate('prices')
+            .exec(function (error, variants) {
+              if (error) {
+                return response.send(500, {
+                  code: 'error',
+                  message: error
+                });
+              }
+
+              return response.send(200, {
+                code: 'successful',
+                variants: variants
+              });
+            });
         });
       });
-  }
-
-  ,
+  },
 
   addCategory: function (request, response) {
     var categoryId = request.param('categoryId'),
