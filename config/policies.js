@@ -71,13 +71,14 @@ module.exports.policies = {
 
   'CategoryController': {
     'create': 'isAuthenticated',
-    'find': 'isAuthenticated',
-    'findOne': ['isAuthenticated', 'isUserOwnerOfCategory'],
-    'remove': ['isAuthenticated', 'isUserOwnerOfCategory'],
-    'update': ['isAuthenticated', 'isUserOwnerOfCategory'],
-    'getProduct': ['isAuthenticated', 'isUserOwnerOfCategory'],
-    'addProduct': ['isAuthenticated', 'isUserOwnerOfCategory'],
-    'removeProduct': ['isAuthenticated', 'isUserOwnerOfCategory']
+    //DEPRECATED
+    //'find': 'isAuthenticated',
+    'findOne': 'isAuthenticated',
+    'remove': 'isAuthenticated',
+    'update': 'isAuthenticated',
+    'getProducts': 'isAuthenticated',
+    'addProduct': 'isAuthenticated',
+    'removeProduct': 'isAuthenticated'
   },
 
   'CompanyController': {

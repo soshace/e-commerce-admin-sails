@@ -99,7 +99,8 @@ module.exports.routes = {
 
 
   'post /categories': 'CategoryController.create',
-  'get /categories': 'CategoryController.find',
+  //DEPRECATED
+  //'get /categories': 'CategoryController.find',
   'put /categories/:id': 'CategoryController.update',
   'get /categories/:id': 'CategoryController.findOne',
   'delete /categories/:id': 'CategoryController.remove',

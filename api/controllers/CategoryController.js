@@ -9,63 +9,30 @@ var _ = require('underscore');
 
 module.exports = {
   create: function (request, response) {
-    var categoryData = request.body,
-      profile = request.user;
+    var user = request.user,
+      userId = user.id,
+      categoryData = request.body,
+      projectId = categoryData.project;
 
-    categoryData.owner = profile.id;
-    Category.create(categoryData).exec(function (error, category) {
+    PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
+      var isOwner,
+        managerOfProducts;
+
       if (error) {
-        return response.send(500, {
-          code: 'error',
-          message: error
+        return response.serverError(error);
+      }
+
+      isOwner = permission.isOwner;
+      managerOfProducts = permission.productsPermission === 'manage';
+      if (!isOwner && !managerOfProducts) {
+        return response.send(403, {
+          code: 'access.denied',
+          message: 'Access denied'
         });
       }
 
-      response.send(200, {
-        code: 'successful',
-        category: category
-      });
-    });
-  },
-
-  update: function (request, response) {
-    var categoryData = request.body || {},
-      category = request.category || {};
-
-    _.extend(category, categoryData);
-
-    category.save(function (error, category) {
-      var returnedCategory;
-
-      if (error) {
-        return response.send(500, {
-          code: 'error',
-          message: error
-        });
-      }
-
-      returnedCategory = _.pick(category, 'id', 'name', 'createdAt', 'updatedAt');
-      response.send(200, {
-        code: 'successful',
-        message: 'Category was successfully updated',
-        category: returnedCategory
-      });
-    });
-  },
-
-  findOne: function (request, response) {
-    response.send(200, {
-      code: 'successful',
-      message: 'Category was successfully found',
-      category: request.category
-    });
-  },
-
-  remove: function (request, response) {
-    var categoryId = request.param('id');
-
-    Category.destroy({id: categoryId})
-      .exec(function (error, category) {
+      categoryData.owner = userId;
+      Category.create(categoryData).exec(function (error, category) {
         if (error) {
           return response.send(500, {
             code: 'error',
@@ -73,21 +40,191 @@ module.exports = {
           });
         }
 
-        if (typeof category === 'undefined') {
-          return response.send(400, {
-            code: 'not.found',
-            message: 'Category was not found'
+        response.send(200, {
+          code: 'successful',
+          category: category
+        });
+      });
+    });
+  },
+
+  update: function (request, response) {
+    var categoryId = request.param('id'),
+      user = request.user,
+      userId = user.id,
+      categoryData = request.body;
+
+    Category.findOne({id: categoryId}).exec(function (error, category) {
+      var projectId;
+
+      if (error) {
+        return response.serverError(error);
+      }
+
+      if (typeof category === 'undefined') {
+        return response.send(200, {
+          code: 'not.found',
+          message: 'category not found'
+        });
+      }
+
+      projectId = category.project;
+      PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
+        var isOwner,
+          managerOfProducts;
+
+        if (error) {
+          return response.serverError(error);
+        }
+
+        isOwner = permission.isOwner;
+        managerOfProducts = permission.productsPermission === 'manage';
+        if (!isOwner && !managerOfProducts) {
+          return response.send(403, {
+            code: 'access.denied',
+            message: 'Access denied'
+          });
+        }
+
+        categoryData.owner = userId;
+        _.extend(category, categoryData);
+
+        category.save(function (error, category) {
+          var returnedCategory;
+
+          if (error) {
+            return response.send(500, {
+              code: 'error',
+              message: error
+            });
+          }
+
+          returnedCategory = _.pick(category, 'id', 'name', 'createdAt', 'updatedAt');
+          response.send(200, {
+            code: 'successful',
+            message: 'Category was successfully updated',
+            category: returnedCategory
+          });
+        });
+      });
+    });
+  },
+
+  findOne: function (request, response) {
+    var categoryId = request.param('id'),
+      user = request.user,
+      userId = user.id;
+
+    Category.findOne({id: categoryId}).exec(function (error, category) {
+      var projectId;
+
+      if (error) {
+        return response.serverError(error);
+      }
+
+      if (typeof category === 'undefined') {
+        return response.send(200, {
+          code: 'not.found',
+          message: 'category not found'
+        });
+      }
+
+      projectId = category.project;
+      PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
+        var isOwner,
+          managerOfProducts;
+
+        if (error) {
+          return response.serverError(error);
+        }
+
+        isOwner = permission.isOwner;
+        managerOfProducts = permission.productsPermission === 'manage';
+        if (!isOwner && !managerOfProducts) {
+          return response.send(403, {
+            code: 'access.denied',
+            message: 'Access denied'
           });
         }
 
         response.send(200, {
           code: 'successful',
-          message: 'Category was removed successfully',
+          message: 'Category was successfully found',
           category: category
         });
       });
+    });
   },
 
+  remove: function (request, response) {
+    var categoryId = request.param('id'),
+      user = request.user,
+      userId = user.id;
+
+    Category.findOne({id: categoryId}).exec(function (error, category) {
+      var projectId;
+
+      if (error) {
+        return response.serverError(error);
+      }
+
+      if (typeof category === 'undefined') {
+        return response.send(200, {
+          code: 'not.found',
+          message: 'category not found'
+        });
+      }
+
+      projectId = category.project;
+      PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
+        var isOwner,
+          managerOfProducts;
+
+        if (error) {
+          return response.serverError(error);
+        }
+
+        isOwner = permission.isOwner;
+        managerOfProducts = permission.productsPermission === 'manage';
+        if (!isOwner && !managerOfProducts) {
+          return response.send(403, {
+            code: 'access.denied',
+            message: 'Access denied'
+          });
+        }
+
+        Category.destroy({id: categoryId})
+          .exec(function (error, category) {
+            if (error) {
+              return response.send(500, {
+                code: 'error',
+                message: error
+              });
+            }
+
+            if (typeof category === 'undefined') {
+              return response.send(400, {
+                code: 'not.found',
+                message: 'Category was not found'
+              });
+            }
+
+            response.send(200, {
+              code: 'successful',
+              message: 'Category was removed successfully',
+              category: category
+            });
+          });
+      });
+    });
+  },
+
+  /**
+   * @deprecated
+   *
+   * @param request
+   * @param response
+   */
   find: function (request, response) {
     var user = request.user,
       userId = user.id;
@@ -108,7 +245,9 @@ module.exports = {
   },
 
   getProducts: function (request, response) {
-    var categoryId = request.param('id'),
+    var user = request.user,
+      userId = user.id,
+      categoryId = request.param('id'),
       requestObj = {},
       query = request.query || {};
 
@@ -126,7 +265,8 @@ module.exports = {
     }
 
     Category.findOne({id: categoryId}).populate('products', requestObj).exec(function (error, category) {
-      var products;
+      var projectId,
+        products;
 
       if (error) {
         return response.send(500, {
@@ -135,20 +275,44 @@ module.exports = {
         });
       }
 
-      products = category.products || [];
-      return response.send(200, {
-        code: 'successful',
-        products: products
+
+      projectId = category.project;
+      PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
+        var isOwner,
+          managerOfProducts;
+
+        if (error) {
+          return response.serverError(error);
+        }
+
+        isOwner = permission.isOwner;
+        managerOfProducts = permission.productsPermission === 'manage';
+        if (!isOwner && !managerOfProducts) {
+          return response.send(403, {
+            code: 'access.denied',
+            message: 'Access denied'
+          });
+        }
+
+        products = category.products || [];
+        return response.send(200, {
+          code: 'successful',
+          products: products
+        });
       });
     });
   },
 
+  //TODO: need to check product permissions
   addProduct: function (request, response) {
     var productId = request.param('productId'),
-      category = request.category;
+      categoryId = request.param('is'),
+      user = request.user,
+      userId = user.id;
 
-    category.products.add(productId);
-    category.save(function (error, category) {
+    Category.findOne({id: categoryId}).exec(function (error, category) {
+      var projectId;
+
       if (error) {
         return response.send(500, {
           code: 'error',
@@ -156,19 +320,53 @@ module.exports = {
         });
       }
 
-      return response.send(200, {
-        code: 'successful',
-        category: category
+
+      projectId = category.project;
+      PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
+        var isOwner,
+          managerOfProducts;
+
+        if (error) {
+          return response.serverError(error);
+        }
+
+        isOwner = permission.isOwner;
+        managerOfProducts = permission.productsPermission === 'manage';
+        if (!isOwner && !managerOfProducts) {
+          return response.send(403, {
+            code: 'access.denied',
+            message: 'Access denied'
+          });
+        }
+
+        category.products.add(productId);
+        category.save(function (error, category) {
+          if (error) {
+            return response.send(500, {
+              code: 'error',
+              message: error
+            });
+          }
+
+          return response.send(200, {
+            code: 'successful',
+            category: category
+          });
+        });
       });
     });
   },
 
+  //TODO: need to check product permissions
   removeProduct: function (request, response) {
     var productId = request.param('productId'),
-      category = request.category;
+      categoryId = request.param('is'),
+      user = request.user,
+      userId = user.id;
 
-    category.products.remove(productId);
-    category.save(function (error, category) {
+    Category.findOne({id: categoryId}).exec(function (error, category) {
+      var projectId;
+
       if (error) {
         return response.send(500, {
           code: 'error',
@@ -176,9 +374,39 @@ module.exports = {
         });
       }
 
-      return response.send(200, {
-        code: 'successful',
-        category: category
+
+      projectId = category.project;
+      PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
+        var isOwner,
+          managerOfProducts;
+
+        if (error) {
+          return response.serverError(error);
+        }
+
+        isOwner = permission.isOwner;
+        managerOfProducts = permission.productsPermission === 'manage';
+        if (!isOwner && !managerOfProducts) {
+          return response.send(403, {
+            code: 'access.denied',
+            message: 'Access denied'
+          });
+        }
+
+        category.products.remove(productId);
+        category.save(function (error, category) {
+          if (error) {
+            return response.send(500, {
+              code: 'error',
+              message: error
+            });
+          }
+
+          return response.send(200, {
+            code: 'successful',
+            category: category
+          });
+        });
       });
     });
   }
