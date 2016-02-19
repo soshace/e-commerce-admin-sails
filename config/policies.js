@@ -124,7 +124,7 @@ module.exports.policies = {
     //'getImages': ['isAuthenticated', 'isUserOwnerOfVariant'],
     //'getPrices': ['isAuthenticated', 'isUserOwnerOfVariant'],
     'create': 'isAuthenticated',
-    'remove': ['isAuthenticated', 'isUserOwnerOfVariant'],
+    'remove': 'isAuthenticated',
     'updateSKU': 'isAuthenticated'
   },
 

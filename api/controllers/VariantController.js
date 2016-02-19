@@ -143,30 +143,59 @@ module.exports = {
   },
 
   remove: function (request, response) {
-    var variantId = request.param('id');
+    var variantId = request.param('id'),
+      user = request.user,
+      userId = user.id;
 
-    Variant.destroy({id: variantId})
-      .exec(function (error, variant) {
+    Variant.findOne({id: variantId}).exec(function (error, variant) {
+      var projectId;
+
+      if (error) {
+        return response.serverError(error);
+      }
+
+      projectId = variant.project;
+      PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
+        var isOwner,
+          managerOfProducts;
+
         if (error) {
-          return response.send(500, {
-            code: 'error',
-            message: error
+          return response.serverError(error);
+        }
+
+        isOwner = permission.isOwner;
+        managerOfProducts = permission.productsPermission === 'manage';
+        if (!isOwner && !managerOfProducts) {
+          return response.send(403, {
+            code: 'access.denied',
+            message: 'Access denied'
           });
         }
 
-        if (typeof variant === 'undefined') {
-          return response.send(400, {
-            code: 'not.found',
-            message: 'Variant was not found'
-          });
-        }
+        Variant.destroy({id: variantId})
+          .exec(function (error, variant) {
+            if (error) {
+              return response.send(500, {
+                code: 'error',
+                message: error
+              });
+            }
 
-        response.send(200, {
-          code: 'successful',
-          message: 'Variant was removed successfully',
-          variant: variant
-        });
+            if (typeof variant === 'undefined') {
+              return response.send(400, {
+                code: 'not.found',
+                message: 'Variant was not found'
+              });
+            }
+
+            response.send(200, {
+              code: 'successful',
+              message: 'Variant was removed successfully',
+              variant: variant
+            });
+          });
       });
+    });
   },
 
   //TODO: need to include products which user has rights access
