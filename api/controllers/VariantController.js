@@ -63,25 +63,54 @@ module.exports = {
 
   updateSKU: function (request, response) {
     var variantSKU = request.body && request.body.sku,
-      variant = request.variant || {};
+      variantId = request.param('id'),
+      user = request.user,
+      userId = user.id;
 
-    _.extend(variant, {sku: variantSKU});
-
-    variant.save(function (error, variant) {
-      var returnedVariant;
+    Variant.findOne({id: variantId}).exec(function (error, variant) {
+      var projectId;
 
       if (error) {
-        return response.send(500, {
-          code: 'error',
-          message: error
-        });
+        return response.serverError(error);
       }
 
-      returnedVariant = _.pick(variant, 'id', 'createdAt', 'updatedAt', 'isMaster', 'productType', 'product', 'sku');
-      response.send(200, {
-        code: 'successful',
-        message: 'Product was successfully updated',
-        variant: returnedVariant
+      projectId = variant.project;
+      PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
+        var isOwner,
+          managerOfProducts;
+
+        if (error) {
+          return response.serverError(error);
+        }
+
+        isOwner = permission.isOwner;
+        managerOfProducts = permission.productsPermission === 'manage';
+        if (!isOwner && !managerOfProducts) {
+          return response.send(403, {
+            code: 'access.denied',
+            message: 'Access denied'
+          });
+        }
+
+        _.extend(variant, {sku: variantSKU});
+
+        variant.save(function (error, variant) {
+          var returnedVariant;
+
+          if (error) {
+            return response.send(500, {
+              code: 'error',
+              message: error
+            });
+          }
+
+          returnedVariant = _.pick(variant, 'id', 'createdAt', 'updatedAt', 'isMaster', 'productType', 'product', 'sku');
+          response.send(200, {
+            code: 'successful',
+            message: 'Product was successfully updated',
+            variant: returnedVariant
+          });
+        });
       });
     });
   },

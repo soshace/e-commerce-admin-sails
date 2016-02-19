@@ -125,7 +125,7 @@ module.exports.policies = {
     //'getPrices': ['isAuthenticated', 'isUserOwnerOfVariant'],
     'create': 'isAuthenticated',
     'remove': ['isAuthenticated', 'isUserOwnerOfVariant'],
-    'updateSKU': ['isAuthenticated', 'isUserOwnerOfVariant']
+    'updateSKU': 'isAuthenticated'
   },
 
   'VariantAttributeController': {
