@@ -58,11 +58,11 @@ module.exports = {
 
   update: function (request, response) {
     var imageData = request.body,
-      variantId = imageData.variant,
+      imageId = request.param('id'),
       user = request.user,
       userId = user.id;
 
-    Image.findOne({id: variantId}).exec(function (error, image) {
+    Image.findOne({id: imageId}).exec(function (error, image) {
       var projectId;
 
       if (error) {
