@@ -14,7 +14,6 @@ module.exports = {
     var user = request.user,
       userId = user.id,
       productData = request.body,
-      profile = request.user,
       productTypeId = productData.productType,
       projectId = productData.project;
 
@@ -55,7 +54,7 @@ module.exports = {
         }
 
         sails.log('-----------Product Controller productType 2----------');
-        productData.owner = profile.id;
+        productData.owner = userId;
         Product.create(productData).exec(function (error, product) {
           if (error) {
             return response.serverError(error);
