@@ -277,24 +277,41 @@ module.exports = {
   },
 
   getCategories: function (request, response) {
-    var productId = request.param('id');
+    var user = request.user,
+      userId = user.id,
+      productId = request.product.id;
 
-    Product.findOne({id: productId}).populate('categories').exec(function (error, product) {
-      var categories;
+    Product.findOne({id: productId})
+      .populate('categories')
+      .exec(function (error, product) {
+        var projectId = product.project;
 
-      if (error) {
-        return response.send(500, {
-          code: 'error',
-          message: error
+        sails.log('-------- Product Controller product--------', product);
+        PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
+          var isOwner,
+            hasAccessToProduct,
+            categories;
+
+          if (error) {
+            return response.serverError(error);
+          }
+
+          isOwner = permission.isOwner;
+          hasAccessToProduct = permission.productsPermission !== 'none';
+          if (!isOwner && !hasAccessToProduct) {
+            return response.send(403, {
+              code: 'access.denied',
+              message: 'Access denied'
+            });
+          }
+
+          categories = product.categories || [];
+          return response.send(200, {
+            code: 'successful',
+            categories: categories
+          });
         });
-      }
-
-      categories = product.categories || [];
-      return response.send(200, {
-        code: 'successful',
-        categories: categories
       });
-    });
   },
 
   getVariants: function (request, response) {
@@ -317,7 +334,9 @@ module.exports = {
           variants: variants
         });
       });
-  },
+  }
+
+  ,
 
   addCategory: function (request, response) {
     var categoryId = request.param('categoryId'),
@@ -337,7 +356,8 @@ module.exports = {
         product: product
       });
     });
-  },
+  }
+  ,
 
   removeCategory: function (request, response) {
     var categoryId = request.param('categoryId'),
@@ -357,7 +377,8 @@ module.exports = {
         product: product
       });
     });
-  },
+  }
+  ,
 
   getImages: function (request, response) {
     var productId = request.param('id');
@@ -373,7 +394,8 @@ module.exports = {
         images: images
       });
     });
-  },
+  }
+  ,
 
   getPrices: function (request, response) {
     var productId = request.param('id');
