@@ -180,7 +180,16 @@ module.exports = {
       .populate('categories')
       .populate('variants')
       .exec(function (error, product) {
-        var projectId = product.project;
+        var projectId;
+
+        if (typeof product === 'undefined') {
+          return response.send(400, {
+            code: 'not.found',
+            message: 'Product was not found'
+          });
+        }
+
+        projectId = product.project;
 
         sails.log('-------- Product Controller product--------', product);
         PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
@@ -206,13 +215,6 @@ module.exports = {
                 return response.send(500, {
                   code: 'error',
                   message: error
-                });
-              }
-
-              if (typeof product === 'undefined') {
-                return response.send(400, {
-                  code: 'not.found',
-                  message: 'Product was not found'
                 });
               }
 
