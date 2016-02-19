@@ -55,7 +55,8 @@ module.exports.policies = {
 
   'ProductController': {
     'create': 'isAuthenticated',
-    'find': 'isAuthenticated',
+    //DEPRECATED
+    //'find': 'isAuthenticated',
     'findOne': 'isAuthenticated',
     'remove': 'isAuthenticated',
     'update': ['isAuthenticated', 'isUserOwnerOfProduct'],

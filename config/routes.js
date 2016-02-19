@@ -84,7 +84,8 @@ module.exports.routes = {
 
 
   'post /products': 'ProductController.create',
-  'get /products': 'ProductController.find',
+  //DEPRECATED
+  //'get /products': 'ProductController.find',
   'put /products/:id': 'ProductController.update',
   'get /products/:id': 'ProductController.findOne',
   'delete /products/:id': 'ProductController.remove',

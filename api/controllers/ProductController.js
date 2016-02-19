@@ -229,6 +229,12 @@ module.exports = {
   },
 
   //TODO: need to include products which user has rights access
+  /**
+   * @deprecated
+   *
+   * @param request
+   * @param response
+   */
   find: function (request, response) {
     var user = request.user,
       userId = user.id,

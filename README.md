@@ -936,6 +936,7 @@ POST /products
 }
 ```
 
+###DEPRECATED
 ###Get full list of current user's products
 #####Answer includes products of user as an owner and which he has rights access
 ```
