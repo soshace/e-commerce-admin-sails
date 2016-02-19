@@ -54,6 +54,12 @@ module.exports = {
     });
   },
 
+  /**
+   * @deprecated
+   *
+   * @param request
+   * @param response
+   */
   findOne: function (request, response) {
     var variantId = request.variant.id;
 
@@ -103,6 +109,12 @@ module.exports = {
   },
 
   //TODO: need to include products which user has rights access
+  /**
+   * @deprecated
+   *
+   * @param request
+   * @param response
+   */
   find: function (request, response) {
     var user = request.user,
       userId = user.id;
@@ -122,6 +134,12 @@ module.exports = {
     });
   },
 
+  /**
+   * @deprecated
+   *
+   * @param request
+   * @param response
+   */
   getImages: function (request, response) {
     var variantId = request.param('id');
 
@@ -137,6 +155,12 @@ module.exports = {
     });
   },
 
+  /**
+   * @deprecated
+   *
+   * @param request
+   * @param response
+   */
   getPrices: function (request, response) {
     var variantId = request.param('id');
 

@@ -124,12 +124,14 @@ module.exports.routes = {
 
 
   'post /variants': 'VariantController.create',
-  'get /variants': 'VariantController.find',
   'put /variants/:id': 'VariantController.updateSKU',
-  'get /variants/:id': 'VariantController.findOne',
-  'get /variants/:id/images': 'VariantController.getImages',
-  'get /variants/:id/prices': 'VariantController.getPrices',
   'delete /variants/:id': 'VariantController.remove',
+
+  //DEPRECATED
+  //'get /variants': 'VariantController.find',
+  //'get /variants/:id': 'VariantController.findOne',
+  //'get /variants/:id/images': 'VariantController.getImages',
+  //'get /variants/:id/prices': 'VariantController.getPrices',
 
 
   'put /variant_attributes/:id': 'VariantAttributeController.updateValue',

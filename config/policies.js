@@ -118,11 +118,12 @@ module.exports.policies = {
   },
 
   'VariantController': {
+    //DEPRECATED API
+    //'find': 'isAuthenticated',
+    //'findOne': ['isAuthenticated', 'isUserOwnerOfVariant'],
+    //'getImages': ['isAuthenticated', 'isUserOwnerOfVariant'],
+    //'getPrices': ['isAuthenticated', 'isUserOwnerOfVariant'],
     'create': 'isAuthenticated',
-    'find': 'isAuthenticated',
-    'findOne': ['isAuthenticated', 'isUserOwnerOfVariant'],
-    'getImages': ['isAuthenticated', 'isUserOwnerOfVariant'],
-    'getPrices': ['isAuthenticated', 'isUserOwnerOfVariant'],
     'remove': ['isAuthenticated', 'isUserOwnerOfVariant'],
     'updateSKU': ['isAuthenticated', 'isUserOwnerOfVariant']
   },
