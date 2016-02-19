@@ -10,42 +10,100 @@ var _ = require('underscore');
 module.exports = {
   create: function (request, response) {
     var priceData = request.body,
-      profile = request.user;
+      variantId = priceData.variant,
+      user = request.user,
+      userId = user.id;
 
-    priceData.owner = profile.id;
-    Price.create(priceData).exec(function (error, price) {
+    Variant.findOne({id: variantId}).exec(function (error, variant) {
+      var projectId;
+
       if (error) {
-        return response.send(500, {
-          code: 'error',
-          message: error
-        });
+        return response.serverError(error);
       }
 
-      response.send(200, {
-        code: 'successful',
-        price: price
+      projectId = variant.project;
+      PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
+        var isOwner,
+          managerOfProducts;
+
+        if (error) {
+          return response.serverError(error);
+        }
+
+        isOwner = permission.isOwner;
+        managerOfProducts = permission.productsPermission === 'manage';
+        if (!isOwner && !managerOfProducts) {
+          return response.send(403, {
+            code: 'access.denied',
+            message: 'Access denied'
+          });
+        }
+
+        priceData.owner = userId;
+        Price.create(priceData).exec(function (error, price) {
+          if (error) {
+            return response.send(500, {
+              code: 'error',
+              message: error
+            });
+          }
+
+          response.send(200, {
+            code: 'successful',
+            price: price
+          });
+        });
       });
     });
   },
 
   update: function (request, response) {
-    var priceData = request.body || {},
-      price = request.price || {};
+    var priceData = request.body,
+      priceId = request.param('id'),
+      user = request.user,
+      userId = user.id;
 
-    _.extend(price, priceData);
+    Price.findOne({id: priceId}).exec(function (error, price) {
+      var projectId;
 
-    price.save(function (error, price) {
       if (error) {
-        return response.send(500, {
-          code: 'error',
-          message: error
-        });
+        return response.serverError(error);
       }
 
-      response.send(200, {
-        code: 'successful',
-        message: 'Price was successfully updated',
-        price: price
+      projectId = price.project;
+      PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
+        var isOwner,
+          managerOfProducts;
+
+        if (error) {
+          return response.serverError(error);
+        }
+
+        isOwner = permission.isOwner;
+        managerOfProducts = permission.productsPermission === 'manage';
+        if (!isOwner && !managerOfProducts) {
+          return response.send(403, {
+            code: 'access.denied',
+            message: 'Access denied'
+          });
+        }
+
+        _.extend(price, priceData);
+
+        price.save(function (error, price) {
+          if (error) {
+            return response.send(500, {
+              code: 'error',
+              message: error
+            });
+          }
+
+          response.send(200, {
+            code: 'successful',
+            message: 'Price was successfully updated',
+            price: price
+          });
+        });
       });
     });
   },
@@ -88,30 +146,59 @@ module.exports = {
   },
 
   remove: function (request, response) {
-    var priceId = request.param('id');
+    var priceId = request.param('id'),
+      user = request.user,
+      userId = user.id;
 
-    Price.destroy({id: priceId})
-      .exec(function (error, price) {
+    Price.findOne({id: priceId}).exec(function (error, price) {
+      var projectId;
+
+      if (error) {
+        return response.serverError(error);
+      }
+
+      projectId = price.project;
+      PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
+        var isOwner,
+          managerOfProducts;
+
         if (error) {
-          return response.send(500, {
-            code: 'error',
-            message: error
+          return response.serverError(error);
+        }
+
+        isOwner = permission.isOwner;
+        managerOfProducts = permission.productsPermission === 'manage';
+        if (!isOwner && !managerOfProducts) {
+          return response.send(403, {
+            code: 'access.denied',
+            message: 'Access denied'
           });
         }
 
-        if (typeof price === 'undefined') {
-          return response.send(400, {
-            code: 'not.found',
-            message: 'Price was not found'
-          });
-        }
+        Price.destroy({id: priceId})
+          .exec(function (error, price) {
+            if (error) {
+              return response.send(500, {
+                code: 'error',
+                message: error
+              });
+            }
 
-        response.send(200, {
-          code: 'successful',
-          message: 'Price was removed successfully',
-          price: price
-        });
+            if (typeof price === 'undefined') {
+              return response.send(400, {
+                code: 'not.found',
+                message: 'Price was not found'
+              });
+            }
+
+            response.send(200, {
+              code: 'successful',
+              message: 'Price was removed successfully',
+              price: price
+            });
+          });
       });
+    });
   }
 };
 
