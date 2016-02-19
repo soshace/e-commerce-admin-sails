@@ -56,8 +56,8 @@ module.exports.policies = {
   'ProductController': {
     'create': 'isAuthenticated',
     'find': 'isAuthenticated',
-    'findOne': ['isAuthenticated', 'isUserOwnerOfProduct'],
-    'remove': ['isAuthenticated', 'isUserOwnerOfProduct'],
+    'findOne': 'isAuthenticated',
+    'remove': 'isAuthenticated',
     'update': ['isAuthenticated', 'isUserOwnerOfProduct'],
     'getCategories': ['isAuthenticated', 'isUserOwnerOfProduct'],
     'getImages': ['isAuthenticated', 'isUserOwnerOfProduct'],

@@ -147,15 +147,15 @@ module.exports = {
         sails.log('-------- Product Controller product--------', product);
         PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
           var isOwner,
-            managerOfProducts;
+            hasAccessToProduct;
 
           if (error) {
             return response.serverError(error);
           }
 
           isOwner = permission.isOwner;
-          managerOfProducts = permission.productsPermission === 'manage';
-          if (!isOwner && !managerOfProducts) {
+          hasAccessToProduct = permission.productsPermission !== 'none';
+          if (!isOwner && !hasAccessToProduct) {
             return response.send(403, {
               code: 'access.denied',
               message: 'Access denied'
@@ -172,28 +172,56 @@ module.exports = {
   },
 
   remove: function (request, response) {
-    var productId = request.param('id');
+    var user = request.user,
+      userId = user.id,
+      productId = request.param('id');
 
-    Product.destroy({id: productId})
+    Product.findOne({id: productId})
+      .populate('categories')
+      .populate('variants')
       .exec(function (error, product) {
-        if (error) {
-          return response.send(500, {
-            code: 'error',
-            message: error
-          });
-        }
+        var projectId = product.project;
 
-        if (typeof product === 'undefined') {
-          return response.send(400, {
-            code: 'not.found',
-            message: 'Product was not found'
-          });
-        }
+        sails.log('-------- Product Controller product--------', product);
+        PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
+          var isOwner,
+            managerOfProducts;
 
-        response.send(200, {
-          code: 'successful',
-          message: 'Product was removed successfully',
-          product: product
+          if (error) {
+            return response.serverError(error);
+          }
+
+          isOwner = permission.isOwner;
+          managerOfProducts = permission.productsPermission === 'manage';
+          if (!isOwner && !managerOfProducts) {
+            return response.send(403, {
+              code: 'access.denied',
+              message: 'Access denied'
+            });
+          }
+
+          Product.destroy({id: productId})
+            .exec(function (error, product) {
+              if (error) {
+                return response.send(500, {
+                  code: 'error',
+                  message: error
+                });
+              }
+
+              if (typeof product === 'undefined') {
+                return response.send(400, {
+                  code: 'not.found',
+                  message: 'Product was not found'
+                });
+              }
+
+              response.send(200, {
+                code: 'successful',
+                message: 'Product was removed successfully',
+                product: product
+              });
+            });
         });
       });
   },
