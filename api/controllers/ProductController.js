@@ -134,16 +134,39 @@ module.exports = {
   },
 
   findOne: function (request, response) {
-    var productId = request.product.id;
+    var user = request.user,
+      userId = user.id,
+      productId = request.product.id;
 
     Product.findOne({id: productId})
       .populate('categories')
       .populate('variants')
       .exec(function (error, product) {
-        response.send(200, {
-          code: 'successful',
-          message: 'Product was successfully found',
-          product: product
+        var projectId = product.project;
+
+        sails.log('-------- Product Controller product--------', product);
+        PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
+          var isOwner,
+            managerOfProducts;
+
+          if (error) {
+            return response.serverError(error);
+          }
+
+          isOwner = permission.isOwner;
+          managerOfProducts = permission.productsPermission === 'manage';
+          if (!isOwner && !managerOfProducts) {
+            return response.send(403, {
+              code: 'access.denied',
+              message: 'Access denied'
+            });
+          }
+
+          response.send(200, {
+            code: 'successful',
+            message: 'Product was successfully found',
+            product: product
+          });
         });
       });
   },

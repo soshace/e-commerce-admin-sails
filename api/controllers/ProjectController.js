@@ -128,6 +128,7 @@ module.exports = {
   },
 
   //TODO: need to check all tied products!
+  //TODO: need to remove all tied staff
   remove: function (request, response) {
     var projectId = request.param('id');
 
