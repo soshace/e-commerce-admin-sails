@@ -169,7 +169,7 @@ module.exports = {
             permissions = userPopulated.permissions;
 
           async.each(permissions, function (permission, callback) {
-            Project.find({id: permission.project}).exec(function (error, project) {
+            Project.findOne({id: permission.project}).exec(function (error, project) {
               if (error) {
                 return callback(error);
               }
