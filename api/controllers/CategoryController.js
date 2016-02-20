@@ -306,7 +306,7 @@ module.exports = {
   //TODO: need to check product permissions
   addProduct: function (request, response) {
     var productId = request.param('productId'),
-      categoryId = request.param('is'),
+      categoryId = request.param('id'),
       user = request.user,
       userId = user.id;
 
@@ -317,6 +317,13 @@ module.exports = {
         return response.send(500, {
           code: 'error',
           message: error
+        });
+      }
+
+      if (typeof category === 'undefined') {
+        return response.send(404, {
+          code: 'not.found',
+          message: 'Category not found'
         });
       }
 
@@ -360,7 +367,7 @@ module.exports = {
   //TODO: need to check product permissions
   removeProduct: function (request, response) {
     var productId = request.param('productId'),
-      categoryId = request.param('is'),
+      categoryId = request.param('id'),
       user = request.user,
       userId = user.id;
 
@@ -374,6 +381,12 @@ module.exports = {
         });
       }
 
+      if (typeof category === 'undefined') {
+        return response.send(404, {
+          code: 'not.found',
+          message: 'Category not found'
+        });
+      }
 
       projectId = category.project;
       PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
