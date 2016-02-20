@@ -55,13 +55,8 @@ module.exports = {
   },
 
   update: function (request, response) {
-    var projectData = {},
-      projectName = request.body && request.body.name,
+    var projectData = request.body,
       project = request.project || {};
-
-    if (_.isString(projectName) && projectName.length) {
-      projectData.name = projectName;
-    }
 
     _.extend(project, projectData);
 
@@ -74,12 +69,20 @@ module.exports = {
         return response.serverError(error);
       }
 
+      if (typeof project === 'undefined') {
+        return response.send(404, {
+          code: 'not.found',
+          message: 'project not found'
+        });
+      }
+
       returnedProject = _.clone(project);
       company = returnedProject.company;
       owner = returnedProject.owner;
       returnedProject.company = company && company.id;
       returnedProject.owner = owner && owner.id;
       returnedProject = _.pick(returnedProject, 'id', 'name', 'createdAt', 'updatedAt', 'company', 'owner');
+
       response.send(200, {
         code: 'successful',
         message: 'Project was successfully updated',
