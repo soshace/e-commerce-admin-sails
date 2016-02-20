@@ -8,7 +8,6 @@
 var _ = require('underscore');
 
 module.exports = {
-  //TODO: need to check if user have access to variant by project access
   create: function (request, response) {
     var variantData = request.body,
       productId = variantData.product,
@@ -20,6 +19,13 @@ module.exports = {
 
       if (error) {
         return response.serverError(error);
+      }
+
+      if(typeof product === 'undefined'){
+        return response.send(404, {
+          code: 'not.found',
+          message: 'Product not found'
+        });
       }
 
       projectId = product.project;
