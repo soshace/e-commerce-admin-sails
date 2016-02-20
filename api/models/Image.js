@@ -32,13 +32,27 @@ module.exports = {
       type: 'integer'
     },
     product: {
-      model: 'product',
-      required: true
+      model: 'product'
     },
     variant: {
       model: 'variant',
       required: true
+    },
+    //Additional field which helps to optimise permission requests
+    project: {
+      model: 'project'
     }
+  },
+
+  beforeCreate: function (image, callback) {
+    Variant.find({id: image.variant}).exec(function (error, variant) {
+      if (error) {
+        return callback(error);
+      }
+
+      image.project = variant.project;
+      callback(null, image);
+    });
   }
 };
 

@@ -142,7 +142,9 @@ module.exports = {
   findPermissions: function (request, response) {
     var teamId = request.param('id');
 
-    Permission.find({team: teamId}).exec(function (error, permission) {
+    Permission.find({team: teamId})
+      .populate('members')
+      .exec(function (error, permission) {
       if (error) {
         return response.serverError(error);
       }
@@ -169,11 +171,26 @@ module.exports = {
       });
     }
 
-    team.members.remove(memberId);
-    team.save(function (error, team) {
+    async.waterfall([
+      function (callback) {
+        team.members.remove(memberId);
+        team.save(callback);
+      },
+      function (team, callback) {
+        Permission.find({team: team.id}).exec(callback);
+      },
+      function (permissions, callback) {
+        async.each(permissions, function (permission, callback) {
+          permission.members.remove(memberId);
+          permission.save(callback);
+        }, callback);
+      }
+    ], function (error) {
       if (error) {
         return response.serverError(error);
       }
+    });
+    team.save(function (error, team) {
 
       return response.send(200, {
         code: 'successful',

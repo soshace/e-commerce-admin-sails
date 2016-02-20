@@ -42,40 +42,43 @@ module.exports.policies = {
   },
 
   'ProjectController': {
-    'create': 'isAuthenticated',
+    'create': ['isAuthenticated', 'isCompanyOwner'],
     'find': 'isAuthenticated',
-    'findOne': ['isAuthenticated', 'doesUserHaveProjectAccess'],
-    'findProjectCategories': ['isAuthenticated', 'doesUserHaveProjectAccess'],
-    'findProjectProducts': ['isAuthenticated', 'doesUserHaveProjectAccess'],
-    'findProjectProductTypes': ['isAuthenticated', 'doesUserHaveProjectAccess'],
-    'findPermissions': ['isAuthenticated', 'doesUserHaveProjectAccess'],
-    'remove': ['isAuthenticated', 'doesUserHaveProjectAccess'],
-    'update': ['isAuthenticated', 'doesUserHaveProjectAccess']
+    'findOne': 'isAuthenticated',
+    'findProjectCategories': 'isAuthenticated',
+    'findProjectProducts': 'isAuthenticated',
+    'findProjectProductTypes': ['isAuthenticated', 'isUserOwnerOfProject'],
+    'findPermissions': ['isAuthenticated', 'isUserOwnerOfProject'],
+    'remove': ['isAuthenticated', 'isUserOwnerOfProject'],
+    'update': ['isAuthenticated', 'isUserOwnerOfProject']
   },
 
   'ProductController': {
     'create': 'isAuthenticated',
-    'find': 'isAuthenticated',
-    'findOne': ['isAuthenticated', 'doesUserHaveProductAccess'],
-    'remove': ['isAuthenticated', 'doesUserHaveProductAccess'],
-    'update': ['isAuthenticated', 'doesUserHaveProductAccess'],
-    'getCategories': ['isAuthenticated', 'doesUserHaveProductAccess'],
-    'getImages': ['isAuthenticated', 'doesUserHaveProductAccess'],
-    'getPrices': ['isAuthenticated', 'doesUserHaveProductAccess'],
-    'getVariants': ['isAuthenticated', 'doesUserHaveProductAccess'],
-    'addCategory': ['isAuthenticated', 'doesUserHaveProductAccess'],
-    'removeCategory': ['isAuthenticated', 'doesUserHaveProductAccess']
+    //DEPRECATED
+    //'find': 'isAuthenticated',
+    'findOne': 'isAuthenticated',
+    'remove': 'isAuthenticated',
+    'update': 'isAuthenticated',
+    //DEPRECATED
+    //'getCategories': 'isAuthenticated',
+    //'getImages': ['isAuthenticated', 'isUserOwnerOfProduct'],
+    //'getPrices': ['isAuthenticated', 'isUserOwnerOfProduct'],
+    'getVariants': 'isAuthenticated',
+    'addCategory': 'isAuthenticated',
+    'removeCategory': ['isAuthenticated', 'isUserOwnerOfProduct']
   },
 
   'CategoryController': {
     'create': 'isAuthenticated',
-    'find': 'isAuthenticated',
-    'findOne': ['isAuthenticated', 'doesUserHaveCategoryAccess'],
-    'remove': ['isAuthenticated', 'doesUserHaveCategoryAccess'],
-    'update': ['isAuthenticated', 'doesUserHaveCategoryAccess'],
-    'getProduct': ['isAuthenticated', 'doesUserHaveCategoryAccess'],
-    'addProduct': ['isAuthenticated', 'doesUserHaveCategoryAccess'],
-    'removeProduct': ['isAuthenticated', 'doesUserHaveCategoryAccess']
+    //DEPRECATED
+    //'find': 'isAuthenticated',
+    'findOne': 'isAuthenticated',
+    'remove': 'isAuthenticated',
+    'update': 'isAuthenticated',
+    'getProducts': 'isAuthenticated',
+    'addProduct': 'isAuthenticated',
+    'removeProduct': 'isAuthenticated'
   },
 
   'CompanyController': {
@@ -101,54 +104,58 @@ module.exports.policies = {
   'ProductTypeController': {
     'create': 'isAuthenticated',
     'find': 'isAuthenticated',
-    'findOne': ['isAuthenticated', 'doesUserHaveProductTypeAccess'],
-    'remove': ['isAuthenticated', 'doesUserHaveProductTypeAccess'],
-    'update': ['isAuthenticated', 'doesUserHaveProductTypeAccess'],
-    'getProductAttributes': ['isAuthenticated', 'doesUserHaveProductTypeAccess']
+    'findOne': ['isAuthenticated', 'isUserOwnerOfProductType'],
+    'remove': ['isAuthenticated', 'isUserOwnerOfProductType'],
+    'update': ['isAuthenticated', 'isUserOwnerOfProductType'],
+    'getProductAttributes': ['isAuthenticated', 'isUserOwnerOfProductType']
   },
 
   'ProductAttributeController': {
     'create': 'isAuthenticated',
     'find': 'isAuthenticated',
-    'findOne': ['isAuthenticated', 'doesUserHaveProductAttributeAccess'],
-    'remove': ['isAuthenticated', 'doesUserHaveProductAttributeAccess'],
-    'update': ['isAuthenticated', 'doesUserHaveProductAttributeAccess']
+    'findOne': ['isAuthenticated', 'isUserOwnerOfProductAttribute'],
+    'remove': ['isAuthenticated', 'isUserOwnerOfProductAttribute'],
+    'update': ['isAuthenticated', 'isUserOwnerOfProductAttribute']
   },
 
   'VariantController': {
+    //DEPRECATED API
+    //'find': 'isAuthenticated',
+    //'findOne': ['isAuthenticated', 'isUserOwnerOfVariant'],
+    //'getImages': ['isAuthenticated', 'isUserOwnerOfVariant'],
+    //'getPrices': ['isAuthenticated', 'isUserOwnerOfVariant'],
     'create': 'isAuthenticated',
-    'find': 'isAuthenticated',
-    'findOne': ['isAuthenticated', 'doesUserHaveVariantAccess'],
-    'getImages': ['isAuthenticated', 'doesUserHaveVariantAccess'],
-    'getPrices': ['isAuthenticated', 'doesUserHaveVariantAccess'],
-    'remove': ['isAuthenticated', 'doesUserHaveVariantAccess'],
-    'updateSKU': ['isAuthenticated', 'doesUserHaveVariantAccess']
+    'remove': 'isAuthenticated',
+    'updateSKU': 'isAuthenticated'
   },
 
   'VariantAttributeController': {
-    'updateValue': ['isAuthenticated', 'doesUserHaveVariantAttributeAccess']
+    'updateValue': 'isAuthenticated'
   },
 
   'ImageController': {
+    //DEPRECATED
+    //'find': 'isAuthenticated',
+    //'findOne': ['isAuthenticated', 'isUserOwnerOfImage'],
     'create': 'isAuthenticated',
-    'find': 'isAuthenticated',
-    'findOne': ['isAuthenticated', 'doesUserHaveImageAccess'],
-    'remove': ['isAuthenticated', 'doesUserHaveImageAccess'],
-    'update': ['isAuthenticated', 'doesUserHaveImageAccess'],
+    'remove': ['isAuthenticated', 'isUserOwnerOfImage'],
+    'update': ['isAuthenticated', 'isUserOwnerOfImage'],
+
     'upload': ['isAuthenticated']
   },
 
   'PriceController': {
+    //DEPRECATED
+    //'find': 'isAuthenticated',
+    //'findOne': ['isAuthenticated', 'isUserOwnerOfProduct'],
     'create': 'isAuthenticated',
-    'find': 'isAuthenticated',
-    'findOne': ['isAuthenticated', 'doesUserHavePriceAccess'],
-    'remove': ['isAuthenticated', 'doesUserHavePriceAccess'],
-    'update': ['isAuthenticated', 'doesUserHavePriceAccess']
+    'remove': ['isAuthenticated', 'isUserOwnerOfProduct'],
+    'update': ['isAuthenticated', 'isUserOwnerOfProduct']
   },
 
   'PermissionController': {
     'find': 'isAuthenticated',
-    'update': ['isAuthenticated', 'doesUserHavePermissionAccess']
+    'update': ['isAuthenticated', 'isUserOwnerOfPermission']
   },
 
   'CountryController': {

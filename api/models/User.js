@@ -79,6 +79,11 @@ module.exports = {
       collection: 'permission',
       via: 'owner'
     },
+    //needed for getting rights access to resources. It helps make requests faster
+    permissions: {
+      collection: 'permission',
+      via: 'members'
+    },
     toJSON: function () {
       var obj = this.toObject();
       delete obj.password;
@@ -148,6 +153,20 @@ module.exports = {
 
               team.members.add(user.id);
               team.save(callback);
+            });
+          }, function (error) {
+            callback(error, invitations);
+          });
+        },
+        function (invitations, callback) {
+          async.each(invitations, function (invitation, callback) {
+            Permission.findOne({team: invitation.team}).exec(function (error, permission) {
+              if (error) {
+                return callback(error);
+              }
+
+              permission.members.add(user.id);
+              permission.save(callback);
             });
           }, callback);
         }

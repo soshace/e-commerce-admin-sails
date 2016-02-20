@@ -7,6 +7,10 @@ module.exports = function (request, response, next) {
     profileId = profile && profile.id;
 
   if (typeof companyId === 'undefined') {
+    companyId = request.body && request.body.company;
+  }
+
+  if (typeof companyId === 'undefined') {
     return response.send(400, {
       code: 'error',
       message: 'You should specify company\'s id'

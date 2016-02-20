@@ -1,6 +1,4 @@
 /**
- * TODO: Need to check image permissions + if user is owner
- * TODO: Currently we are checking only if he is owner or not
  * Checking if user have enough rights access to the category or not
  */
 

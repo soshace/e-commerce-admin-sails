@@ -19,21 +19,29 @@ module.exports = {
     productsPermission: {
       type: 'string',
       enum: ['none', 'view', 'manage'],
-      defaultsTo: 'none'
+      defaultsTo: 'none',
+      required: true
     },
     ordersPermission: {
       type: 'string',
       enum: ['none', 'view', 'manage'],
-      defaultsTo: 'none'
+      defaultsTo: 'none',
+      required: true
     },
     customersPermission: {
       type: 'string',
       enum: ['none', 'view', 'manage'],
-      defaultsTo: 'none'
+      defaultsTo: 'none',
+      required: true
     },
     owner: {
       model: 'user',
       required: true
+    },
+    //needed for getting rights access to resources. It helps make requests faster
+    members: {
+      collection: 'user',
+      via: 'permissions'
     }
   }
 };

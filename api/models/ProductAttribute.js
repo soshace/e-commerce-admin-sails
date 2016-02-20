@@ -62,7 +62,8 @@ module.exports = {
             VariantAttribute.create({
               owner: attribute.owner,
               productAttribute: attribute.id,
-              variant: variant.id
+              variant: variant.id,
+              project: variant.project
             }).exec(callback)
           }, callback);
         }

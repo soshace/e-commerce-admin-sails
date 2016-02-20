@@ -936,6 +936,7 @@ POST /products
 }
 ```
 
+###DEPRECATED
 ###Get full list of current user's products
 #####Answer includes products of user as an owner and which he has rights access
 ```
@@ -974,6 +975,7 @@ GET /products
 }
 ```
 
+###DEPRECATED
 ###Get full list of current user's products + search + pagination
 #####Answer includes products of user as an owner and which he has rights access
 ```
@@ -1079,6 +1081,7 @@ DELETE /products/:id
 }
 ```
 
+###DEPRECATED
 ###Get categories by product
 ```
 GET /products/:id/categories
@@ -1138,6 +1141,7 @@ GET /products/:id/variants
 }
 ```
 
+###DEPRECATED
 ###Get images by product
 ```
 GET /products/:id/images
@@ -1170,6 +1174,7 @@ GET /products/:id/images
 }
 ```
 
+###DEPRECATED
 ###Get prices by product
 ```
 GET /products/:id/prices
@@ -1328,6 +1333,7 @@ POST /categories
 }
 ```
 
+###DEPRECATED
 ###Get full list of current user's categories
 #####Answer includes products of user as an owner and which he has rights access
 ```
@@ -1931,6 +1937,7 @@ POST /variants
 }
 ```
 
+###DEPRECATED
 ###Get full list of current user's Variants
 #####Answer includes variants of user as an owner and which he has rights access
 ```
@@ -1963,6 +1970,7 @@ GET /variants
 }
 ```
 
+###DEPRECATED
 ###Get one Variant by id
 ```
 GET /variants/:id
@@ -2043,6 +2051,7 @@ DELETE /variants/:id
 }
 ```
 
+###DEPRECATED
 ###Get images by variant
 ```
 GET /variants/:id/images
@@ -2075,6 +2084,7 @@ GET /variants/:id/images
 }
 ```
 
+###DEPRECATED
 ###Get prices by variant
 ```
 GET /variants/:id/prices
@@ -2166,6 +2176,7 @@ POST /images
 }
 ```
 
+###DEPRECATED
 ###Get full list of current user's Images
 #####Answer includes imagesof user as an owner and which he has rights access
 ```
@@ -2200,6 +2211,7 @@ GET /images
 }
 ```
 
+###DEPRECATED
 ###Get one Image by id
 ```
 GET /images/:id
@@ -2347,6 +2359,7 @@ POST /prices
 }
 ```
 
+###DEPRECATED
 ###Get full list of current user's prices
 #####Answer includes prices of user as an owner and which he has rights access
 ```
@@ -2370,6 +2383,7 @@ GET /prices
 }
 ```
 
+###DEPRECATED
 ###Get one Price by id
 ```
 GET /prices/:id

@@ -84,20 +84,23 @@ module.exports.routes = {
 
 
   'post /products': 'ProductController.create',
-  'get /products': 'ProductController.find',
+  //DEPRECATED
   'put /products/:id': 'ProductController.update',
   'get /products/:id': 'ProductController.findOne',
   'delete /products/:id': 'ProductController.remove',
-  'get /products/:id/categories': 'ProductController.getCategories',
   'get /products/:id/variants': 'ProductController.getVariants',
-  'get /products/:id/images': 'ProductController.getImages',
-  'get /products/:id/prices': 'ProductController.getPrices',
+  //DEPRECATED
+  //'get /products': 'ProductController.find',
+  //'get /products/:id/categories': 'ProductController.getCategories',
+  //'get /products/:id/images': 'ProductController.getImages',
+  //'get /products/:id/prices': 'ProductController.getPrices',
   'post /products/:id/categories/:categoryId': 'ProductController.addCategory',
   'delete /products/:id/categories/:categoryId': 'ProductController.removeCategory',
 
 
   'post /categories': 'CategoryController.create',
-  'get /categories': 'CategoryController.find',
+  //DEPRECATED
+  //'get /categories': 'CategoryController.find',
   'put /categories/:id': 'CategoryController.update',
   'get /categories/:id': 'CategoryController.findOne',
   'delete /categories/:id': 'CategoryController.remove',
@@ -122,12 +125,14 @@ module.exports.routes = {
 
 
   'post /variants': 'VariantController.create',
-  'get /variants': 'VariantController.find',
   'put /variants/:id': 'VariantController.updateSKU',
-  'get /variants/:id': 'VariantController.findOne',
-  'get /variants/:id/images': 'VariantController.getImages',
-  'get /variants/:id/prices': 'VariantController.getPrices',
   'delete /variants/:id': 'VariantController.remove',
+
+  //DEPRECATED
+  //'get /variants': 'VariantController.find',
+  //'get /variants/:id': 'VariantController.findOne',
+  //'get /variants/:id/images': 'VariantController.getImages',
+  //'get /variants/:id/prices': 'VariantController.getPrices',
 
 
   'put /variant_attributes/:id': 'VariantAttributeController.updateValue',
@@ -135,17 +140,21 @@ module.exports.routes = {
 
   'post /images': 'ImageController.create',
   'post /images/upload': 'ImageController.upload',
-  'get /images': 'ImageController.find',
   'put /images/:id': 'ImageController.update',
-  'get /images/:id': 'ImageController.findOne',
   'delete /images/:id': 'ImageController.remove',
+
+  //DEPRECATED
+  //'get /images': 'ImageController.find',
+  //'get /images/:id': 'ImageController.findOne',
 
 
   'post /prices': 'PriceController.create',
-  'get /prices': 'PriceController.find',
   'put /prices/:id': 'PriceController.update',
-  'get /prices/:id': 'PriceController.findOne',
   'delete /prices/:id': 'PriceController.remove',
+
+  //DEPRECATED
+  //'get /prices/:id': 'PriceController.findOne',
+  //'get /prices': 'PriceController.find',
 
 
   //TODO: need to add checking permissions for sending invitations

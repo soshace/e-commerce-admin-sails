@@ -5,7 +5,8 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
-var _ = require('underscore');
+var _ = require('underscore'),
+  async = require('async');
 
 module.exports = {
   checkSlug: function (request, response) {
@@ -53,9 +54,8 @@ module.exports = {
     });
   },
 
-  //TODO: need to add validation for locale
   update: function (request, response) {
-    var projectData = request.body || {},
+    var projectData = request.body,
       project = request.project || {};
 
     _.extend(project, projectData);
@@ -69,12 +69,20 @@ module.exports = {
         return response.serverError(error);
       }
 
+      if (typeof project === 'undefined') {
+        return response.send(404, {
+          code: 'not.found',
+          message: 'project not found'
+        });
+      }
+
       returnedProject = _.clone(project);
       company = returnedProject.company;
       owner = returnedProject.owner;
       returnedProject.company = company && company.id;
       returnedProject.owner = owner && owner.id;
       returnedProject = _.pick(returnedProject, 'id', 'name', 'createdAt', 'updatedAt', 'company', 'owner');
+
       response.send(200, {
         code: 'successful',
         message: 'Project was successfully updated',
@@ -84,11 +92,15 @@ module.exports = {
   },
 
   findOne: function (request, response) {
-    var projectId = request.param('id');
+    var userId = request.user.id,
+      projectId = request.param('id');
 
     Project.findOne({id: projectId})
       .populate('permissions')
       .exec(function (error, project) {
+        var isOwner,
+          hasAccessByPermissions;
+
         if (error) {
           return response.serverError(error);
         }
@@ -100,15 +112,26 @@ module.exports = {
           });
         }
 
-        response.send(200, {
-          code: 'successful',
-          message: 'Project was successfully found',
-          project: project
+
+        isOwner = project.owner = userId;
+        hasAccessByPermissions = PermissionsService.accessByOnePermission(userId, project.permissions);
+        if (isOwner || hasAccessByPermissions) {
+          return response.send(200, {
+            code: 'successful',
+            message: 'Project was successfully found',
+            project: project
+          });
+        }
+
+        response(403, {
+          code: 'access.denied',
+          message: 'Access denied'
         });
       });
   },
 
   //TODO: need to check all tied products!
+  //TODO: need to remove all tied staff
   remove: function (request, response) {
     var projectId = request.param('id');
 
@@ -139,23 +162,37 @@ module.exports = {
 
     async.waterfall([
         function (callback) {
-          User.findOne({id: userId}).populate('teams').populate('ownProjects').exec(callback);
+          User.findOne({id: userId}).populate('permissions').exec(callback);
         },
         function (userPopulated, callback) {
-          sails.log('--------projectController.find userPopulated----------', userPopulated);
-          var ownProjects = userPopulated.ownProjects,
-            teams = userPopulated.teams,
-            pluckPermissions = _.pluck(teams, 'permissions'),
-            permissions = _.flatten(pluckPermissions),
-            userInvitedProjects = _.pluck(permissions, 'project'),
-            fullListOfProjects = ownProjects.concat(userInvitedProjects);
+          var projects = [],
+            permissions = userPopulated.permissions;
 
-          sails.log('--------projectController.find ownProjects----------', ownProjects);
-          sails.log('--------projectController.find pluckPermissions----------', pluckPermissions);
-          sails.log('--------projectController.find permissions----------', permissions);
-          sails.log('--------projectController.find userInvitedProjects----------', userInvitedProjects);
+          async.each(permissions, function (permission, callback) {
+            Project.findOne({id: permission.project}).exec(function (error, project) {
+              if (error) {
+                return callback(error);
+              }
 
-          callback(null, fullListOfProjects);
+              projects.push(project);
+              callback(null, projects);
+            });
+          }, function (error) {
+            callback(error, projects);
+          });
+        },
+        function (projectsByPermissions, callback) {
+          sails.log('--------ProjectController find----------', projectsByPermissions);
+
+          Project.find({owner: userId}).exec(function (error, ownProjects) {
+            ownProjects = ownProjects || [];
+            callback(error, ownProjects, projectsByPermissions);
+          });
+        },
+        function (ownProjects, projectsByPermissions, callback) {
+
+          var projects = projectsByPermissions.concat(ownProjects);
+          callback(null, projects);
         }
       ],
       function (error, fullListOfProjects) {
@@ -171,32 +208,76 @@ module.exports = {
   },
 
   findProjectCategories: function (request, response) {
-    var projectId = request.param('id');
+    var user = request.user,
+      userId = user.id,
+      projectId = request.param('id');
 
-    Category.find({project: projectId}).exec(function (error, categories) {
+    async.waterfall([
+      function (callback) {
+        PermissionsService.getPermissionsByProject(userId, projectId, callback);
+      },
+      function (permission, callback) {
+        var isOwner = permission.isOwner,
+          hasAccessToProducts = permission.productsPermission !== 'none';
+
+        if (isOwner || hasAccessToProducts) {
+          return Category.find({project: projectId}).exec(function (error, categories) {
+            if (error) {
+              return callback(error);
+            }
+
+            response.send(200, {
+              code: 'successful',
+              categories: categories
+            });
+            return callback(null);
+          });
+        }
+
+        response.send(403, {
+          code: 'access.denied',
+          message: 'Access denied'
+        });
+
+        callback(null);
+      }
+    ], function (error) {
       if (error) {
         return response.serverError(error);
       }
-
-      return response.send(200, {
-        code: 'successful',
-        categories: categories
-      });
     });
   },
 
   findProjectProducts: function (request, response) {
-    var projectId = request.param('id');
+    var user = request.user,
+      userId = user.id,
+      projectId = request.param('id');
 
-    Product.find({project: projectId}).exec(function (error, products) {
+    async.waterfall([
+      function (callback) {
+        PermissionsService.getPermissionsByProject(userId, projectId, callback);
+      },
+      function (permission, callback) {
+        var isOwner = permission.isOwner,
+          hasAccessToProducts = permission.productsPermission !== 'none';
+
+        if (isOwner || hasAccessToProducts) {
+          return Product.find({project: projectId}).exec(function (error, products) {
+            if (error) {
+              callback(error);
+            }
+
+            response.send(200, {
+              code: 'successful',
+              products: products
+            });
+            callback(null);
+          });
+        }
+      }], function (error) {
       if (error) {
         return response.serverError(error);
       }
-
-      return response.send(200, {
-        code: 'successful',
-        products: products
-      });
     });
   },
 
@@ -216,17 +297,17 @@ module.exports = {
   },
 
   findPermissions: function (request, response) {
-  var projectId = request.param('id');
+    var projectId = request.param('id');
 
-  Permission.find({project: projectId}).exec(function (error, permission) {
-    if (error) {
-      return response.serverError(error);
-    }
+    Permission.find({project: projectId}).exec(function (error, permission) {
+      if (error) {
+        return response.serverError(error);
+      }
 
-    return response.send(200, {
-      code: 'successful',
-      permissions: permission
+      return response.send(200, {
+        code: 'successful',
+        permissions: permission
+      });
     });
-  });
-}
+  }
 };

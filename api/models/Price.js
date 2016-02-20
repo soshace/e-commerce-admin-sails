@@ -1,9 +1,9 @@
 /**
-* Price.js
-*
-* @description :: TODO: You might write a short summary of how this model works and what it represents here.
-* @docs        :: http://sailsjs.org/#!documentation/models
-*/
+ * Price.js
+ *
+ * @description :: TODO: You might write a short summary of how this model works and what it represents here.
+ * @docs        :: http://sailsjs.org/#!documentation/models
+ */
 
 module.exports = {
 
@@ -31,8 +31,7 @@ module.exports = {
       enum: ['channel1', 'channel2']
     },
     product: {
-      model: 'product',
-      required: true
+      model: 'product'
     },
     variant: {
       model: 'variant',
@@ -41,6 +40,10 @@ module.exports = {
     owner: {
       model: 'user',
       required: true
+    },
+    //Additional field which helps to optimise permission requests
+    project: {
+      model: 'project'
     }
   },
 
@@ -51,6 +54,17 @@ module.exports = {
     country: function (value) {
       return CountryService.isCountryAliasExists(value);
     }
+  },
+
+  beforeCreate: function (price, callback) {
+    Variant.find({id: price.variant}).exec(function (error, variant) {
+      if (error) {
+        return callback(error);
+      }
+
+      price.project = variant.project;
+      callback(null, price);
+    });
   }
 };
 

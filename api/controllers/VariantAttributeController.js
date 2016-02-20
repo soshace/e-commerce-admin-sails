@@ -10,26 +10,55 @@ var _ = require('underscore');
 module.exports = {
   //TODO: need to check that user have enough rights access to Attribute
   updateValue: function (request, response) {
-    var attribute = request.variantAttribute,
-      value = request.body && request.body.value;
+    var attributeId = request.param('id'),
+      value = request.body && request.body.value,
+      user = request.user,
+      userId = user.id;
 
-    _.extend(attribute, {value: value});
+    VariantAttribute.findOne({id: attributeId}).exec(function (error, attribute) {
+      var projectId;
 
-    attribute.save(function (error, attribute) {
       if (error) {
-        return response.send(500, {
-          code: 'error',
-          message: error
-        });
+        return response.serverError(error);
       }
 
-      attribute.productAttribute = attribute.productAttribute.id;
-      attribute.owner = attribute.owner.id;
-      attribute.variant = attribute.variant.id;
-      response.send(200, {
-        code: 'successful',
-        message: 'Variant attribute was successfully updated',
-        attribute: attribute
+      projectId = attribute.project;
+      PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
+        var isOwner,
+          managerOfProducts;
+
+        if (error) {
+          return response.serverError(error);
+        }
+
+        isOwner = permission.isOwner;
+        managerOfProducts = permission.productsPermission === 'manage';
+        if (!isOwner && !managerOfProducts) {
+          return response.send(403, {
+            code: 'access.denied',
+            message: 'Access denied'
+          });
+        }
+
+        _.extend(attribute, {value: value});
+
+        attribute.save(function (error, attribute) {
+          if (error) {
+            return response.send(500, {
+              code: 'error',
+              message: error
+            });
+          }
+
+          attribute.productAttribute = attribute.productAttribute.id;
+          attribute.owner = attribute.owner.id;
+          attribute.variant = attribute.variant.id;
+          response.send(200, {
+            code: 'successful',
+            message: 'Variant attribute was successfully updated',
+            attribute: attribute
+          });
+        });
       });
     });
   }

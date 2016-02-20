@@ -1,6 +1,4 @@
 /**
- * TODO: Need to check price permissions + if user is owner
- * TODO: Currently we are checking only if he is owner or not
  * Checking if user have enough rights access to the price or not
  */
 

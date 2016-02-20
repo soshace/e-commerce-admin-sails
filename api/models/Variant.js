@@ -33,12 +33,15 @@ module.exports = {
       required: true
     },
     productType: {
-      model: 'productType',
-      required: true
+      model: 'productType'
     },
     product: {
       model: 'product',
       required: true
+    },
+    //Additional field which helps to optimise permission requests
+    project: {
+      model: 'project'
     }
   },
 
@@ -52,7 +55,8 @@ module.exports = {
         VariantAttribute.create({
           owner: attribute.owner,
           productAttribute: attribute.id,
-          variant: variant.id
+          variant: variant.id,
+          project: variant.project
         }).exec(callback)
       }, callback);
     });
@@ -61,10 +65,10 @@ module.exports = {
 
   afterDestroy: function (variants, callback) {
     async.each(variants, function (variant, callback) {
-          VariantAttribute.destroy({
-            productAttribute: variant.id,
-            variant: variant.id
-          }).exec(callback)
+      VariantAttribute.destroy({
+        productAttribute: variant.id,
+        variant: variant.id
+      }).exec(callback)
     }, callback);
   }
 };
