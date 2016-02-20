@@ -21,7 +21,7 @@ module.exports = {
         return response.serverError(error);
       }
 
-      if(typeof product === 'undefined'){
+      if (typeof product === 'undefined') {
         return response.send(404, {
           code: 'not.found',
           message: 'Product not found'
@@ -78,6 +78,13 @@ module.exports = {
 
       if (error) {
         return response.serverError(error);
+      }
+
+      if (typeof variant === 'undefined') {
+        return response.send(404, {
+          code: 'not.found',
+          message: 'Variant not found'
+        });
       }
 
       projectId = variant.project;
@@ -158,6 +165,13 @@ module.exports = {
 
       if (error) {
         return response.serverError(error);
+      }
+
+      if (typeof variant === 'undefined') {
+        return response.send(404, {
+          code: 'not.found',
+          message: 'Variant not found'
+        });
       }
 
       projectId = variant.project;
