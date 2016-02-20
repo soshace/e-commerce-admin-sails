@@ -135,13 +135,20 @@ module.exports = {
   findOne: function (request, response) {
     var user = request.user,
       userId = user.id,
-      productId = request.product.id;
+      productId = request.param('id');
 
     Product.findOne({id: productId})
       .populate('categories')
       .populate('variants')
       .exec(function (error, product) {
         var projectId = product.project;
+
+        if (typeof product === 'undefined') {
+          return response.send(404, {
+            code: 'not.found',
+            message: 'Product with current id was not found'
+          });
+        }
 
         sails.log('-------- Product Controller product--------', product);
         PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
