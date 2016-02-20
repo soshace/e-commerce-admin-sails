@@ -85,13 +85,13 @@ module.exports.routes = {
 
   'post /products': 'ProductController.create',
   //DEPRECATED
-  //'get /products': 'ProductController.find',
   'put /products/:id': 'ProductController.update',
   'get /products/:id': 'ProductController.findOne',
   'delete /products/:id': 'ProductController.remove',
+  'get /products/:id/variants': 'ProductController.getVariants',
   //DEPRECATED
+  //'get /products': 'ProductController.find',
   //'get /products/:id/categories': 'ProductController.getCategories',
-  //'get /products/:id/variants': 'ProductController.getVariants',
   //'get /products/:id/images': 'ProductController.getImages',
   //'get /products/:id/prices': 'ProductController.getPrices',
   'post /products/:id/categories/:categoryId': 'ProductController.addCategory',

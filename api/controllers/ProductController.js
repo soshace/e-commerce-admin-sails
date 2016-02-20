@@ -327,20 +327,26 @@ module.exports = {
   },
 
   /**
-   * @deprecated
-   *
    * @param request
    * @param response
    */
   getVariants: function (request, response) {
     var user = request.user,
       userId = user.id,
-      productId = request.product.id;
+      productId = request.param('id');
 
     Product.findOne({id: productId})
       .exec(function (error, product) {
-        var projectId = product.project;
+        var projectId;
 
+        if (typeof product === 'undefined') {
+          return response.send(404, {
+            code: 'not.found',
+            message: 'product not found'
+          });
+        }
+
+        projectId = product.project;
         sails.log('-------- Product Controller product--------', product);
         PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
           var isOwner,

@@ -64,7 +64,7 @@ module.exports.policies = {
     //'getCategories': 'isAuthenticated',
     //'getImages': ['isAuthenticated', 'isUserOwnerOfProduct'],
     //'getPrices': ['isAuthenticated', 'isUserOwnerOfProduct'],
-    //'getVariants': 'isAuthenticated',
+    'getVariants': 'isAuthenticated',
     'addCategory': 'isAuthenticated',
     'removeCategory': ['isAuthenticated', 'isUserOwnerOfProduct']
   },
