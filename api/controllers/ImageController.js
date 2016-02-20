@@ -15,11 +15,25 @@ module.exports = {
       user = request.user,
       userId = user.id;
 
+    if (typeof variantId === 'undefined') {
+      return response.send(404, {
+        code: 'not.found',
+        message: 'You need to specify variant id'
+      });
+    }
+
     Variant.findOne({id: variantId}).exec(function (error, variant) {
       var projectId;
 
       if (error) {
         return response.serverError(error);
+      }
+
+      if(typeof variant === 'undefined'){
+        return response.send(404, {
+          code: 'not.found',
+          message: 'variant was not found'
+        });
       }
 
       projectId = variant.project;
