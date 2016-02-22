@@ -48,5 +48,23 @@ module.exports = {
         team.save(callback);
       }
     ], callback);
+  },
+
+  afterDestroy: function (companies, callback) {
+    async.each(companies, function (company, callback) {
+      async.waterfall([
+        function (callback) {
+          Project.destroy({
+            company: company.id
+          }).exec(callback);
+        },
+        function (projects, callback) {
+          Team.destroy({
+            company: company.id
+          }).exec(callback);
+        }
+      ], callback);
+
+    }, callback);
   }
 };
