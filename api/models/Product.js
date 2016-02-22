@@ -15,6 +15,9 @@ module.exports = {
     description: {
       type: 'string'
     },
+    fullDescription: {
+      type: 'string'
+    },
     keywords: {
       model: 'localizedString'
     },
