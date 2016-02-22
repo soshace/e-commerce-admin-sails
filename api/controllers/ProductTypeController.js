@@ -236,21 +236,52 @@ module.exports = {
   },
 
   getProductAttributes: function (request, response) {
-    var productTypeId = request.productType.id;
+    var productTypeId = request.param('id'),
+      user = request.user,
+      userId = user.id;
 
-    ProductAttribute.find({productType: productTypeId}).exec(function (error, productAttributes) {
-      if (error) {
-        return response.send(500, {
-          code: 'error',
-          message: error
+    ProductType.findOne({id: productTypeId})
+      .populate('productAttributes')
+      .exec(function (error, productType) {
+        var projectId;
+
+        if (error) {
+          return response.serverError(error);
+        }
+
+        projectId = productType.project;
+        PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
+          var isOwner,
+            managerOfProducts;
+
+          if (error) {
+            return response.serverError(error);
+          }
+
+          isOwner = permission.isOwner;
+          managerOfProducts = permission.productsPermission === 'manage';
+          if (!isOwner && !managerOfProducts) {
+            return response.send(403, {
+              code: 'access.denied',
+              message: 'Access denied'
+            });
+          }
+
+          ProductAttribute.find({productType: productTypeId}).exec(function (error, productAttributes) {
+            if (error) {
+              return response.send(500, {
+                code: 'error',
+                message: error
+              });
+            }
+
+            return response.send(200, {
+              code: 'successful',
+              productAttributes: productAttributes
+            });
+          });
         });
-      }
-
-      return response.send(200, {
-        code: 'successful',
-        productAttributes: productAttributes
       });
-    });
   }
 };
 
