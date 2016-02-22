@@ -49,29 +49,64 @@ module.exports = {
     });
   },
 
-  //TODO: need to check that Project exists
-  //TODO: need to check permissions to Project
   update: function (request, response) {
-    var productTypeData = request.body || {},
-      productType = request.productType || {};
+    var user = request.user,
+      userId = user.id,
+      productTypeData = request.body || {},
+      productTypeId = request.param('id');
 
-    _.extend(productType, productTypeData);
 
-    productType.save(function (error, productType) {
-      var returnedProductType;
+    ProductType.findOne({id: productTypeId}).exec(function (error, productType) {
+      var projectId;
 
       if (error) {
-        return response.send(500, {
-          code: 'error',
-          message: error
+        return response.serverError(error);
+      }
+
+      if (typeof  productType === 'undefined') {
+        return response.send(404, {
+          code: 'not.found',
+          message: 'Product type not found'
         });
       }
 
-      returnedProductType = _.pick(productType, 'id', 'name', 'description', 'createdAt', 'updatedAt');
-      response.send(200, {
-        code: 'successful',
-        message: 'Product was successfully updated',
-        productType: returnedProductType
+      projectId = productType.project;
+      PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
+        var isOwner,
+          managerOfProducts;
+
+        if (error) {
+          return response.serverError(error);
+        }
+
+        isOwner = permission.isOwner;
+        managerOfProducts = permission.productsPermission === 'manage';
+        if (!isOwner && !managerOfProducts) {
+          return response.send(403, {
+            code: 'access.denied',
+            message: 'Access denied'
+          });
+        }
+
+        _.extend(productType, productTypeData);
+
+        productType.save(function (error, productType) {
+          var returnedProductType;
+
+          if (error) {
+            return response.send(500, {
+              code: 'error',
+              message: error
+            });
+          }
+
+          returnedProductType = _.pick(productType, 'id', 'name', 'description', 'createdAt', 'updatedAt');
+          response.send(200, {
+            code: 'successful',
+            message: 'Product type was successfully updated',
+            productType: returnedProductType
+          });
+        });
       });
     });
   },
