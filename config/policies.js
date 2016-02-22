@@ -106,7 +106,7 @@ module.exports.policies = {
     //'find': 'isAuthenticated',
     'create': 'isAuthenticated',
     'findOne': 'isAuthenticated',
-    'remove': ['isAuthenticated', 'isUserOwnerOfProductType'],
+    'remove': 'isAuthenticated',
     'update': 'isAuthenticated',
     'getProductAttributes': ['isAuthenticated', 'isUserOwnerOfProductType']
   },

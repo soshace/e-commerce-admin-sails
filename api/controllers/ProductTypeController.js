@@ -153,33 +153,63 @@ module.exports = {
   },
 
   remove: function (request, response) {
-    var productTypeId = request.param('id');
+    var productTypeId = request.param('id'),
+      user = request.user,
+      userId = user.id;
 
-    ProductType.destroy({id: productTypeId})
+    ProductType.findOne({id: productTypeId})
+      .populate('productAttributes')
       .exec(function (error, productType) {
+        var projectId;
+
         if (error) {
-          return response.send(500, {
-            code: 'error',
-            message: error
-          });
+          return response.serverError(error);
         }
 
-        if (typeof productType === 'undefined') {
-          return response.send(400, {
-            code: 'not.found',
-            message: 'Product type was not found'
-          });
-        }
+        projectId = productType.project;
+        PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
+          var isOwner,
+            managerOfProducts;
 
-        response.send(200, {
-          code: 'successful',
-          message: 'Product type was removed successfully',
-          productType: productType
+          if (error) {
+            return response.serverError(error);
+          }
+
+          isOwner = permission.isOwner;
+          managerOfProducts = permission.productsPermission === 'manage';
+          if (!isOwner && !managerOfProducts) {
+            return response.send(403, {
+              code: 'access.denied',
+              message: 'Access denied'
+            });
+          }
+
+          ProductType.destroy({id: productTypeId})
+            .exec(function (error, productType) {
+              if (error) {
+                return response.send(500, {
+                  code: 'error',
+                  message: error
+                });
+              }
+
+              if (typeof productType === 'undefined') {
+                return response.send(400, {
+                  code: 'not.found',
+                  message: 'Product type was not found'
+                });
+              }
+
+              response.send(200, {
+                code: 'successful',
+                message: 'Product type was removed successfully',
+                productType: productType
+              });
+            });
         });
       });
   },
 
-  //TODO: need to include products which user has rights access
   /**
    * @deprecated
    *
