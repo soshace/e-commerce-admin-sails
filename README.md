@@ -792,13 +792,37 @@ GET /projects/:id/products
 }
 ```
 
+
+###Get project's products by id + pagination
+```
+GET /projects/:id/products?limit=:limit&page=:page
+```
+**Example of the API's answer:**
+```
+{
+  "code": "successful",
+  "products": [
+    {
+      "owner": "56c878c8f5efcfa62ad4898e",
+      "project": "56c879b1f5efcfa62ad48992",
+      "productType": "56c879b1f5efcfa62ad48993",
+      "name": "New Product2",
+      "createdAt": "2016-02-22T13:17:32.919Z",
+      "updatedAt": "2016-02-22T13:17:32.919Z",
+      "id": "56cb0a6c32354fa868b7a9f9"
+    }
+  ],
+  "amount": 3
+}
+```
+
 ###Get project's Product Types by id
-   ```
-   GET /projects/:id/product_types
-   ```
-   **Example of the API's answer:**
-   ```
-   {
+```
+GET /projects/:id/product_types
+```
+**Example of the API's answer:**
+```
+{
      "code": "successful",
      "productTypes": [
        {
@@ -821,7 +845,7 @@ GET /projects/:id/products
        }
      ]
    }
-   ```
+```
 
 ```
 PUT /projects/:id

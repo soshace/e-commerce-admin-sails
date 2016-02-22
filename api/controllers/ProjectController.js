@@ -251,6 +251,10 @@ module.exports = {
   findProjectProducts: function (request, response) {
     var user = request.user,
       userId = user.id,
+      query = request.query || {},
+      requestObj = {},
+      paginate = {},
+      findResults,
       projectId = request.param('id');
 
     async.waterfall([
@@ -262,16 +266,47 @@ module.exports = {
           hasAccessToProducts = permission.productsPermission !== 'none';
 
         if (isOwner || hasAccessToProducts) {
-          return Product.find({project: projectId}).exec(function (error, products) {
+          requestObj = {
+            project: projectId
+          };
+
+          if (query.page) {
+            paginate.page = query.page;
+          }
+
+          if (query.limit) {
+            paginate.limit = query.limit;
+          }
+
+          if (query.name) {
+            requestObj.name = query.name;
+          }
+
+          findResults = Product.find(requestObj);
+
+          if (!_.isEmpty(paginate)) {
+            findResults = findResults.paginate(paginate);
+          }
+
+          Product.count(requestObj).exec(function (error, productNum) {
             if (error) {
-              callback(error);
+              return response.serverError(error);
             }
 
-            response.send(200, {
-              code: 'successful',
-              products: products
+            findResults.exec(function (error, products) {
+              if (error) {
+                callback(error);
+              }
+
+              sails.log('----ProjectController findProjectProducts arguments----', arguments);
+
+              response.send(200, {
+                code: 'successful',
+                products: products,
+                amount: productNum
+              });
+              callback(null);
             });
-            callback(null);
           });
         }
       }], function (error) {
