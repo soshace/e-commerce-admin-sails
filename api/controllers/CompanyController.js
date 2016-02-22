@@ -155,9 +155,7 @@ module.exports = {
   findProjects: function (request, response) {
     var companyId = request.param('id');
 
-    Company.findOne({id: companyId}).populate('projects').exec(function (error, company) {
-      var projects;
-
+    Project.findOne({company: companyId, removed: false}).exec(function (error, projects) {
       if (error) {
         return response.send(500, {
           code: 'error',
@@ -165,9 +163,6 @@ module.exports = {
         });
       }
 
-      sails.log('----------CompanyController--company---', company);
-      sails.log('----------CompanyController--company.projects---', company.projects);
-      projects = company.projects || [];
       return response.send(200, {
         code: 'successful',
         message: 'Company\'s projects were successfully found',
