@@ -41,7 +41,8 @@ module.exports = {
     },
     //Additional field which helps to optimise permission requests
     project: {
-      model: 'project'
+      model: 'project',
+      required: true
     }
   },
 
