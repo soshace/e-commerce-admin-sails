@@ -266,50 +266,56 @@ module.exports = {
         var isOwner = permission.isOwner,
           hasAccessToProducts = permission.productsPermission !== 'none';
 
-        if (isOwner || hasAccessToProducts) {
-          requestObj = {
-            project: projectId
-          };
+        if (!isOwner && !hasAccessToProducts) {
+          response.send(403, {
+            code: 'permission.denied',
+            message: 'Permission denied'
+          });
+          return callback(null);
+        }
 
-          if (query.page) {
-            paginate.page = query.page;
+        requestObj = {
+          project: projectId
+        };
+
+        if (query.page) {
+          paginate.page = query.page;
+        }
+
+        if (query.limit) {
+          paginate.limit = query.limit;
+        }
+
+        if (query.name) {
+          requestObj.name = query.name;
+        }
+
+        findResults = Product.find(requestObj);
+
+        if (!_.isEmpty(paginate)) {
+          findResults = findResults.paginate(paginate);
+        }
+
+        Product.count(requestObj).exec(function (error, productNum) {
+          if (error) {
+            return response.serverError(error);
           }
 
-          if (query.limit) {
-            paginate.limit = query.limit;
-          }
-
-          if (query.name) {
-            requestObj.name = query.name;
-          }
-
-          findResults = Product.find(requestObj);
-
-          if (!_.isEmpty(paginate)) {
-            findResults = findResults.paginate(paginate);
-          }
-
-          Product.count(requestObj).exec(function (error, productNum) {
+          findResults.exec(function (error, products) {
             if (error) {
-              return response.serverError(error);
+              callback(error);
             }
 
-            findResults.exec(function (error, products) {
-              if (error) {
-                callback(error);
-              }
+            sails.log('----ProjectController findProjectProducts arguments----', arguments);
 
-              sails.log('----ProjectController findProjectProducts arguments----', arguments);
-
-              response.send(200, {
-                code: 'successful',
-                products: products,
-                amount: productNum
-              });
-              callback(null);
+            response.send(200, {
+              code: 'successful',
+              products: products,
+              amount: productNum
             });
+            callback(null);
           });
-        }
+        });
       }], function (error) {
       if (error) {
         return response.serverError(error);
