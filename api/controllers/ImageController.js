@@ -56,6 +56,7 @@ module.exports = {
 
         imageData.owner = userId;
         imageData.external = true;
+        imageData.project  = projectId;
         Image.create(imageData).exec(function (error, image) {
           if (error) {
             return response.serverError(error);
@@ -152,7 +153,15 @@ module.exports = {
         return response.serverError(error);
       }
 
+      if(_.isEmpty(image)){
+        return response.send(404, {
+          code: 'not.found',
+          message: 'Image not found'
+        });
+      }
+
       projectId = image.project;
+      sails.log('------ImageController remove------', image);
       PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
         var isOwner,
           managerOfProducts;

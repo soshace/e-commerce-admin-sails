@@ -40,19 +40,9 @@ module.exports = {
     },
     //Additional field which helps to optimise permission requests
     project: {
-      model: 'project'
+      model: 'project',
+      required: true
     }
-  },
-
-  beforeCreate: function (image, callback) {
-    Variant.find({id: image.variant}).exec(function (error, variant) {
-      if (error) {
-        return callback(error);
-      }
-
-      image.project = variant.project;
-      callback(null, image);
-    });
   }
 };
 
