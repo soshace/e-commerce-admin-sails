@@ -43,7 +43,8 @@ module.exports = {
     },
     //Additional field which helps to optimise permission requests
     project: {
-      model: 'project'
+      model: 'project',
+      required: true
     }
   },
 
@@ -54,17 +55,6 @@ module.exports = {
     country: function (value) {
       return CountryService.isCountryAliasExists(value);
     }
-  },
-
-  beforeCreate: function (price, callback) {
-    Variant.find({id: price.variant}).exec(function (error, variant) {
-      if (error) {
-        return callback(error);
-      }
-
-      price.project = variant.project;
-      callback(null, price);
-    });
   }
 };
 

@@ -138,9 +138,8 @@ module.exports.policies = {
     //'find': 'isAuthenticated',
     //'findOne': ['isAuthenticated', 'isUserOwnerOfImage'],
     'create': 'isAuthenticated',
-    'remove': ['isAuthenticated', 'isUserOwnerOfImage'],
-    'update': ['isAuthenticated', 'isUserOwnerOfImage'],
-
+    'remove': 'isAuthenticated',
+    'update': 'isAuthenticated',
     'upload': ['isAuthenticated']
   },
 
@@ -149,8 +148,8 @@ module.exports.policies = {
     //'find': 'isAuthenticated',
     //'findOne': ['isAuthenticated', 'isUserOwnerOfProduct'],
     'create': 'isAuthenticated',
-    'remove': ['isAuthenticated', 'isUserOwnerOfProduct'],
-    'update': ['isAuthenticated', 'isUserOwnerOfProduct']
+    'remove': 'isAuthenticated',
+    'update': 'isAuthenticated'
   },
 
   'PermissionController': {

@@ -40,6 +40,7 @@ module.exports = {
         }
 
         priceData.owner = userId;
+        priceData.project = projectId;
         Price.create(priceData).exec(function (error, price) {
           if (error) {
             return response.send(500, {
