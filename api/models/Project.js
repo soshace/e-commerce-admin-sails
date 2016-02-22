@@ -5,6 +5,8 @@
  * @docs        :: http://sailsjs.org/#!documentation/models
  */
 
+var async = require('async');
+
 module.exports = {
 
   attributes: {
@@ -129,9 +131,34 @@ module.exports = {
    */
   afterDestroy: function (projects, callback) {
     async.each(projects, function (project, callback) {
-      Permission.destroy({
-        project: project.id
-      }).exec(callback)
+      async.waterfall([
+        function (callback) {
+          Permission.destroy({
+            project: project.id
+          }).exec(callback);
+        },
+        function (permissions, callback) {
+          Product.destroy({
+            project: project.id
+          }).exec(callback);
+        },
+        function (products, callback) {
+          Discount.destroy({
+            project: project.id
+          }).exec(callback);
+        },
+        function (discounts, callback) {
+          Order.destroy({
+            project: project.id
+          }).exec(callback);
+        },
+        function (orders, callback) {
+          Customer.destroy({
+            project: project.id
+          }).exec(callback);
+        }
+      ], callback);
+
     }, callback);
   }
 };
