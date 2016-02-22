@@ -112,21 +112,44 @@ module.exports = {
   },
 
   findOne: function (request, response) {
-    var productTypeId = request.param('id');
+    var productTypeId = request.param('id'),
+      user = request.user,
+      userId = user.id;
 
     ProductType.findOne({id: productTypeId})
       .populate('productAttributes')
-      .exec(function(error, productType){
-      if(error){
-        return response.serverError(error);
-      }
+      .exec(function (error, productType) {
+        var projectId;
 
-      response.send(200, {
-        code: 'successful',
-        message: 'Product was successfully found',
-        productType: productType
+        if (error) {
+          return response.serverError(error);
+        }
+
+        projectId = productType.project;
+        PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
+          var isOwner,
+            managerOfProducts;
+
+          if (error) {
+            return response.serverError(error);
+          }
+
+          isOwner = permission.isOwner;
+          managerOfProducts = permission.productsPermission === 'manage';
+          if (!isOwner && !managerOfProducts) {
+            return response.send(403, {
+              code: 'access.denied',
+              message: 'Access denied'
+            });
+          }
+
+          response.send(200, {
+            code: 'successful',
+            message: 'Product was successfully found',
+            productType: productType
+          });
+        });
       });
-    });
   },
 
   remove: function (request, response) {
