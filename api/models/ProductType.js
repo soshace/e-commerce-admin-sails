@@ -43,6 +43,14 @@ module.exports = {
       collection: 'category',
       via: 'productType'
     }
+  },
+
+  afterDestroy: function (productTypes, callback) {
+    async.each(productTypes, function (productType, callback) {
+      Category.destroy({
+        productType: productType.id
+      }).exec(callback);
+    }, callback);
   }
 };
 
