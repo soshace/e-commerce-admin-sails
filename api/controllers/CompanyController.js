@@ -57,7 +57,7 @@ module.exports = {
   findOne: function (request, response) {
     var companyId = request.param('id');
 
-    Company.findOne({id: companyId})
+    Company.findOne({id: companyId, removed: false})
       .populate('projects')
       .populate('teams')
       .exec(function (error, company) {
@@ -83,12 +83,11 @@ module.exports = {
       });
   },
 
-  //TODO: need to check all tied teams and projects!
   remove: function (request, response) {
     var companyId = request.param('id');
 
-    Company.destroy({id: companyId})
-      .exec(function (error, company) {
+    Company.update({id: companyId}, {removed: true})
+      .exec(function (error, companies) {
         if (error) {
           return response.send(500, {
             code: 'error',
@@ -96,7 +95,7 @@ module.exports = {
           });
         }
 
-        if (typeof company === 'undefined') {
+        if (typeof companies === 'undefined') {
           return response.send(400, {
             code: 'not.found',
             message: 'Company was not found'
@@ -106,7 +105,7 @@ module.exports = {
         return response.send(200, {
           code: 'successful',
           message: 'Company was removed successfully',
-          company: company
+          company: companies
         });
       });
   },
@@ -114,7 +113,7 @@ module.exports = {
   find: function (request, response) {
     var user = request.user;
 
-    Company.find({owner: user.id}).exec(function (error, companies) {
+    Company.find({owner: user.id, removed: false}).exec(function (error, companies) {
       if (error) {
         return response.send(500, {
           code: 'error',
