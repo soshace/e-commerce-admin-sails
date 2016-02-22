@@ -320,7 +320,7 @@ module.exports = {
   findProjectProductTypes: function (request, response) {
     var projectId = request.param('id');
 
-    ProductType.find({project: projectId}).exec(function (error, productTypes) {
+    ProductType.find({project: projectId}).populate('categories').exec(function (error, productTypes) {
       if (error) {
         return response.serverError(error);
       }

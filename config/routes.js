@@ -109,8 +109,9 @@ module.exports.routes = {
   'delete /categories/:id/products/:productId': 'CategoryController.removeProduct',
 
 
+  //DEPRECATED
+  //'get /product_types': 'ProductTypeController.find',
   'post /product_types': 'ProductTypeController.create',
-  'get /product_types': 'ProductTypeController.find',
   'put /product_types/:id': 'ProductTypeController.update',
   'get /product_types/:id': 'ProductTypeController.findOne',
   'delete /product_types/:id': 'ProductTypeController.remove',

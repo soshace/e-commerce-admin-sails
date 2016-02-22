@@ -19,6 +19,10 @@ module.exports = {
       model: 'project',
       required: true
     },
+    productType: {
+      model: 'productType',
+      required: true
+    },
     products: {
       collection: 'product',
       via: 'categories'

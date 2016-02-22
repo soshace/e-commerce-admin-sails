@@ -38,6 +38,10 @@ module.exports = {
     variants: {
       collection: 'variant',
       via: 'productType'
+    },
+    categories: {
+      collection: 'category',
+      via: 'productType'
     }
   }
 };
