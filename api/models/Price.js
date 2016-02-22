@@ -9,7 +9,7 @@ module.exports = {
 
   attributes: {
     price: {
-      type: 'float'
+      type: 'number'
     },
     //TODO: need to check project's currencies
     currency: {
