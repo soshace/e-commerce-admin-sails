@@ -5,6 +5,8 @@
  * @docs        :: http://sailsjs.org/#!documentation/models
  */
 
+var async = require('async');
+
 module.exports = {
 
   attributes: {
@@ -66,10 +68,26 @@ module.exports = {
 
   afterDestroy: function (variants, callback) {
     async.each(variants, function (variant, callback) {
-      VariantAttribute.destroy({
-        productAttribute: variant.id,
-        variant: variant.id
-      }).exec(callback)
+      async.waterfall([
+        function (callback) {
+          VariantAttribute.destroy({
+            productAttribute: variant.id,
+            variant: variant.id
+          }).exec(callback);
+        },
+        function (attributes, callback) {
+          Image.destroy({
+            variant: variant.id
+          }).exec(callback);
+        },
+        function (images, callback) {
+          Price.destroy({
+            variant: variant.id
+          }).exec(callback);
+        }
+      ], callback);
+
+
     }, callback);
   }
 };
