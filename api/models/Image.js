@@ -31,9 +31,6 @@ module.exports = {
     height: {
       type: 'integer'
     },
-    product: {
-      model: 'product'
-    },
     variant: {
       model: 'variant',
       required: true

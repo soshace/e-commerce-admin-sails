@@ -5,6 +5,8 @@
  * @docs        :: http://sailsjs.org/#!documentation/models
  */
 
+var async = require('async');
+
 module.exports = {
 
   attributes: {
@@ -43,14 +45,6 @@ module.exports = {
     variants: {
       collection: 'variant',
       via: 'product'
-    },
-    images: {
-      collection: 'image',
-      via: 'product'
-    },
-    prices: {
-      collection: 'price',
-      via: 'product'
     }
   },
 
@@ -74,6 +68,18 @@ module.exports = {
         }
       ],
       callback);
+  },
+  /**
+   * Method removes all variants
+   * @param products
+   * @param callback
+   */
+  afterDestroy: function (products, callback) {
+    async.each(products, function (product, callback) {
+      Variant.destroy({
+        product: product.id
+      }).exec(callback);
+    }, callback);
   }
 };
 

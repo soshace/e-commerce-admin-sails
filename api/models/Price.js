@@ -30,9 +30,6 @@ module.exports = {
       type: 'string',
       enum: ['channel1', 'channel2']
     },
-    product: {
-      model: 'product'
-    },
     variant: {
       model: 'variant',
       required: true
