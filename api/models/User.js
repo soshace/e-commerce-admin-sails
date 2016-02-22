@@ -125,19 +125,6 @@ module.exports = {
           }).exec(callback);
         },
         function (company, callback) {
-          sails.log('--------User  afterCreate company--------', company);
-          Team.create({
-            name: 'Administrators',
-            company: company.id,
-            owner: user.id,
-            admin: true
-          }).exec(callback);
-        },
-        function (team, callback) {
-          team.members.add(user.id);
-          team.save(callback);
-        },
-        function (team, callback) {
           sails.log('-----User  afterCreate user----', user);
           Invitation.destroy({email: user.email}).exec(function (error, invitations) {
             callback(error, user, invitations);
