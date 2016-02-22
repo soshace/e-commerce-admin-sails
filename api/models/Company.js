@@ -23,11 +23,6 @@ module.exports = {
     owner: {
       model: 'user',
       required: true
-    },
-    removed: {
-      type: 'boolean',
-      defaultsTo: false,
-      required: true
     }
   },
 

@@ -95,7 +95,7 @@ module.exports = {
     var userId = request.user.id,
       projectId = request.param('id');
 
-    Project.findOne({id: projectId, removed: false})
+    Project.findOne({id: projectId})
       .populate('permissions')
       .exec(function (error, project) {
         var isOwner,
@@ -133,7 +133,7 @@ module.exports = {
   remove: function (request, response) {
     var projectId = request.param('id');
 
-    Project.update({id: projectId}, {removed: true})
+    Project.update({id: projectId})
       .exec(function (error, project) {
         if (error) {
           return response.serverError(error);
@@ -167,7 +167,7 @@ module.exports = {
             permissions = userPopulated.permissions;
 
           async.each(permissions, function (permission, callback) {
-            Project.findOne({id: permission.project, removed: false}).exec(function (error, project) {
+            Project.findOne({id: permission.project}).exec(function (error, project) {
               if (error) {
                 return callback(error);
               }
@@ -185,7 +185,7 @@ module.exports = {
         function (projectsByPermissions, callback) {
           sails.log('--------ProjectController find----------', projectsByPermissions);
 
-          Project.find({owner: userId, removed: false}).exec(function (error, ownProjects) {
+          Project.find({owner: userId}).exec(function (error, ownProjects) {
             ownProjects = ownProjects || [];
             callback(error, ownProjects, projectsByPermissions);
           });

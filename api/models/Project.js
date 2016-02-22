@@ -69,11 +69,6 @@ module.exports = {
     permissions: {
       collection: 'permission',
       via: 'project'
-    },
-    removed: {
-      type: 'boolean',
-      defaultsTo: false,
-      required: true
     }
   },
 

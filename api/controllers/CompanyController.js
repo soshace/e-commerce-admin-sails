@@ -57,7 +57,7 @@ module.exports = {
   findOne: function (request, response) {
     var companyId = request.param('id');
 
-    Company.findOne({id: companyId, removed: false})
+    Company.findOne({id: companyId})
       .populate('projects')
       .populate('teams')
       .exec(function (error, company) {
@@ -86,7 +86,7 @@ module.exports = {
   remove: function (request, response) {
     var companyId = request.param('id');
 
-    Company.update({id: companyId}, {removed: true})
+    Company.update({id: companyId})
       .exec(function (error, companies) {
         if (error) {
           return response.send(500, {
@@ -113,7 +113,7 @@ module.exports = {
   find: function (request, response) {
     var user = request.user;
 
-    Company.find({owner: user.id, removed: false}).exec(function (error, companies) {
+    Company.find({owner: user.id}).exec(function (error, companies) {
       if (error) {
         return response.send(500, {
           code: 'error',
@@ -154,7 +154,7 @@ module.exports = {
   findProjects: function (request, response) {
     var companyId = request.param('id');
 
-    Project.findOne({company: companyId, removed: false}).exec(function (error, projects) {
+    Project.findOne({company: companyId}).exec(function (error, projects) {
       if (error) {
         return response.send(500, {
           code: 'error',
