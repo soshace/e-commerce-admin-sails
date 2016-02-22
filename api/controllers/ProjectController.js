@@ -324,16 +324,36 @@ module.exports = {
   },
 
   findProjectProductTypes: function (request, response) {
-    var projectId = request.param('id');
+    var projectId = request.param('id'),
+      user = request.user,
+      userId = user.id;
 
-    ProductType.find({project: projectId}).populate('categories').exec(function (error, productTypes) {
+    PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
+      var isOwner,
+        managerOfProducts;
+
       if (error) {
         return response.serverError(error);
       }
 
-      return response.send(200, {
-        code: 'successful',
-        productTypes: productTypes
+      isOwner = permission.isOwner;
+      managerOfProducts = permission.productsPermission === 'manage';
+      if (!isOwner && !managerOfProducts) {
+        return response.send(403, {
+          code: 'access.denied',
+          message: 'Access denied'
+        });
+      }
+
+      ProductType.find({project: projectId}).populate('categories').exec(function (error, productTypes) {
+        if (error) {
+          return response.serverError(error);
+        }
+
+        return response.send(200, {
+          code: 'successful',
+          productTypes: productTypes
+        });
       });
     });
   },

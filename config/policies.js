@@ -47,7 +47,7 @@ module.exports.policies = {
     'findOne': 'isAuthenticated',
     'findProjectCategories': 'isAuthenticated',
     'findProjectProducts': 'isAuthenticated',
-    'findProjectProductTypes': ['isAuthenticated', 'isUserOwnerOfProject'],
+    'findProjectProductTypes': 'isAuthenticated',
     'findPermissions': ['isAuthenticated', 'isUserOwnerOfProject'],
     'remove': ['isAuthenticated', 'isUserOwnerOfProject'],
     'update': ['isAuthenticated', 'isUserOwnerOfProject']
