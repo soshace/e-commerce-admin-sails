@@ -50,7 +50,7 @@ module.exports.policies = {
     'findProjectProductTypes': 'isAuthenticated',
     'findPermissions': ['isAuthenticated', 'isUserOwnerOfProject'],
     'remove': ['isAuthenticated', 'isUserOwnerOfProject'],
-    'update': ['isAuthenticated', 'isUserOwnerOfProject']
+    'update': 'isAuthenticated'
   },
 
   'ProductController': {

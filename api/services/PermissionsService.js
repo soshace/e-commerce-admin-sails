@@ -37,7 +37,7 @@ module.exports = {
             }
           });
 
-          callback(null, projectPermission);
+          callback(null, projectPermission, project, user);
         })
       }
     ], callback);

@@ -108,34 +108,54 @@ module.exports = {
 
   update: function (request, response) {
     var projectData = request.body,
-      project = request.project || {};
+      projectId = request.param('id'),
+      user = request.user,
+      userId = user.id;
 
-    _.extend(project, projectData);
-
-    project.save(function (error, project) {
-      var returnedProject,
-        company;
+    PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission, project) {
+      var isAdmin,
+        hasAccessToProduct;
 
       if (error) {
         return response.serverError(error);
       }
 
-      if (typeof project === 'undefined') {
-        return response.send(404, {
-          code: 'not.found',
-          message: 'project not found'
+      isAdmin = permission.admin;
+      hasAccessToProduct = permission.productsPermission !== 'none';
+      if (!isAdmin && !hasAccessToProduct) {
+        return response.send(403, {
+          code: 'access.denied',
+          message: 'Access denied'
         });
       }
 
-      returnedProject = _.clone(project);
-      company = returnedProject.company;
-      returnedProject.company = company && company.id;
-      returnedProject = _.pick(returnedProject, 'id', 'name', 'createdAt', 'updatedAt', 'company', 'owner');
+      _.extend(project, projectData);
 
-      response.send(200, {
-        code: 'successful',
-        message: 'Project was successfully updated',
-        project: returnedProject
+      project.save(function (error, project) {
+        var returnedProject,
+          company;
+
+        if (error) {
+          return response.serverError(error);
+        }
+
+        if (typeof project === 'undefined') {
+          return response.send(404, {
+            code: 'not.found',
+            message: 'project not found'
+          });
+        }
+
+        returnedProject = _.clone(project);
+        company = returnedProject.company;
+        returnedProject.company = company && company.id;
+        returnedProject = _.pick(returnedProject, 'id', 'name', 'createdAt', 'updatedAt', 'company', 'owner');
+
+        response.send(200, {
+          code: 'successful',
+          message: 'Project was successfully updated',
+          project: returnedProject
+        });
       });
     });
   },
