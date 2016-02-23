@@ -8,22 +8,65 @@
 var _ = require('underscore');
 
 module.exports = {
-  //TODO: need to check if user have access to productType
   create: function (request, response) {
-    var productAttributeData = request.body,
-      profile = request.user;
+    var user = request.user,
+      userId = user.id,
+      productAttributeData = request.body || {},
+      productTypeId = productAttributeData.productType;
 
-    ProductAttribute.create(productAttributeData).exec(function (error, productAttribute) {
+
+    if (_.isEmpty(productTypeId)) {
+      return response.send(400, {
+        code: 'error',
+        message: 'You need to specify product type id'
+      })
+    }
+
+    ProductType.findOne({id: productTypeId}).exec(function (error, productType) {
+      var projectId;
+
       if (error) {
-        return response.send(500, {
-          code: 'error',
-          message: error
+        return response.serverError(error);
+      }
+
+      if (typeof  productType === 'undefined') {
+        return response.send(404, {
+          code: 'not.found',
+          message: 'Product type not found'
         });
       }
 
-      response.send(200, {
-        code: 'successful',
-        productAttribute: productAttribute
+      projectId = productType.project;
+      PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
+        var isAdmin,
+          managerOfProducts;
+
+        if (error) {
+          return response.serverError(error);
+        }
+
+        isAdmin = permission.admin;
+        managerOfProducts = permission.productsPermission === 'manage';
+        if (!isAdmin && !managerOfProducts) {
+          return response.send(403, {
+            code: 'access.denied',
+            message: 'Access denied'
+          });
+        }
+
+        ProductAttribute.create(productAttributeData).exec(function (error, productAttribute) {
+          if (error) {
+            return response.send(500, {
+              code: 'error',
+              message: error
+            });
+          }
+
+          response.send(200, {
+            code: 'successful',
+            productAttribute: productAttribute
+          });
+        });
       });
     });
   },
