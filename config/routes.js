@@ -73,9 +73,9 @@ module.exports.routes = {
   'get /companies/:id/teams': 'CompanyController.findTeams',
   'get /companies/:id/projects': 'CompanyController.findProjects',
 
-
+  //DEPRECATED
+  //'get /teams': 'TeamController.find',
   'post /teams': 'TeamController.create',
-  'get /teams': 'TeamController.find',
   'get /teams/:id': 'TeamController.findOne',
   'get /teams/:id/permissions': 'TeamController.findPermissions',
   'delete /teams/:id': 'TeamController.remove',
@@ -119,7 +119,8 @@ module.exports.routes = {
 
 
   'post /product_attributes': 'ProductAttributeController.create',
-  'get /product_attributes': 'ProductAttributeController.find',
+  //DEPRECATED
+  //'get /product_attributes': 'ProductAttributeController.find',
   'put /product_attributes/:id': 'ProductAttributeController.update',
   'get /product_attributes/:id': 'ProductAttributeController.findOne',
   'delete /product_attributes/:id': 'ProductAttributeController.remove',
@@ -162,7 +163,8 @@ module.exports.routes = {
   'post /invitations': 'InvitationController.create',
 
   'put /permissions/:id': 'PermissionController.update',
-  'get /permissions': 'PermissionController.find',
+  //DEPRECATED
+  //'get /permissions': 'PermissionController.find',
 
   'get /countries/:locale': 'CountryController.find',
 

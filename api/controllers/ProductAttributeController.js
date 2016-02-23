@@ -13,7 +13,6 @@ module.exports = {
     var productAttributeData = request.body,
       profile = request.user;
 
-    productAttributeData.owner = profile.id;
     ProductAttribute.create(productAttributeData).exec(function (error, productAttribute) {
       if (error) {
         return response.send(500, {
@@ -90,6 +89,12 @@ module.exports = {
   },
 
   //TODO: need to include products which user has rights access
+  /**
+   * @deprecated
+   *
+   * @param request
+   * @param response
+   */
   find: function (request, response) {
     var user = request.user,
       userId = user.id;

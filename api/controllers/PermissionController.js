@@ -6,6 +6,12 @@
  */
 
 module.exports = {
+  /**
+   * @deprecated
+   *
+   * @param request
+   * @param response
+   */
   find: function (request, response) {
     var user = request.user,
       userId = user.id;

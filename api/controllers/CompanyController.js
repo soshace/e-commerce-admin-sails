@@ -12,7 +12,6 @@ module.exports = {
     var user = request.user,
       companyData = request.body || {};
 
-    companyData.owner = user.id;
     Company.create(companyData).exec(function (error, company) {
       if (error) {
         return response.send(500, {

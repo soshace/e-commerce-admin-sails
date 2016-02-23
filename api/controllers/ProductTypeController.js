@@ -32,7 +32,6 @@ module.exports = {
         });
       }
 
-      productTypeData.owner = user.id;
       ProductType.create(productTypeData).exec(function (error, productType) {
         if (error) {
           return response.send(500, {

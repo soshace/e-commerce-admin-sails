@@ -51,7 +51,6 @@ module.exports = {
           }
 
           attribute.productAttribute = attribute.productAttribute.id;
-          attribute.owner = attribute.owner.id;
           attribute.variant = attribute.variant.id;
           response.send(200, {
             code: 'successful',

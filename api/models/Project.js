@@ -40,10 +40,6 @@ module.exports = {
       model: 'company',
       required: true
     },
-    owner: {
-      model: 'user',
-      required: true
-    },
     products: {
       collection: 'product',
       via: 'project'

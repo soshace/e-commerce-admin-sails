@@ -16,10 +16,6 @@ module.exports = {
       type: 'string',
       required: true
     },
-    owner: {
-      model: 'user',
-      required: true
-    },
     project: {
       model: 'project',
       required: true

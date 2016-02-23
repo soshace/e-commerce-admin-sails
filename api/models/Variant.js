@@ -30,10 +30,6 @@ module.exports = {
       defaultsTo: false,
       required: true
     },
-    owner: {
-      model: 'user',
-      required: true
-    },
     productType: {
       model: 'productType'
     },

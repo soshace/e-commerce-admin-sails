@@ -24,10 +24,6 @@ module.exports = {
       collection: 'permission',
       via: 'team'
     },
-    owner: {
-      model: 'user',
-      required: true
-    },
     admin: {
       type: 'boolean',
       required: true,

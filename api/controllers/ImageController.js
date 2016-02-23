@@ -54,7 +54,6 @@ module.exports = {
           });
         }
 
-        imageData.owner = userId;
         imageData.external = true;
         imageData.project  = projectId;
         Image.create(imageData).exec(function (error, image) {

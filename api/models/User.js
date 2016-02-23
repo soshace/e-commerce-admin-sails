@@ -35,50 +35,6 @@ module.exports = {
       required: true,
       defaultsTo: 'en'
     },
-    ownTeams: {
-      collection: 'team',
-      via: 'owner'
-    },
-    ownProjects: {
-      collection: 'project',
-      via: 'owner'
-    },
-    ownCompanies: {
-      collection: 'company',
-      via: 'owner'
-    },
-    ownProducts: {
-      collection: 'product',
-      via: 'owner'
-    },
-    ownProductTypes: {
-      collection: 'productType',
-      via: 'owner'
-    },
-    ownProductAttributes: {
-      collection: 'productAttribute',
-      via: 'owner'
-    },
-    ownImages: {
-      collection: 'image',
-      via: 'owner'
-    },
-    ownPrices: {
-      collection: 'image',
-      via: 'owner'
-    },
-    ownVariants: {
-      collection: 'variant',
-      via: 'owner'
-    },
-    ownVariantAttributes: {
-      collection: 'variantAttribute',
-      via: 'owner'
-    },
-    ownPermissions: {
-      collection: 'permission',
-      via: 'owner'
-    },
     //needed for getting rights access to resources. It helps make requests faster
     permissions: {
       collection: 'permission',

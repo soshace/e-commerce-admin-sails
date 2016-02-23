@@ -9,10 +9,8 @@ var _ = require('underscore');
 
 module.exports = {
   create: function (request, response) {
-    var projectData = request.body || {},
-      profile = request.user;
+    var projectData = request.body || {};
 
-    projectData.owner = profile.id;
     Team.create(projectData).exec(function (error, team) {
       if (error) {
         return response.send(500, {
@@ -54,6 +52,12 @@ module.exports = {
     });
   },
 
+  /**
+   * @deprecated
+   *
+   * @param request
+   * @param response
+   */
   find: function (request, response) {
     var user = request.user;
 

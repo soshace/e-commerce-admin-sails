@@ -19,10 +19,6 @@ module.exports = {
     projects: {
       collection: 'project',
       via: 'company'
-    },
-    owner: {
-      model: 'user',
-      required: true
     }
   },
 

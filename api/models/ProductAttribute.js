@@ -16,10 +16,6 @@ module.exports = {
       type: 'string',
       required: true
     },
-    owner: {
-      model: 'user',
-      required: true
-    },
     constraints: {
       type: 'string',
       enum: ['none', 'unique', 'combo', 'same'],

@@ -39,10 +39,6 @@ module.exports = {
       defaultsTo: false,
       required: true
     },
-    owner: {
-      model: 'user',
-      required: true
-    },
     //needed for getting rights access to resources. It helps make requests faster
     members: {
       collection: 'user',

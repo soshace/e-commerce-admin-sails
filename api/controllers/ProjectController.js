@@ -41,7 +41,6 @@ module.exports = {
     var projectData = request.body || {},
       profile = request.user;
 
-    projectData.owner = profile.id;
     Project.create(projectData).exec(function (error, project) {
       if (error) {
         return response.serverError(error);
@@ -62,8 +61,7 @@ module.exports = {
 
     project.save(function (error, project) {
       var returnedProject,
-        company,
-        owner;
+        company;
 
       if (error) {
         return response.serverError(error);
@@ -78,9 +76,7 @@ module.exports = {
 
       returnedProject = _.clone(project);
       company = returnedProject.company;
-      owner = returnedProject.owner;
       returnedProject.company = company && company.id;
-      returnedProject.owner = owner && owner.id;
       returnedProject = _.pick(returnedProject, 'id', 'name', 'createdAt', 'updatedAt', 'company', 'owner');
 
       response.send(200, {
@@ -98,8 +94,7 @@ module.exports = {
     Project.findOne({id: projectId})
       .populate('permissions')
       .exec(function (error, project) {
-        var isAdmin,
-          hasAccessByPermissions;
+        var hasAccessByPermissions;
 
         if (error) {
           return response.serverError(error);
@@ -113,9 +108,8 @@ module.exports = {
         }
 
 
-        isAdmin = project.owner = userId;
         hasAccessByPermissions = PermissionsService.accessByOnePermission(userId, project.permissions);
-        if (isAdmin || hasAccessByPermissions) {
+        if (hasAccessByPermissions) {
           return response.send(200, {
             code: 'successful',
             message: 'Project was successfully found',

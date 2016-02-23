@@ -23,10 +23,6 @@ module.exports = {
     keywords: {
       model: 'localizedString'
     },
-    owner: {
-      model: 'user',
-      required: true
-    },
     project: {
       model: 'project',
       required: true

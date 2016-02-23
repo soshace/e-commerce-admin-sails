@@ -54,7 +54,6 @@ module.exports = {
         }
 
         sails.log('-----------Product Controller productType 2----------');
-        productData.owner = userId;
         Product.create(productData).exec(function (error, product) {
           if (error) {
             return response.serverError(error);

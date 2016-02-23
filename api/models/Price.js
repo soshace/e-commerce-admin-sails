@@ -34,10 +34,6 @@ module.exports = {
       model: 'variant',
       required: true
     },
-    owner: {
-      model: 'user',
-      required: true
-    },
     //Additional field which helps to optimise permission requests
     project: {
       model: 'project',

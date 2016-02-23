@@ -426,7 +426,7 @@ POST /teams
 }
 ```
 
-
+###DEPRECATED
 ###Get all user's teams
 #####Answer includes teams of user only as an owner
 ```
@@ -1815,6 +1815,7 @@ POST /product_attributes
 }
 ```
 
+###DEPRECATED
 ###Get full list of current user's ProductTypes
 #####Answer includes product attributes of user as an owner and which he has rights access
 ```
@@ -2579,6 +2580,7 @@ POST /invitations/
 
 ##Permissions
 
+###DEPRECATED
 ###Get full list of current user's permissions
 #####Answer includes permissions of user as an owner and which he has rights access
 ```

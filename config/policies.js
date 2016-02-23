@@ -112,8 +112,9 @@ module.exports.policies = {
   },
 
   'ProductAttributeController': {
+    //DEPRECATED
+    //'find': 'isAuthenticated',
     'create': 'isAuthenticated',
-    'find': 'isAuthenticated',
     'findOne': ['isAuthenticated', 'isUserOwnerOfProductAttribute'],
     'remove': ['isAuthenticated', 'isUserOwnerOfProductAttribute'],
     'update': ['isAuthenticated', 'isUserOwnerOfProductAttribute']
@@ -154,7 +155,8 @@ module.exports.policies = {
   },
 
   'PermissionController': {
-    'find': 'isAuthenticated',
+    //DEPRECATED
+    //'find': 'isAuthenticated',
     'update': ['isAuthenticated', 'isUserOwnerOfPermission']
   },
 

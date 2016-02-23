@@ -31,7 +31,6 @@ module.exports = {
         });
       }
 
-      categoryData.owner = userId;
       Category.create(categoryData).exec(function (error, category) {
         if (error) {
           return response.send(500, {
@@ -86,7 +85,6 @@ module.exports = {
           });
         }
 
-        categoryData.owner = userId;
         _.extend(category, categoryData);
 
         category.save(function (error, category) {
