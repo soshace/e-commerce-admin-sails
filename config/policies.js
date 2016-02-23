@@ -54,25 +54,24 @@ module.exports.policies = {
   },
 
   'ProductController': {
-    'create': 'isAuthenticated',
     //DEPRECATED
+    //'getCategories': 'isAuthenticated',
     //'find': 'isAuthenticated',
+    //'getImages': ['isAuthenticated', 'isUserOwnerOfProduct'],
+    //'getPrices': ['isAuthenticated', 'isUserOwnerOfProduct'],
+    'create': 'isAuthenticated',
     'findOne': 'isAuthenticated',
     'remove': 'isAuthenticated',
     'update': 'isAuthenticated',
-    //DEPRECATED
-    //'getCategories': 'isAuthenticated',
-    //'getImages': ['isAuthenticated', 'isUserOwnerOfProduct'],
-    //'getPrices': ['isAuthenticated', 'isUserOwnerOfProduct'],
     'getVariants': 'isAuthenticated',
     'addCategory': 'isAuthenticated',
-    'removeCategory': ['isAuthenticated', 'isUserOwnerOfProduct']
+    'removeCategory': 'isAuthenticated'
   },
 
   'CategoryController': {
-    'create': 'isAuthenticated',
     //DEPRECATED
     //'find': 'isAuthenticated',
+    'create': 'isAuthenticated',
     'findOne': 'isAuthenticated',
     'remove': 'isAuthenticated',
     'update': 'isAuthenticated',

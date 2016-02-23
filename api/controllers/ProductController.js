@@ -477,16 +477,11 @@ module.exports = {
 
         sails.log('-------- Product Controller product--------', product);
         PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
-          var isAdmin,
-            managerOfProducts;
-
           if (error) {
             return response.serverError(error);
           }
 
-          isAdmin = permission.admin;
-          managerOfProducts = permission.productsPermission === 'manage';
-          if (!isAdmin && !managerOfProducts) {
+          if (!permission.admin) {
             return response.send(403, {
               code: 'access.denied',
               message: 'Access denied'
