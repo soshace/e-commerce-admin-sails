@@ -86,8 +86,8 @@ module.exports.policies = {
     'update': 'isAuthenticated',
     'findOne': 'isAuthenticated',
     'remove': 'isAuthenticated',
-    'findTeams': ['isAuthenticated', 'isCompanyOwner'],
-    'findProjects': ['isAuthenticated', 'isCompanyOwner']
+    'findTeams': 'isAuthenticated',
+    'findProjects': 'isAuthenticated'
   },
 
   'TeamController': {
