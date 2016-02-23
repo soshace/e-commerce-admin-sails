@@ -275,38 +275,95 @@ module.exports = {
 
   remove: function (request, response) {
     var teamId = request.param('id'),
-      team = request.team,
-      adminTeam = team.admin;
+      user = request.user,
+      userId = user.id;
 
-    if (adminTeam) {
-      return response.send(403, {
-        code: 'forbidden',
-        message: 'You are not able to delete Administrator\'s team'
+    if (_.isEmpty(teamId)) {
+      return response.send(400, {
+        code: 'error',
+        message: 'You need to specify team id'
       });
     }
 
-    Team.destroy({id: teamId})
-      .exec(function (error, team) {
-        if (error) {
-          return response.send(500, {
-            code: 'error',
-            message: error
-          });
-        }
+    Team.findOne({id: teamId}).exec(function (error, team) {
+      if (error) {
+        return response.serverError(error);
+      }
 
-        if (typeof team === 'undefined') {
-          return response.send(400, {
-            code: 'not.found',
-            message: 'Team not found'
-          });
-        }
-
-        return response.send(200, {
-          code: 'successful',
-          message: 'Team was removed successfully',
-          team: team
+      if (_.isEmpty(team)) {
+        return response.send(404, {
+          code: 'not.found',
+          message: 'Team not found'
         });
+      }
+
+      Company.findOne({id: team.company}).populate('teams').exec(function (error, company) {
+        var teams,
+          adminTeam,
+          isAdmin = false;
+
+        if (error) {
+          return response.serverError(error);
+        }
+
+        if (_.isEmpty(company)) {
+          return response.send(404, {
+            code: 'not.found',
+            message: 'Company not found'
+          });
+        }
+
+        teams = company.teams;
+        _.each(teams, function (team) {
+          if (team.admin) {
+            adminTeam = team;
+          }
+        });
+
+        if (_.isEmpty(adminTeam)) {
+          return response.send(404, {
+            code: 'not.found',
+            message: 'Admin team not found'
+          })
+        }
+
+        _.each(adminTeam.members, function (teamMember) {
+          if (teamMember === userId) {
+            isAdmin = true;
+          }
+        });
+
+        if (!isAdmin) {
+          return response.send(403, {
+            code: 'access.denied',
+            message: 'Access denied'
+          });
+        }
+
+        Team.destroy({id: teamId})
+          .exec(function (error, team) {
+            if (error) {
+              return response.send(500, {
+                code: 'error',
+                message: error
+              });
+            }
+
+            if (typeof team === 'undefined') {
+              return response.send(400, {
+                code: 'not.found',
+                message: 'Team not found'
+              });
+            }
+
+            return response.send(200, {
+              code: 'successful',
+              message: 'Team was removed successfully',
+              team: team
+            });
+          });
       });
+    });
   },
 
   findPermissions: function (request, response) {

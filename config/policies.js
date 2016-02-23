@@ -95,7 +95,7 @@ module.exports.policies = {
     'find': 'isAuthenticated',
     'findOne': 'isAuthenticated',
     'findPermissions': ['isAuthenticated', 'isTeamOwner'],
-    'remove': ['isAuthenticated', 'isTeamOwner'],
+    'remove': 'isAuthenticated',
     'update': 'isAuthenticated',
     'removeMember': ['isAuthenticated', 'isTeamOwner']
   },
