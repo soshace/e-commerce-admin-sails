@@ -80,28 +80,93 @@ module.exports = {
     });
   },
 
-  //TODO: need to close access to change team to administrators
   update: function (request, response) {
     var teamData = request.body || {},
-      team = request.team || {};
+      teamId = request.param('id'),
+      user = request.user,
+      userId = user.id;
 
-    _.extend(team, teamData);
+    if (_.isEmpty(teamId)) {
+      return response.send(400, {
+        code: 'error',
+        message: 'You need to specify team id'
+      });
+    }
 
-    team.save(function (error, team) {
-      var returnedTeam;
-
+    Team.findOne({id: teamId}).exec(function (error, team) {
       if (error) {
-        return response.send(500, {
-          code: 'error',
-          message: error
+        return response.serverError(error);
+      }
+
+      if (_.isEmpty(team)) {
+        return response.send(404, {
+          code: 'not.found',
+          message: 'Team not found'
         });
       }
 
-      returnedTeam = _.pick(team, 'id', 'name', 'createdAt', 'updatedAt');
-      response.send(200, {
-        code: 'successful',
-        message: 'Team was successfully updated',
-        team: returnedTeam
+      Company.findOne({id: companyId}).populate('teams').exec(function (error, company) {
+        var teams,
+          adminTeam,
+          isAdmin = false;
+
+        if (error) {
+          return response.serverError(error);
+        }
+
+        if (_.isEmpty(company)) {
+          return response.send(404, {
+            code: 'not.found',
+            message: 'Company not found'
+          });
+        }
+
+        teams = company.teams;
+        _.each(teams, function (team) {
+          if (team.admin) {
+            adminTeam = team;
+          }
+        });
+
+        if (_.isEmpty(adminTeam)) {
+          return response.send(404, {
+            code: 'not.found',
+            message: 'Admin team not found'
+          })
+        }
+
+        _.each(adminTeam.members, function (teamMember) {
+          if (teamMember === userId) {
+            isAdmin = true;
+          }
+        });
+
+        if (!isAdmin) {
+          return response.send(403, {
+            code: 'access.denied',
+            message: 'Access denied'
+          });
+        }
+
+        _.extend(team, teamData);
+
+        team.save(function (error, team) {
+          var returnedTeam;
+
+          if (error) {
+            return response.send(500, {
+              code: 'error',
+              message: error
+            });
+          }
+
+          returnedTeam = _.pick(team, 'id', 'name', 'createdAt', 'updatedAt');
+          response.send(200, {
+            code: 'successful',
+            message: 'Team was successfully updated',
+            team: returnedTeam
+          });
+        });
       });
     });
   },
@@ -203,15 +268,15 @@ module.exports = {
     Permission.find({team: teamId})
       .populate('members')
       .exec(function (error, permission) {
-      if (error) {
-        return response.serverError(error);
-      }
+        if (error) {
+          return response.serverError(error);
+        }
 
-      return response.send(200, {
-        code: 'successful',
-        permissions: permission
+        return response.send(200, {
+          code: 'successful',
+          permissions: permission
+        });
       });
-    });
   },
 
   removeMember: function (request, response) {
