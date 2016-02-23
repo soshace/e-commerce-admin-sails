@@ -170,29 +170,81 @@ module.exports = {
   },
 
   remove: function (request, response) {
-    var companyId = request.param('id');
+    var companyId = request.param('id'),
+      user = request.user,
+      userId = user.id;
 
-    Company.update({id: companyId})
-      .exec(function (error, companies) {
+    if (_.isEmpty(companyId)) {
+      return response.send(400, {
+        code: 'error',
+        message: 'Company id is not defined'
+      });
+    }
+
+    Company.findOne({id: companyId})
+      .exec(function (error, company) {
+        var adminTeam,
+          isAdmin = false;
+
         if (error) {
-          return response.send(500, {
-            code: 'error',
-            message: error
-          });
+          return response.serverError(error);
         }
 
-        if (typeof companies === 'undefined') {
+        if (_.isEmpty(company)) {
           return response.send(400, {
             code: 'not.found',
             message: 'Company was not found'
           });
         }
 
-        return response.send(200, {
-          code: 'successful',
-          message: 'Company was removed successfully',
-          company: companies
+        _.each(company.teams, function (team) {
+          if (team.admin) {
+            adminTeam = team;
+          }
         });
+
+        if (_.isEmpty(adminTeam)) {
+          return response.send(404, {
+            code: 'error',
+            message: 'Admin team not found'
+          });
+        }
+
+        _.each(adminTeam.memebers, function (member) {
+          if (member.id === userId) {
+            isAdmin = true;
+          }
+        });
+
+        if (!isAdmin) {
+          return response.send(403, {
+            code: 'access.denied',
+            message: 'Access denied'
+          });
+        }
+
+        Company.destroy({id: companyId})
+          .exec(function (error, companies) {
+            if (error) {
+              return response.send(500, {
+                code: 'error',
+                message: error
+              });
+            }
+
+            if (_.isEmpty(companies)) {
+              return response.send(400, {
+                code: 'not.found',
+                message: 'Company was not found'
+              });
+            }
+
+            return response.send(200, {
+              code: 'successful',
+              message: 'Company was removed successfully',
+              company: companies
+            });
+          });
       });
   },
 
