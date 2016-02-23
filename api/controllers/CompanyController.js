@@ -5,7 +5,8 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
-var _ = require('underscore');
+var _ = require('underscore'),
+  async = require('async');
 
 module.exports = {
   create: function (request, response) {
@@ -251,17 +252,49 @@ module.exports = {
   find: function (request, response) {
     var user = request.user;
 
-    Company.find({owner: user.id}).exec(function (error, companies) {
+    User.findOne({id: user.id}).populate('teams').exec(function (error, user) {
+      var teams,
+        adminTeams = [],
+        companies = [];
+
       if (error) {
-        return response.send(500, {
-          code: 'error',
-          message: error
+        return response.serverError(error);
+      }
+
+      if (_.isEmpty(user)) {
+        return response.send(400, {
+          code: 'not.found',
+          message: 'User was not found'
         });
       }
 
-      return response.send(200, {
-        code: 'successful',
-        message: 'Companies were successfully found',
+      teams = user.teams;
+      if (_.isEmpty(teams)) {
+        return response.send(404, {
+          code: 'not.found',
+          message: 'Teams not found'
+        });
+      }
+
+      _.each(teams, function (team) {
+        if (team.admin) {
+          adminTeams.push(team);
+        }
+      });
+
+      if (_.isEmpty(adminTeams)) {
+        return response.send(404, {
+          code: 'not.found',
+          message: 'You haven\'t access to admin teams'
+        });
+      }
+
+      _.each(adminTeams, function (team) {
+        companies.push(team.company);
+      });
+
+      response.send(200, {
+        code: 'success',
         companies: companies
       });
     });
