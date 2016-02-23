@@ -198,12 +198,11 @@ module.exports = {
   },
 
   remove: function (request, response) {
-    var projectData = request.body,
-      projectId = request.param('id'),
+    var projectId = request.param('id'),
       user = request.user,
       userId = user.id;
 
-    PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission, project) {
+    PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
       var isAdmin,
         hasAccessToProduct;
 
@@ -220,40 +219,25 @@ module.exports = {
         });
       }
 
-      _.extend(project, projectData);
+      Project.destroy({id: projectId})
+        .exec(function (error, projects) {
+          if (error) {
+            return response.serverError(error);
+          }
 
-      project.save(function (error, project) {
-        if (error) {
-          return response.serverError(error);
-        }
-
-        if (typeof project === 'undefined') {
-          return response.send(404, {
-            code: 'not.found',
-            message: 'project not found'
-          });
-        }
-
-        Project.destroy({id: projectId})
-          .exec(function (error, projects) {
-            if (error) {
-              return response.serverError(error);
-            }
-
-            if (typeof projects === 'undefined') {
-              return response.send(400, {
-                code: 'not.found',
-                message: 'Project was not found'
-              });
-            }
-
-            response.send(200, {
-              code: 'successful',
-              message: 'Project was removed successfully',
-              projects: projects
+          if (typeof projects === 'undefined') {
+            return response.send(400, {
+              code: 'not.found',
+              message: 'Project was not found'
             });
+          }
+
+          response.send(200, {
+            code: 'successful',
+            message: 'Project was removed successfully',
+            projects: projects
           });
-      });
+        });
     });
   },
 
