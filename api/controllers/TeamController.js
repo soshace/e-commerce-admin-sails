@@ -9,19 +9,73 @@ var _ = require('underscore');
 
 module.exports = {
   create: function (request, response) {
-    var projectData = request.body || {};
+    var teamData = request.body || {},
+      companyId = teamData.company,
+      user = request.user,
+      userId = user.id;
 
-    Team.create(projectData).exec(function (error, team) {
+    if (_.isEmpty(companyId)) {
+      return response.send(400, {
+        code: 'error',
+        message: 'You need to specify company id'
+      });
+    }
+
+    Company.findOne({id: companyId}).populate('teams').exec(function (error, company) {
+      var teams,
+        adminTeam,
+        isAdmin = false;
+
       if (error) {
-        return response.send(500, {
-          code: 'error',
-          message: error
+        return response.serverError(error);
+      }
+
+      if (_.isEmpty(company)) {
+        return response.send(404, {
+          code: 'not.found',
+          message: 'Company not found'
         });
       }
 
-      response.send(200, {
-        code: 'successful',
-        team: team
+      teams = company.teams;
+      _.each(teams, function (team) {
+        if (team.admin) {
+          adminTeam = team;
+        }
+      });
+
+      if (_.isEmpty(adminTeam)) {
+        return response.send(404, {
+          code: 'not.found',
+          message: 'Admin team not found'
+        })
+      }
+
+      _.each(adminTeam.members, function (teamMember) {
+        if (teamMember === userId) {
+          isAdmin = true;
+        }
+      });
+
+      if (!isAdmin) {
+        return response.send(403, {
+          code: 'access.denied',
+          message: 'Access denied'
+        });
+      }
+
+      Team.create(teamData).exec(function (error, team) {
+        if (error) {
+          return response.send(500, {
+            code: 'error',
+            message: error
+          });
+        }
+
+        response.send(200, {
+          code: 'successful',
+          team: team
+        });
       });
     });
   },
