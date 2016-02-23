@@ -18,16 +18,16 @@ module.exports = {
       projectId = productData.project;
 
     PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
-      var isOwner,
+      var isAdmin,
         managerOfProducts;
 
       if (error) {
         return response.serverError(error);
       }
 
-      isOwner = permission.isOwner;
+      isAdmin = permission.admin;
       managerOfProducts = permission.productsPermission === 'manage';
-      if (!isOwner && !managerOfProducts) {
+      if (!isAdmin && !managerOfProducts) {
         return response.send(403, {
           code: 'access.denied',
           message: 'Access denied'
@@ -92,16 +92,16 @@ module.exports = {
 
       projectId = product.project;
       PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
-        var isOwner,
+        var isAdmin,
           managerOfProducts;
 
         if (error) {
           return response.serverError(error);
         }
 
-        isOwner = permission.isOwner;
+        isAdmin = permission.admin;
         managerOfProducts = permission.productsPermission === 'manage';
-        if (!isOwner && !managerOfProducts) {
+        if (!isAdmin && !managerOfProducts) {
           return response.send(403, {
             code: 'access.denied',
             message: 'Access denied'
@@ -152,16 +152,16 @@ module.exports = {
 
         sails.log('-------- Product Controller product--------', product);
         PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
-          var isOwner,
+          var isAdmin,
             hasAccessToProduct;
 
           if (error) {
             return response.serverError(error);
           }
 
-          isOwner = permission.isOwner;
+          isAdmin = permission.admin;
           hasAccessToProduct = permission.productsPermission !== 'none';
-          if (!isOwner && !hasAccessToProduct) {
+          if (!isAdmin && !hasAccessToProduct) {
             return response.send(403, {
               code: 'access.denied',
               message: 'Access denied'
@@ -199,16 +199,16 @@ module.exports = {
 
         sails.log('-------- Product Controller product--------', product);
         PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
-          var isOwner,
+          var isAdmin,
             managerOfProducts;
 
           if (error) {
             return response.serverError(error);
           }
 
-          isOwner = permission.isOwner;
+          isAdmin = permission.admin;
           managerOfProducts = permission.productsPermission === 'manage';
-          if (!isOwner && !managerOfProducts) {
+          if (!isAdmin && !managerOfProducts) {
             return response.send(403, {
               code: 'access.denied',
               message: 'Access denied'
@@ -300,7 +300,7 @@ module.exports = {
 
         sails.log('-------- Product Controller product--------', product);
         PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
-          var isOwner,
+          var isAdmin,
             hasAccessToProduct,
             categories;
 
@@ -308,9 +308,9 @@ module.exports = {
             return response.serverError(error);
           }
 
-          isOwner = permission.isOwner;
+          isAdmin = permission.admin;
           hasAccessToProduct = permission.productsPermission !== 'none';
-          if (!isOwner && !hasAccessToProduct) {
+          if (!isAdmin && !hasAccessToProduct) {
             return response.send(403, {
               code: 'access.denied',
               message: 'Access denied'
@@ -349,16 +349,16 @@ module.exports = {
         projectId = product.project;
         sails.log('-------- Product Controller product--------', product);
         PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
-          var isOwner,
+          var isAdmin,
             hasAccessToProduct;
 
           if (error) {
             return response.serverError(error);
           }
 
-          isOwner = permission.isOwner;
+          isAdmin = permission.admin;
           hasAccessToProduct = permission.productsPermission !== 'none';
-          if (!isOwner && !hasAccessToProduct) {
+          if (!isAdmin && !hasAccessToProduct) {
             return response.send(403, {
               code: 'access.denied',
               message: 'Access denied'
@@ -415,16 +415,16 @@ module.exports = {
 
         sails.log('-------- Product Controller product--------', product);
         PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
-          var isOwner,
+          var isAdmin,
             managerOfProducts;
 
           if (error) {
             return response.serverError(error);
           }
 
-          isOwner = permission.isOwner;
+          isAdmin = permission.admin;
           managerOfProducts = permission.productsPermission === 'manage';
-          if (!isOwner && !managerOfProducts) {
+          if (!isAdmin && !managerOfProducts) {
             return response.send(403, {
               code: 'access.denied',
               message: 'Access denied'
@@ -478,16 +478,16 @@ module.exports = {
 
         sails.log('-------- Product Controller product--------', product);
         PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
-          var isOwner,
+          var isAdmin,
             managerOfProducts;
 
           if (error) {
             return response.serverError(error);
           }
 
-          isOwner = permission.isOwner;
+          isAdmin = permission.admin;
           managerOfProducts = permission.productsPermission === 'manage';
-          if (!isOwner && !managerOfProducts) {
+          if (!isAdmin && !managerOfProducts) {
             return response.send(403, {
               code: 'access.denied',
               message: 'Access denied'

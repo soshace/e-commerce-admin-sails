@@ -21,15 +21,6 @@ module.exports = {
         });
       },
       function (project, callback) {
-        var isOwner = project.owner = userId;
-
-        sails.log('---------PermissionService project------', project);
-        if (isOwner) {
-          return callback(null, {
-            isOwner: true
-          });
-        }
-
         User.findOne({id: userId}).populate('permissions').exec(function (error, user) {
           var permissions,
             projectPermission;
@@ -46,7 +37,6 @@ module.exports = {
             }
           });
 
-          projectPermission.isOwner = false;
           callback(null, projectPermission);
         })
       }
@@ -78,7 +68,7 @@ module.exports = {
       return false;
     }
 
-    return permission.isOwner ||
+    return permission.admin ||
       permission.productsPermission !== 'none' ||
       permission.ordersPermission !== 'none' ||
       permission.customersPermission !== 'none';

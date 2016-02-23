@@ -42,7 +42,6 @@ module.exports = {
 
       updatedPermission.project = updatedPermission.project.id;
       updatedPermission.team = updatedPermission.team.id;
-      updatedPermission.owner = updatedPermission.owner.id;
       response.send(200, {
         code: 'successful',
         message: 'Permission was successfully updated',

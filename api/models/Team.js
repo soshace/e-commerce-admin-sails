@@ -53,7 +53,8 @@ module.exports = {
           Permission.create({
             project: project.id,
             team: team.id,
-            owner: team.owner
+            owner: team.owner,
+            admin: team.admin
           }).exec(callback);
         }, callback);
       }

@@ -16,16 +16,16 @@ module.exports = {
       projectId = productTypeData.project;
 
     PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
-      var isOwner,
+      var isAdmin,
         managerOfProducts;
 
       if (error) {
         return response.serverError(error);
       }
 
-      isOwner = permission.isOwner;
+      isAdmin = permission.admin;
       managerOfProducts = permission.productsPermission === 'manage';
-      if (!isOwner && !managerOfProducts) {
+      if (!isAdmin && !managerOfProducts) {
         return response.send(403, {
           code: 'access.denied',
           message: 'Access denied'
@@ -72,16 +72,16 @@ module.exports = {
 
       projectId = productType.project;
       PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
-        var isOwner,
+        var isAdmin,
           managerOfProducts;
 
         if (error) {
           return response.serverError(error);
         }
 
-        isOwner = permission.isOwner;
+        isAdmin = permission.admin;
         managerOfProducts = permission.productsPermission === 'manage';
-        if (!isOwner && !managerOfProducts) {
+        if (!isAdmin && !managerOfProducts) {
           return response.send(403, {
             code: 'access.denied',
             message: 'Access denied'
@@ -127,16 +127,16 @@ module.exports = {
 
         projectId = productType.project;
         PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
-          var isOwner,
+          var isAdmin,
             managerOfProducts;
 
           if (error) {
             return response.serverError(error);
           }
 
-          isOwner = permission.isOwner;
+          isAdmin = permission.admin;
           managerOfProducts = permission.productsPermission === 'manage';
-          if (!isOwner && !managerOfProducts) {
+          if (!isAdmin && !managerOfProducts) {
             return response.send(403, {
               code: 'access.denied',
               message: 'Access denied'
@@ -168,16 +168,16 @@ module.exports = {
 
         projectId = productType.project;
         PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
-          var isOwner,
+          var isAdmin,
             managerOfProducts;
 
           if (error) {
             return response.serverError(error);
           }
 
-          isOwner = permission.isOwner;
+          isAdmin = permission.admin;
           managerOfProducts = permission.productsPermission === 'manage';
-          if (!isOwner && !managerOfProducts) {
+          if (!isAdmin && !managerOfProducts) {
             return response.send(403, {
               code: 'access.denied',
               message: 'Access denied'
@@ -251,16 +251,16 @@ module.exports = {
 
         projectId = productType.project;
         PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
-          var isOwner,
+          var isAdmin,
             managerOfProducts;
 
           if (error) {
             return response.serverError(error);
           }
 
-          isOwner = permission.isOwner;
+          isAdmin = permission.admin;
           managerOfProducts = permission.productsPermission === 'manage';
-          if (!isOwner && !managerOfProducts) {
+          if (!isAdmin && !managerOfProducts) {
             return response.send(403, {
               code: 'access.denied',
               message: 'Access denied'

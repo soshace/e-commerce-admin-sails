@@ -8,7 +8,6 @@
 var async = require('async');
 
 module.exports = {
-  //TODO: need to close ability to invite owners to the team
   //TODO: need to remove user from another teams of current company
   create: function (request, response) {
     var that = this,

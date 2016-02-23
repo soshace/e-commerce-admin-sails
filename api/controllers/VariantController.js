@@ -30,16 +30,16 @@ module.exports = {
 
       projectId = product.project;
       PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
-        var isOwner,
+        var isAdmin,
           managerOfProducts;
 
         if (error) {
           return response.serverError(error);
         }
 
-        isOwner = permission.isOwner;
+        isAdmin = permission.admin;
         managerOfProducts = permission.productsPermission === 'manage';
-        if (!isOwner && !managerOfProducts) {
+        if (!isAdmin && !managerOfProducts) {
           return response.send(403, {
             code: 'access.denied',
             message: 'Access denied'
@@ -89,16 +89,16 @@ module.exports = {
 
       projectId = variant.project;
       PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
-        var isOwner,
+        var isAdmin,
           managerOfProducts;
 
         if (error) {
           return response.serverError(error);
         }
 
-        isOwner = permission.isOwner;
+        isAdmin = permission.admin;
         managerOfProducts = permission.productsPermission === 'manage';
-        if (!isOwner && !managerOfProducts) {
+        if (!isAdmin && !managerOfProducts) {
           return response.send(403, {
             code: 'access.denied',
             message: 'Access denied'
@@ -176,16 +176,16 @@ module.exports = {
 
       projectId = variant.project;
       PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
-        var isOwner,
+        var isAdmin,
           managerOfProducts;
 
         if (error) {
           return response.serverError(error);
         }
 
-        isOwner = permission.isOwner;
+        isAdmin = permission.admin;
         managerOfProducts = permission.productsPermission === 'manage';
-        if (!isOwner && !managerOfProducts) {
+        if (!isAdmin && !managerOfProducts) {
           return response.send(403, {
             code: 'access.denied',
             message: 'Access denied'

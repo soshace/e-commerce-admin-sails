@@ -98,7 +98,7 @@ module.exports = {
     Project.findOne({id: projectId})
       .populate('permissions')
       .exec(function (error, project) {
-        var isOwner,
+        var isAdmin,
           hasAccessByPermissions;
 
         if (error) {
@@ -113,9 +113,9 @@ module.exports = {
         }
 
 
-        isOwner = project.owner = userId;
+        isAdmin = project.owner = userId;
         hasAccessByPermissions = PermissionsService.accessByOnePermission(userId, project.permissions);
-        if (isOwner || hasAccessByPermissions) {
+        if (isAdmin || hasAccessByPermissions) {
           return response.send(200, {
             code: 'successful',
             message: 'Project was successfully found',
@@ -218,10 +218,10 @@ module.exports = {
         PermissionsService.getPermissionsByProject(userId, projectId, callback);
       },
       function (permission, callback) {
-        var isOwner = permission.isOwner,
+        var isAdmin = permission.admin,
           hasAccessToProducts = permission.productsPermission !== 'none';
 
-        if (isOwner || hasAccessToProducts) {
+        if (isAdmin || hasAccessToProducts) {
           return Category.find({project: projectId}).exec(function (error, categories) {
             if (error) {
               return callback(error);
@@ -263,10 +263,10 @@ module.exports = {
         PermissionsService.getPermissionsByProject(userId, projectId, callback);
       },
       function (permission, callback) {
-        var isOwner = permission.isOwner,
+        var isAdmin = permission.admin,
           hasAccessToProducts = permission.productsPermission !== 'none';
 
-        if (!isOwner && !hasAccessToProducts) {
+        if (!isAdmin && !hasAccessToProducts) {
           response.send(403, {
             code: 'permission.denied',
             message: 'Permission denied'
@@ -329,16 +329,16 @@ module.exports = {
       userId = user.id;
 
     PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
-      var isOwner,
+      var isAdmin,
         managerOfProducts;
 
       if (error) {
         return response.serverError(error);
       }
 
-      isOwner = permission.isOwner;
+      isAdmin = permission.admin;
       managerOfProducts = permission.productsPermission === 'manage';
-      if (!isOwner && !managerOfProducts) {
+      if (!isAdmin && !managerOfProducts) {
         return response.send(403, {
           code: 'access.denied',
           message: 'Access denied'

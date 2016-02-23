@@ -34,6 +34,11 @@ module.exports = {
       defaultsTo: 'none',
       required: true
     },
+    admin: {
+      type: 'boolean',
+      defaultsTo: false,
+      required: true
+    },
     owner: {
       model: 'user',
       required: true
