@@ -156,7 +156,7 @@ module.exports.policies = {
   'PermissionController': {
     //DEPRECATED
     //'find': 'isAuthenticated',
-    'update': ['isAuthenticated', 'isUserOwnerOfPermission']
+    'update': 'isAuthenticated'
   },
 
   'CountryController': {

@@ -5,6 +5,8 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
+var _ = require('underscore');
+
 module.exports = {
   /**
    * @deprecated
@@ -34,24 +36,54 @@ module.exports = {
 
   update: function (request, response) {
     var permissionData = request.body || {},
-      permission = request.permission || {};
+      permissionId = request.param('id'),
+      user = request.user,
+      userId = user.id;
 
-    _.extend(permission, permissionData);
+    Permission.findOne({id: permissionId}).populate('members').exec(function (error, permission) {
+      var hasAccess = false;
 
-    permission.save(function (error, updatedPermission) {
       if (error) {
-        return response.send(500, {
-          code: 'error',
-          message: error
+        return response.serverError(error);
+      }
+
+      if (_.isEmpty(permission)) {
+        return response.send(404, {
+          code: 'not.found',
+          message: 'Product attribute not found'
         });
       }
 
-      updatedPermission.project = updatedPermission.project.id;
-      updatedPermission.team = updatedPermission.team.id;
-      response.send(200, {
-        code: 'successful',
-        message: 'Permission was successfully updated',
-        permission: updatedPermission
+      _.each(permission.members, function (member) {
+        if (member.id === userId) {
+          hasAccess = true;
+        }
+      });
+
+      if (!hasAccess) {
+        return response.send(403, {
+          code: 'access.denied',
+          message: 'Access denied'
+        });
+      }
+
+      _.extend(permission, permissionData);
+
+      permission.save(function (error, updatedPermission) {
+        if (error) {
+          return response.send(500, {
+            code: 'error',
+            message: error
+          });
+        }
+
+        updatedPermission.project = updatedPermission.project.id;
+        updatedPermission.team = updatedPermission.team.id;
+        response.send(200, {
+          code: 'successful',
+          message: 'Permission was successfully updated',
+          permission: updatedPermission
+        });
       });
     });
   }
