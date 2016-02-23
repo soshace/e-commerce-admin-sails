@@ -198,27 +198,63 @@ module.exports = {
   },
 
   remove: function (request, response) {
-    var projectId = request.param('id');
+    var projectData = request.body,
+      projectId = request.param('id'),
+      user = request.user,
+      userId = user.id;
 
-    Project.update({id: projectId})
-      .exec(function (error, project) {
+    PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission, project) {
+      var isAdmin,
+        hasAccessToProduct;
+
+      if (error) {
+        return response.serverError(error);
+      }
+
+      isAdmin = permission.admin;
+      hasAccessToProduct = permission.productsPermission !== 'none';
+      if (!isAdmin && !hasAccessToProduct) {
+        return response.send(403, {
+          code: 'access.denied',
+          message: 'Access denied'
+        });
+      }
+
+      _.extend(project, projectData);
+
+      project.save(function (error, project) {
         if (error) {
           return response.serverError(error);
         }
 
         if (typeof project === 'undefined') {
-          return response.send(400, {
+          return response.send(404, {
             code: 'not.found',
-            message: 'Project was not found'
+            message: 'project not found'
           });
         }
 
-        response.send(200, {
-          code: 'successful',
-          message: 'Project was removed successfully',
-          project: project
-        });
+        Project.destroy({id: projectId})
+          .exec(function (error, projects) {
+            if (error) {
+              return response.serverError(error);
+            }
+
+            if (typeof projects === 'undefined') {
+              return response.send(400, {
+                code: 'not.found',
+                message: 'Project was not found'
+              });
+            }
+
+            response.send(200, {
+              code: 'successful',
+              message: 'Project was removed successfully',
+              projects: projects
+            });
+          });
       });
+    });
   },
 
   find: function (request, response) {
