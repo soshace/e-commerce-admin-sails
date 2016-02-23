@@ -43,15 +43,21 @@ module.exports = {
     }
 
     Company.findOne({id: companyId}).populate('teams').exec(function (error, company) {
-      var teams = company.teams,
-        adminTeam,
+      var adminTeam,
         isAdmin = false;
 
       if (error) {
         return response.serverError(error);
       }
 
-      _.each(teams, function (team) {
+      if (_.isEmpty(company)) {
+        return response.send(400, {
+          code: 'not.found',
+          message: 'Company was not found'
+        });
+      }
+
+      _.each(company.teams, function (team) {
         if (team.admin) {
           adminTeam = team;
         }
@@ -100,23 +106,58 @@ module.exports = {
   },
 
   findOne: function (request, response) {
-    var companyId = request.param('id');
+    var companyId = request.param('id'),
+      user = request.user,
+      userId = user.id;
+
+    if (_.isEmpty(companyId)) {
+      return response.send(400, {
+        code: 'error',
+        message: 'Company id is not defined'
+      });
+    }
 
     Company.findOne({id: companyId})
-      .populate('projects')
       .populate('teams')
+      .populate('projects')
       .exec(function (error, company) {
+        var adminTeam,
+          isAdmin = false;
+
         if (error) {
-          return response.send(500, {
-            code: 'error',
-            message: error
-          });
+          return response.serverError(error);
         }
 
-        if (typeof company === 'undefined') {
+        if (_.isEmpty(company)) {
           return response.send(400, {
             code: 'not.found',
             message: 'Company was not found'
+          });
+        }
+
+        _.each(company.teams, function (team) {
+          if (team.admin) {
+            adminTeam = team;
+          }
+        });
+
+        if (_.isEmpty(adminTeam)) {
+          return response.send(404, {
+            code: 'error',
+            message: 'Admin team not found'
+          });
+        }
+
+        _.each(adminTeam.memebers, function (member) {
+          if (member.id === userId) {
+            isAdmin = true;
+          }
+        });
+
+        if (!isAdmin) {
+          return response.send(403, {
+            code: 'access.denied',
+            message: 'Access denied'
           });
         }
 

@@ -84,7 +84,7 @@ module.exports.policies = {
     'create': 'isAuthenticated',
     'find': 'isAuthenticated',
     'update': 'isAuthenticated',
-    'findOne': ['isAuthenticated', 'isCompanyOwner'],
+    'findOne': 'isAuthenticated',
     'remove': ['isAuthenticated', 'isCompanyOwner'],
     'findTeams': ['isAuthenticated', 'isCompanyOwner'],
     'findProjects': ['isAuthenticated', 'isCompanyOwner']
