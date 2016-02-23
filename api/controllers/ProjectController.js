@@ -258,29 +258,16 @@ module.exports = {
           }, function (error) {
             callback(error, projects);
           });
-        },
-        function (projectsByPermissions, callback) {
-          sails.log('--------ProjectController find----------', projectsByPermissions);
-
-          Project.find({owner: userId}).exec(function (error, ownProjects) {
-            ownProjects = ownProjects || [];
-            callback(error, ownProjects, projectsByPermissions);
-          });
-        },
-        function (ownProjects, projectsByPermissions, callback) {
-
-          var projects = projectsByPermissions.concat(ownProjects);
-          callback(null, projects);
         }
       ],
-      function (error, fullListOfProjects) {
+      function (error, projects) {
         if (error) {
           return response.serverError(error);
         }
 
         return response.send(200, {
           code: 'successful',
-          projects: fullListOfProjects
+          projects: projects
         });
       });
   },
