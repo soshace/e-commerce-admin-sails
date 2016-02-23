@@ -28,8 +28,6 @@ module.exports = {
         }
 
         User.findOne({id: user.id})
-          .populate('ownCompanies')
-          .populate('ownTeams')
           .populate('teams')
           .exec(function (error, userPopulated) {
             if (error) {
