@@ -94,10 +94,10 @@ module.exports.policies = {
     'create': 'isAuthenticated',
     'find': 'isAuthenticated',
     'findOne': 'isAuthenticated',
-    'findPermissions': ['isAuthenticated', 'isTeamOwner'],
+    'findPermissions': 'isAuthenticated',
     'remove': 'isAuthenticated',
     'update': 'isAuthenticated',
-    'removeMember': ['isAuthenticated', 'isTeamOwner']
+    'removeMember': 'isAuthenticated'
   },
 
   'ProductTypeController': {

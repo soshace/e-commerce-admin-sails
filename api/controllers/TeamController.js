@@ -367,62 +367,183 @@ module.exports = {
   },
 
   findPermissions: function (request, response) {
-    var teamId = request.param('id');
+    var teamId = request.param('id'),
+      user = request.user,
+      userId = user.id;
 
-    Permission.find({team: teamId})
-      .populate('members')
-      .exec(function (error, permission) {
+    if (_.isEmpty(teamId)) {
+      return response.send(400, {
+        code: 'error',
+        message: 'You need to specify team id'
+      });
+    }
+
+    Team.findOne({id: teamId}).exec(function (error, team) {
+      if (error) {
+        return response.serverError(error);
+      }
+
+      if (_.isEmpty(team)) {
+        return response.send(404, {
+          code: 'not.found',
+          message: 'Team not found'
+        });
+      }
+
+      Company.findOne({id: team.company}).populate('teams').exec(function (error, company) {
+        var teams,
+          adminTeam,
+          isAdmin = false;
+
         if (error) {
           return response.serverError(error);
         }
 
-        return response.send(200, {
-          code: 'successful',
-          permissions: permission
+        if (_.isEmpty(company)) {
+          return response.send(404, {
+            code: 'not.found',
+            message: 'Company not found'
+          });
+        }
+
+        teams = company.teams;
+        _.each(teams, function (team) {
+          if (team.admin) {
+            adminTeam = team;
+          }
         });
+
+        if (_.isEmpty(adminTeam)) {
+          return response.send(404, {
+            code: 'not.found',
+            message: 'Admin team not found'
+          })
+        }
+
+        _.each(adminTeam.members, function (teamMember) {
+          if (teamMember === userId) {
+            isAdmin = true;
+          }
+        });
+
+        if (!isAdmin) {
+          return response.send(403, {
+            code: 'access.denied',
+            message: 'Access denied'
+          });
+        }
+
+        Permission.find({team: teamId})
+          .populate('members')
+          .exec(function (error, permission) {
+            if (error) {
+              return response.serverError(error);
+            }
+
+            return response.send(200, {
+              code: 'successful',
+              permissions: permission
+            });
+          });
       });
+    });
   },
 
   removeMember: function (request, response) {
-    var memberId = request.param('memberId'),
-      team = request.team,
-      adminTeam = team.admin,
-      onlyOneMember = team.members.length === 1;
+    var teamId = request.param('id'),
+      memberId = request.param('memberId'),
+      user = request.user,
+      userId = user.id;
 
-
-    sails.log('----TeamController RemoveMember team onlyOneMember----', team, team.members);
-    if (adminTeam && onlyOneMember) {
-      return response.send(403, {
-        code: 'forbidden',
-        message: 'You are not able to delete last user in Administrator\'s team'
+    if (_.isEmpty(teamId)) {
+      return response.send(400, {
+        code: 'error',
+        message: 'You need to specify team id'
       });
     }
 
-    async.waterfall([
-      function (callback) {
-        team.members.remove(memberId);
-        team.save(callback);
-      },
-      function (team, callback) {
-        Permission.find({team: team.id}).exec(callback);
-      },
-      function (permissions, callback) {
-        async.each(permissions, function (permission, callback) {
-          permission.members.remove(memberId);
-          permission.save(callback);
-        }, callback);
-      }
-    ], function (error) {
+    Team.findOne({id: teamId}).exec(function (error, team) {
       if (error) {
         return response.serverError(error);
       }
-    });
-    team.save(function (error, team) {
 
-      return response.send(200, {
-        code: 'successful',
-        message: 'Team member was removed successfully',
-        team: team
+      if (_.isEmpty(team)) {
+        return response.send(404, {
+          code: 'not.found',
+          message: 'Team not found'
+        });
+      }
+
+      Company.findOne({id: team.company}).populate('teams').exec(function (error, company) {
+        var teams,
+          adminTeam,
+          isAdmin = false;
+
+        if (error) {
+          return response.serverError(error);
+        }
+
+        if (_.isEmpty(company)) {
+          return response.send(404, {
+            code: 'not.found',
+            message: 'Company not found'
+          });
+        }
+
+        teams = company.teams;
+        _.each(teams, function (team) {
+          if (team.admin) {
+            adminTeam = team;
+          }
+        });
+
+        if (_.isEmpty(adminTeam)) {
+          return response.send(404, {
+            code: 'not.found',
+            message: 'Admin team not found'
+          })
+        }
+
+        _.each(adminTeam.members, function (teamMember) {
+          if (teamMember === userId) {
+            isAdmin = true;
+          }
+        });
+
+        if (!isAdmin) {
+          return response.send(403, {
+            code: 'access.denied',
+            message: 'Access denied'
+          });
+        }
+
+        async.waterfall([
+          function (callback) {
+            team.members.remove(memberId);
+            team.save(callback);
+          },
+          function (team, callback) {
+            Permission.find({team: team.id}).exec(callback);
+          },
+          function (permissions, callback) {
+            async.each(permissions, function (permission, callback) {
+              permission.members.remove(memberId);
+              permission.save(callback);
+            }, callback);
+          }
+        ], function (error) {
+          if (error) {
+            return response.serverError(error);
+          }
+        });
+        team.save(function (error, team) {
+
+          return response.send(200, {
+            code: 'successful',
+            message: 'Team member was removed successfully',
+            team: team
+          });
+        });
       });
     });
   }
