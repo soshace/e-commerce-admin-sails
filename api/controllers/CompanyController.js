@@ -289,13 +289,25 @@ module.exports = {
         });
       }
 
-      _.each(adminTeams, function (team) {
-        companies.push(team.company);
-      });
+      async.each(adminTeams, function (team, callback) {
+        async.waterfall([
+          function (callback) {
+            Company.findOne(team.company).exec(callback);
+          },
+          function (company, callback) {
+            companies.push(company);
+            callback(null);
+          }
+        ], callback);
+      }, function (error) {
+        if (error) {
+          return response.serverError(error);
+        }
 
-      response.send(200, {
-        code: 'success',
-        companies: companies
+        response.send(200, {
+          code: 'success',
+          companies: companies
+        });
       });
     });
   },
