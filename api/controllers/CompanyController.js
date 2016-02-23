@@ -31,25 +31,70 @@ module.exports = {
 
   update: function (request, response) {
     var companyData = request.body || {},
-      company = request.company || {};
+      companyId = request.param('id'),
+      user = request.user,
+      userId = user.id;
 
-    _.extend(company, companyData);
+    if (_.isEmpty(companyId)) {
+      return response.send(400, {
+        code: 'error',
+        message: 'Company id is not defined'
+      });
+    }
 
-    company.save(function (error, company) {
-      var returnedCompany;
+    Company.findOne({id: companyId}).populate('teams').exec(function (error, company) {
+      var teams = company.teams,
+        adminTeam,
+        isAdmin = false;
 
       if (error) {
-        return response.send(500, {
+        return response.serverError(error);
+      }
+
+      _.each(teams, function (team) {
+        if (team.admin) {
+          adminTeam = team;
+        }
+      });
+
+      if (_.isEmpty(adminTeam)) {
+        return response.send(404, {
           code: 'error',
-          message: error
+          message: 'Admin team not found'
         });
       }
 
-      returnedCompany = _.pick(company, 'name', 'createAt', 'updatedAt', 'id');
-      response.send(200, {
-        code: 'successful',
-        message: 'Company was successfully updated',
-        company: returnedCompany
+      _.each(adminTeam.memebers, function (member) {
+        if (member.id === userId) {
+          isAdmin = true;
+        }
+      });
+
+      if (!isAdmin) {
+        return response.send(403, {
+          code: 'access.denied',
+          message: 'Access denied'
+        });
+      }
+
+      _.extend(company, companyData);
+
+      company.save(function (error, company) {
+        var returnedCompany;
+
+        if (error) {
+          return response.send(500, {
+            code: 'error',
+            message: error
+          });
+        }
+
+        returnedCompany = _.pick(company, 'name', 'createAt', 'updatedAt', 'id');
+        response.send(200, {
+          code: 'successful',
+          message: 'Company was successfully updated',
+          company: returnedCompany
+        });
       });
     });
   },

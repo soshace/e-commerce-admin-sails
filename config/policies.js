@@ -83,7 +83,7 @@ module.exports.policies = {
   'CompanyController': {
     'create': 'isAuthenticated',
     'find': 'isAuthenticated',
-    'update': ['isAuthenticated', 'isCompanyOwner'],
+    'update': 'isAuthenticated',
     'findOne': ['isAuthenticated', 'isCompanyOwner'],
     'remove': ['isAuthenticated', 'isCompanyOwner'],
     'findTeams': ['isAuthenticated', 'isCompanyOwner'],
