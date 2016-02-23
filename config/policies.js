@@ -26,7 +26,7 @@ module.exports.policies = {
    *                                                                          *
    ***************************************************************************/
 
-  '*': true,
+  '*': 'isAuthenticated',
 
   /***************************************************************************
    *                                                                          *
@@ -35,140 +35,24 @@ module.exports.policies = {
    *                                                                          *
    ***************************************************************************/
 
-  'UserController': {
-    'update': 'isAuthenticated',
-    'getProfile': 'isAuthenticated',
-    'logout': 'isAuthenticated'
-  },
-
-  'ProjectController': {
-    'create': 'isAuthenticated',
-    'find': 'isAuthenticated',
-    'findOne': 'isAuthenticated',
-    'findProjectCategories': 'isAuthenticated',
-    'findProjectProducts': 'isAuthenticated',
-    'findProjectProductTypes': 'isAuthenticated',
-    'findPermissions': 'isAuthenticated',
-    'remove': 'isAuthenticated',
-    'update': 'isAuthenticated'
-  },
-
-  'ProductController': {
-    //DEPRECATED
-    //'getCategories': 'isAuthenticated',
-    //'find': 'isAuthenticated',
-    //'getImages': ['isAuthenticated', 'isUserOwnerOfProduct'],
-    //'getPrices': ['isAuthenticated', 'isUserOwnerOfProduct'],
-    'create': 'isAuthenticated',
-    'findOne': 'isAuthenticated',
-    'remove': 'isAuthenticated',
-    'update': 'isAuthenticated',
-    'getVariants': 'isAuthenticated',
-    'addCategory': 'isAuthenticated',
-    'removeCategory': 'isAuthenticated'
-  },
-
-  'CategoryController': {
-    //DEPRECATED
-    //'find': 'isAuthenticated',
-    'create': 'isAuthenticated',
-    'findOne': 'isAuthenticated',
-    'remove': 'isAuthenticated',
-    'update': 'isAuthenticated',
-    'getProducts': 'isAuthenticated',
-    'addProduct': 'isAuthenticated',
-    'removeProduct': 'isAuthenticated'
-  },
-
-  'CompanyController': {
-    'create': 'isAuthenticated',
-    'find': 'isAuthenticated',
-    'update': 'isAuthenticated',
-    'findOne': 'isAuthenticated',
-    'remove': 'isAuthenticated',
-    'findTeams': 'isAuthenticated',
-    'findProjects': 'isAuthenticated'
-  },
 
   'TeamController': {
-    'create': 'isAuthenticated',
-    'find': 'isAuthenticated',
-    'findOne': ['isAuthenticated', 'isTeamOwner'],
-    'findPermissions': ['isAuthenticated', 'isTeamOwner'],
-    'remove': ['isAuthenticated', 'isTeamOwner'],
-    'update': ['isAuthenticated', 'isTeamOwner'],
-    'removeMember': ['isAuthenticated', 'isTeamOwner']
-  },
-
-  'ProductTypeController': {
-    //DEPRECATED
-    //'find': 'isAuthenticated',
-    'create': 'isAuthenticated',
-    'findOne': 'isAuthenticated',
-    'remove': 'isAuthenticated',
-    'update': 'isAuthenticated',
-    'getProductAttributes': 'isAuthenticated'
+    'findOne': ['isTeamOwner'],
+    'findPermissions': ['isTeamOwner'],
+    'remove': ['isTeamOwner'],
+    'update': ['isTeamOwner'],
+    'removeMember': ['isTeamOwner']
   },
 
   'ProductAttributeController': {
-    //DEPRECATED
-    //'find': 'isAuthenticated',
-    'create': 'isAuthenticated',
-    'findOne': ['isAuthenticated', 'isUserOwnerOfProductAttribute'],
-    'remove': ['isAuthenticated', 'isUserOwnerOfProductAttribute'],
-    'update': ['isAuthenticated', 'isUserOwnerOfProductAttribute']
+    'findOne': ['isUserOwnerOfProductAttribute'],
+    'remove': ['isUserOwnerOfProductAttribute'],
+    'update': ['isUserOwnerOfProductAttribute']
   },
 
-  'VariantController': {
-    //DEPRECATED API
-    //'find': 'isAuthenticated',
-    //'findOne': ['isAuthenticated', 'isUserOwnerOfVariant'],
-    //'getImages': ['isAuthenticated', 'isUserOwnerOfVariant'],
-    //'getPrices': ['isAuthenticated', 'isUserOwnerOfVariant'],
-    'create': 'isAuthenticated',
-    'remove': 'isAuthenticated',
-    'updateSKU': 'isAuthenticated'
-  },
-
-  'VariantAttributeController': {
-    'updateValue': 'isAuthenticated'
-  },
-
-  'ImageController': {
-    //DEPRECATED
-    //'find': 'isAuthenticated',
-    //'findOne': ['isAuthenticated', 'isUserOwnerOfImage'],
-    'create': 'isAuthenticated',
-    'remove': 'isAuthenticated',
-    'update': 'isAuthenticated',
-    'upload': ['isAuthenticated']
-  },
-
-  'PriceController': {
-    //DEPRECATED
-    //'find': 'isAuthenticated',
-    //'findOne': ['isAuthenticated', 'isUserOwnerOfProduct'],
-    'create': 'isAuthenticated',
-    'remove': 'isAuthenticated',
-    'update': 'isAuthenticated'
-  },
 
   'PermissionController': {
-    //DEPRECATED
-    //'find': 'isAuthenticated',
-    'update': ['isAuthenticated', 'isUserOwnerOfPermission']
-  },
-
-  'CountryController': {
-    'find': 'isAuthenticated'
-  },
-
-  'LanguageController': {
-    'find': 'isAuthenticated'
-  },
-
-  'CurrencyController': {
-    'find': 'isAuthenticated'
+    'update': ['isUserOwnerOfPermission']
   }
 
   // RabbitController: {
