@@ -93,7 +93,7 @@ module.exports.policies = {
   'TeamController': {
     'create': 'isAuthenticated',
     'find': 'isAuthenticated',
-    'findOne': ['isAuthenticated', 'isTeamOwner'],
+    'findOne': 'isAuthenticated',
     'findPermissions': ['isAuthenticated', 'isTeamOwner'],
     'remove': ['isAuthenticated', 'isTeamOwner'],
     'update': 'isAuthenticated',

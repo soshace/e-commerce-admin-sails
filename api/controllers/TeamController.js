@@ -105,7 +105,7 @@ module.exports = {
         });
       }
 
-      Company.findOne({id: companyId}).populate('teams').exec(function (error, company) {
+      Company.findOne({id: team.company}).populate('teams').exec(function (error, company) {
         var teams,
           adminTeam,
           isAdmin = false;
@@ -197,23 +197,69 @@ module.exports = {
   },
 
   findOne: function (request, response) {
-    var teamId = request.param('id');
+    var teamId = request.param('id'),
+      user = request.user,
+      userId = user.id;
 
-    Team.findOne({id: teamId})
-      .populate('permissions')
-      .populate('members')
-      .exec(function (error, team) {
+    if (_.isEmpty(teamId)) {
+      return response.send(400, {
+        code: 'error',
+        message: 'You need to specify team id'
+      });
+    }
+
+    Team.findOne({id: teamId}).exec(function (error, team) {
+      if (error) {
+        return response.serverError(error);
+      }
+
+      if (_.isEmpty(team)) {
+        return response.send(404, {
+          code: 'not.found',
+          message: 'Team not found'
+        });
+      }
+
+      Company.findOne({id: team.company}).populate('teams').exec(function (error, company) {
+        var teams,
+          adminTeam,
+          isAdmin = false;
+
         if (error) {
-          return response.send(500, {
-            code: 'error',
-            message: error
+          return response.serverError(error);
+        }
+
+        if (_.isEmpty(company)) {
+          return response.send(404, {
+            code: 'not.found',
+            message: 'Company not found'
           });
         }
 
-        if (typeof team === 'undefined') {
-          return response.send(400, {
+        teams = company.teams;
+        _.each(teams, function (team) {
+          if (team.admin) {
+            adminTeam = team;
+          }
+        });
+
+        if (_.isEmpty(adminTeam)) {
+          return response.send(404, {
             code: 'not.found',
-            message: 'Team not found'
+            message: 'Admin team not found'
+          })
+        }
+
+        _.each(adminTeam.members, function (teamMember) {
+          if (teamMember === userId) {
+            isAdmin = true;
+          }
+        });
+
+        if (!isAdmin) {
+          return response.send(403, {
+            code: 'access.denied',
+            message: 'Access denied'
           });
         }
 
@@ -223,6 +269,7 @@ module.exports = {
           team: team
         });
       });
+    });
   },
 
 
