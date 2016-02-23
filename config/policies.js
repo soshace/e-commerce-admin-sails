@@ -114,8 +114,8 @@ module.exports.policies = {
     //DEPRECATED
     //'find': 'isAuthenticated',
     'create': 'isAuthenticated',
-    'findOne': ['isAuthenticated', 'isUserOwnerOfProductAttribute'],
-    'remove': ['isAuthenticated', 'isUserOwnerOfProductAttribute'],
+    'findOne': 'isAuthenticated',
+    'remove': 'isAuthenticated',
     'update': 'isAuthenticated'
   },
 

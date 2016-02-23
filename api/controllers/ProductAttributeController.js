@@ -140,38 +140,126 @@ module.exports = {
   },
 
   findOne: function (request, response) {
-    response.send(200, {
-      code: 'successful',
-      message: 'Product Attribute was successfully found',
-      productAttribute: request.productAttribute
-    });
-  },
+    var user = request.user,
+      userId = user.id,
+      productAttributeId = request.param('id');
 
-  remove: function (request, response) {
-    var productAttributeId = request.param('id');
+    if (_.isEmpty(productAttributeId)) {
+      return response.send(400, {
+        code: 'error',
+        message: 'You need to specify product type id'
+      })
+    }
 
-    ProductAttribute.destroy({id: productAttributeId})
-      .exec(function (error, productAttribute) {
+    ProductAttribute.findOne({id: productAttributeId}).exec(function (error, productAttribute) {
+      var projectId;
+
+      if (error) {
+        return response.serverError(error);
+      }
+
+      if (typeof  productAttribute === 'undefined') {
+        return response.send(404, {
+          code: 'not.found',
+          message: 'Product attribute not found'
+        });
+      }
+
+      projectId = productAttribute.project;
+      PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
+        var isAdmin,
+          managerOfProducts;
+
         if (error) {
-          return response.send(500, {
-            code: 'error',
-            message: error
-          });
+          return response.serverError(error);
         }
 
-        if (typeof productAttribute === 'undefined') {
-          return response.send(400, {
-            code: 'not.found',
-            message: 'Product attribute was not found'
+        isAdmin = permission.admin;
+        managerOfProducts = permission.productsPermission === 'manage';
+        if (!isAdmin && !managerOfProducts) {
+          return response.send(403, {
+            code: 'access.denied',
+            message: 'Access denied'
           });
         }
 
         response.send(200, {
           code: 'successful',
-          message: 'Product attribute was removed successfully',
+          message: 'Product Attribute was successfully found',
           productAttribute: productAttribute
         });
       });
+    });
+  },
+
+  remove: function (request, response) {
+    var user = request.user,
+      userId = user.id,
+      productAttributeId = request.param('id');
+
+    if (_.isEmpty(productAttributeId)) {
+      return response.send(400, {
+        code: 'error',
+        message: 'You need to specify product type id'
+      })
+    }
+
+    ProductAttribute.findOne({id: productAttributeId}).exec(function (error, productAttribute) {
+      var projectId;
+
+      if (error) {
+        return response.serverError(error);
+      }
+
+      if (typeof  productAttribute === 'undefined') {
+        return response.send(404, {
+          code: 'not.found',
+          message: 'Product attribute not found'
+        });
+      }
+
+      projectId = productAttribute.project;
+      PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
+        var isAdmin,
+          managerOfProducts;
+
+        if (error) {
+          return response.serverError(error);
+        }
+
+        isAdmin = permission.admin;
+        managerOfProducts = permission.productsPermission === 'manage';
+        if (!isAdmin && !managerOfProducts) {
+          return response.send(403, {
+            code: 'access.denied',
+            message: 'Access denied'
+          });
+        }
+
+        ProductAttribute.destroy({id: productAttributeId})
+          .exec(function (error, productAttribute) {
+            if (error) {
+              return response.send(500, {
+                code: 'error',
+                message: error
+              });
+            }
+
+            if (typeof productAttribute === 'undefined') {
+              return response.send(400, {
+                code: 'not.found',
+                message: 'Product attribute was not found'
+              });
+            }
+
+            response.send(200, {
+              code: 'successful',
+              message: 'Product attribute was removed successfully',
+              productAttribute: productAttribute
+            });
+          });
+      });
+    });
   },
 
   //TODO: need to include products which user has rights access
