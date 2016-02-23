@@ -77,11 +77,16 @@ module.exports = {
   //TODO: need to check data for update! Like email, companies, etc...
   update: function (request, response) {
     var userData = request.body || {},
-      user = request.user || {};
+      userId = request.param('id');
 
-    _.extend(user, userData);
+    if (userId !== request.user.id) {
+      return response.send(403, {
+        code: 'access.denied',
+        message: 'You are not able to change this user\'s data'
+      });
+    }
 
-    user.save(function (error, user) {
+    User.update({id: userId}, userData).exec(function (error, user) {
       var returnedUser;
 
       if (error) {

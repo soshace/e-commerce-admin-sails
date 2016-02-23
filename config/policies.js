@@ -36,7 +36,7 @@ module.exports.policies = {
    ***************************************************************************/
 
   'UserController': {
-    'update': ['isAuthenticated', 'isProfileOwner'],
+    'update': 'isAuthenticated',
     'getProfile': 'isAuthenticated',
     'logout': 'isAuthenticated'
   },
