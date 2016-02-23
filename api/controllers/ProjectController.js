@@ -113,16 +113,11 @@ module.exports = {
       userId = user.id;
 
     PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission, project) {
-      var isAdmin,
-        hasAccessToProduct;
-
       if (error) {
         return response.serverError(error);
       }
 
-      isAdmin = permission.admin;
-      hasAccessToProduct = permission.productsPermission !== 'none';
-      if (!isAdmin && !hasAccessToProduct) {
+      if (!permission.admin) {
         return response.send(403, {
           code: 'access.denied',
           message: 'Access denied'
@@ -203,16 +198,11 @@ module.exports = {
       userId = user.id;
 
     PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
-      var isAdmin,
-        hasAccessToProduct;
-
       if (error) {
         return response.serverError(error);
       }
 
-      isAdmin = permission.admin;
-      hasAccessToProduct = permission.productsPermission !== 'none';
-      if (!isAdmin && !hasAccessToProduct) {
+      if (!permission.admin) {
         return response.send(403, {
           code: 'access.denied',
           message: 'Access denied'
@@ -305,10 +295,7 @@ module.exports = {
         PermissionsService.getPermissionsByProject(userId, projectId, callback);
       },
       function (permission, callback) {
-        var isAdmin = permission.admin,
-          hasAccessToProducts = permission.productsPermission !== 'none';
-
-        if (isAdmin || hasAccessToProducts) {
+        if (permission.admin) {
           return Category.find({project: projectId}).exec(function (error, categories) {
             if (error) {
               return callback(error);
@@ -350,10 +337,7 @@ module.exports = {
         PermissionsService.getPermissionsByProject(userId, projectId, callback);
       },
       function (permission, callback) {
-        var isAdmin = permission.admin,
-          hasAccessToProducts = permission.productsPermission !== 'none';
-
-        if (!isAdmin && !hasAccessToProducts) {
+        if (!permission.admin) {
           response.send(403, {
             code: 'permission.denied',
             message: 'Permission denied'
@@ -416,16 +400,11 @@ module.exports = {
       userId = user.id;
 
     PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
-      var isAdmin,
-        managerOfProducts;
-
       if (error) {
         return response.serverError(error);
       }
 
-      isAdmin = permission.admin;
-      managerOfProducts = permission.productsPermission === 'manage';
-      if (!isAdmin && !managerOfProducts) {
+      if (!permission.admin) {
         return response.send(403, {
           code: 'access.denied',
           message: 'Access denied'
