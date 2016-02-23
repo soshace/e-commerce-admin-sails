@@ -72,26 +72,69 @@ module.exports = {
   },
 
   update: function (request, response) {
-    var productAttributeData = request.body || {},
-      productAttribute = request.productAttribute || {};
+    var user = request.user,
+      userId = user.id,
+      productAttributeData = request.body || {},
+      productAttributeId = request.param('id');
 
-    _.extend(productAttribute, productAttributeData);
+    if (_.isEmpty(productAttributeId)) {
+      return response.send(400, {
+        code: 'error',
+        message: 'You need to specify product type id'
+      })
+    }
 
-    productAttribute.save(function (error, productAttribute) {
-      var returnedAttributeDefinition;
+    ProductAttribute.findOne({id: productAttributeId}).exec(function (error, productAttribute) {
+      var projectId;
 
       if (error) {
-        return response.send(500, {
-          code: 'error',
-          message: error
+        return response.serverError(error);
+      }
+
+      if (typeof  productAttribute === 'undefined') {
+        return response.send(404, {
+          code: 'not.found',
+          message: 'Product attribute not found'
         });
       }
 
-      returnedAttributeDefinition = _.pick(productAttribute, 'id', 'name', 'description', 'createdAt', 'updatedAt');
-      response.send(200, {
-        code: 'successful',
-        message: 'Product was successfully updated',
-        productAttribute: returnedAttributeDefinition
+      projectId = productAttribute.project;
+      PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
+        var isAdmin,
+          managerOfProducts;
+
+        if (error) {
+          return response.serverError(error);
+        }
+
+        isAdmin = permission.admin;
+        managerOfProducts = permission.productsPermission === 'manage';
+        if (!isAdmin && !managerOfProducts) {
+          return response.send(403, {
+            code: 'access.denied',
+            message: 'Access denied'
+          });
+        }
+
+        _.extend(productAttribute, productAttributeData);
+
+        productAttribute.save(function (error, productAttribute) {
+          var returnedAttributeDefinition;
+
+          if (error) {
+            return response.send(500, {
+              code: 'error',
+              message: error
+            });
+          }
+
+          returnedAttributeDefinition = _.pick(productAttribute, 'id', 'name', 'description', 'createdAt', 'updatedAt');
+          response.send(200, {
+            code: 'successful',
+            message: 'Product was successfully updated',
+            productAttribute: returnedAttributeDefinition
+          });
+        });
       });
     });
   },

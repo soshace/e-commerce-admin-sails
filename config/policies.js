@@ -116,7 +116,7 @@ module.exports.policies = {
     'create': 'isAuthenticated',
     'findOne': ['isAuthenticated', 'isUserOwnerOfProductAttribute'],
     'remove': ['isAuthenticated', 'isUserOwnerOfProductAttribute'],
-    'update': ['isAuthenticated', 'isUserOwnerOfProductAttribute']
+    'update': 'isAuthenticated'
   },
 
   'VariantController': {
