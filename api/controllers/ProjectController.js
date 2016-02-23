@@ -412,16 +412,29 @@ module.exports = {
   },
 
   findPermissions: function (request, response) {
-    var projectId = request.param('id');
+    var user = request.user,
+      userId = user.id,
+      projectId = request.param('id');
 
-    Permission.find({project: projectId}).exec(function (error, permission) {
+    Permission.find({project: projectId}).exec(function (error, permissions) {
+      var userPermission;
+
       if (error) {
         return response.serverError(error);
       }
 
+      userPermission = PermissionsService.getPermissionByUser(userId, permissions);
+
+      if (_.isEmpty(userPermission) || !userPermission.admin) {
+        return response.send(403, {
+          code: 'access.denied',
+          message: 'access denied'
+        });
+      }
+
       return response.send(200, {
         code: 'successful',
-        permissions: permission
+        permissions: permissions
       });
     });
   }
