@@ -50,20 +50,7 @@ module.exports = {
         });
       }
 
-      _.each(company.teams, function (team) {
-        if (team.admin) {
-          adminTeam = team;
-        }
-      });
-
-      if (_.isEmpty(adminTeam)) {
-        return response.send(404, {
-          code: 'error',
-          message: 'Admin team not found'
-        });
-      }
-
-      teamMembersOnly(response, adminTeam.id, userId, function () {
+      adminsOnly(response, company.teams, userId, function () {
         _.extend(company, companyData);
 
         company.save(function (error, company) {
@@ -376,13 +363,7 @@ module.exports = {
           });
         }
 
-        _.each(company.teams, function (team) {
-          if (team.admin) {
-            adminTeam = team;
-          }
-        });
-
-        teamMembersOnly(response, adminTeam.id, userId, function () {
+        adminsOnly(response, company.teams, userId, function () {
           response.send(200, {
             code: 'successful',
             message: 'Company\'s projects were successfully found',
@@ -393,7 +374,22 @@ module.exports = {
   }
 };
 
-function teamMembersOnly(response, teamId, userId, successCb) {
+function adminsOnly(response, teams, userId, successCb) {
+  var adminTeam;
+
+  _.each(teams, function (team) {
+    if (team.admin) {
+      adminTeam = team;
+    }
+  });
+
+  if (_.isEmpty(adminTeam)) {
+    return response.send(404, {
+      code: 'error',
+      message: 'Admin team not found'
+    });
+  }
+
   Team.findOne({id: teamId})
     .populate('members')
     .exec(function (error, team) {
