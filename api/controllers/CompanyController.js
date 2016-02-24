@@ -321,72 +321,47 @@ module.exports = {
       user = request.user,
       userId = user.id;
 
-    if (_.isEmpty(companyId)) {
-      return response.send(400, {
-        code: 'error',
-        message: 'Company id is not defined'
-      });
-    }
-
-    Company.findOne({id: companyId})
-      .exec(function (error, company) {
-        var adminTeam,
-          isAdmin = false;
-
+    Team.find({company: companyId})
+      .populate('members')
+      .populate('permissions')
+      .exec(function (error, teams) {
+        var isAdmin;
         if (error) {
-          return response.serverError(error);
-        }
-
-        if (_.isEmpty(company)) {
-          return response.send(400, {
-            code: 'not.found',
-            message: 'Company was not found'
+          return response.send(500, {
+            code: 'error',
+            message: error
           });
         }
 
-        _.each(company.teams, function (team) {
-          if (team.admin) {
-            adminTeam = team;
-          }
-        });
-
-        if (_.isEmpty(adminTeam)) {
+        if (_.isEmpty(teams)) {
           return response.send(404, {
             code: 'error',
-            message: 'Admin team not found'
+            message: 'No teams found'
           });
         }
 
-        _.each(adminTeam.members, function (member) {
-          if (member.id === userId) {
-            isAdmin = true;
+        _.each(teams, function (team) {
+          if (team.admin) {
+            _.each(team.members, function (member) {
+              if (member.id === userId) {
+                isAdmin = true;
+              }
+            });
+
+            if (!isAdmin) {
+              return response.send(403, {
+                code: 'access.denied',
+                message: 'Access denied'
+              });
+            }
           }
         });
 
-        if (!isAdmin) {
-          return response.send(403, {
-            code: 'access.denied',
-            message: 'Access denied'
-          });
-        }
-
-        Team.find({company: companyId})
-          .populate('members')
-          .populate('permissions')
-          .exec(function (error, teams) {
-            if (error) {
-              return response.send(500, {
-                code: 'error',
-                message: error
-              });
-            }
-
-            return response.send(200, {
-              code: 'successful',
-              message: 'Company\'s teams were successfully found',
-              teams: teams
-            });
-          });
+        response.send(200, {
+          code: 'successful',
+          message: 'Company\'s teams were successfully found',
+          teams: teams
+        });
       });
   },
 
