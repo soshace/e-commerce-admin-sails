@@ -36,13 +36,6 @@ module.exports = {
       user = request.user,
       userId = user.id;
 
-    if (_.isEmpty(companyId)) {
-      return response.send(400, {
-        code: 'error',
-        message: 'Company id is not defined'
-      });
-    }
-
     Company.findOne({id: companyId}).populate('teams').exec(function (error, company) {
       var adminTeam,
         isAdmin = false;
@@ -52,7 +45,7 @@ module.exports = {
       }
 
       if (_.isEmpty(company)) {
-        return response.send(400, {
+        return response.send(404, {
           code: 'not.found',
           message: 'Company was not found'
         });
@@ -71,38 +64,42 @@ module.exports = {
         });
       }
 
-      _.each(adminTeam.members, function (member) {
-        if (member.id === userId) {
-          isAdmin = true;
-        }
-      });
-
-      if (!isAdmin) {
-        return response.send(403, {
-          code: 'access.denied',
-          message: 'Access denied'
+      Team.findOne({id: adminTeam.id}).populate('members').exec(function (error, team) {
+        _.each(team.members, function (member) {
+          if (member.id === userId) {
+            isAdmin = true;
+          }
         });
-      }
 
-      _.extend(company, companyData);
-
-      company.save(function (error, company) {
-        var returnedCompany;
-
-        if (error) {
-          return response.send(500, {
-            code: 'error',
-            message: error
+        if (!isAdmin) {
+          return response.send(403, {
+            code: 'access.denied',
+            message: 'Access denied'
           });
         }
 
-        returnedCompany = _.pick(company, 'name', 'createAt', 'updatedAt', 'id');
-        response.send(200, {
-          code: 'successful',
-          message: 'Company was successfully updated',
-          company: returnedCompany
+        _.extend(company, companyData);
+
+        company.save(function (error, company) {
+          var returnedCompany;
+
+          if (error) {
+            return response.send(500, {
+              code: 'error',
+              message: error
+            });
+          }
+
+          returnedCompany = _.pick(company, 'name', 'createAt', 'updatedAt', 'id');
+          response.send(200, {
+            code: 'successful',
+            message: 'Company was successfully updated',
+            company: returnedCompany
+          });
         });
+
       });
+
     });
   },
 
