@@ -37,8 +37,7 @@ module.exports = {
       userId = user.id;
 
     Company.findOne({id: companyId}).populate('teams').exec(function (error, company) {
-      var adminTeam,
-        isAdmin = false;
+      var adminTeam;
 
       if (error) {
         return response.serverError(error);
@@ -64,20 +63,7 @@ module.exports = {
         });
       }
 
-      Team.findOne({id: adminTeam.id}).populate('members').exec(function (error, team) {
-        _.each(team.members, function (member) {
-          if (member.id === userId) {
-            isAdmin = true;
-          }
-        });
-
-        if (!isAdmin) {
-          return response.send(403, {
-            code: 'access.denied',
-            message: 'Access denied'
-          });
-        }
-
+      teamMembersOnly(response, adminTeam.id, userId, function () {
         _.extend(company, companyData);
 
         company.save(function (error, company) {
@@ -97,8 +83,7 @@ module.exports = {
             company: returnedCompany
           });
         });
-
-      });
+      })
 
     });
   },
@@ -378,15 +363,14 @@ module.exports = {
       .populate('teams')
       .populate('projects')
       .exec(function (error, company) {
-        var adminTeam,
-          isAdmin = false;
+        var adminTeam;
 
         if (error) {
           return response.serverError(error);
         }
 
         if (_.isEmpty(company)) {
-          return response.send(400, {
+          return response.send(404, {
             code: 'not.found',
             message: 'Company was not found'
           });
@@ -398,37 +382,36 @@ module.exports = {
           }
         });
 
-        if (_.isEmpty(adminTeam)) {
-          return response.send(404, {
-            code: 'error',
-            message: 'Admin team not found'
-          });
-        }
-
-        Team.findOne({id: adminTeam.id}).populate('members').exec(function (error, team) {
-          _.each(team.members, function (member) {
-            if (member.id === userId) {
-              isAdmin = true;
-            }
-          });
-
-          if (!isAdmin) {
-            return response.send(403, {
-              code: 'access.denied',
-              message: 'Access denied'
-            });
-          }
-
+        teamMembersOnly(response, adminTeam.id, userId, function () {
           response.send(200, {
             code: 'successful',
             message: 'Company\'s projects were successfully found',
             projects: company.projects
           });
-
-
-        });
-
+        })
       });
   }
 };
 
+function teamMembersOnly(response, teamId, userId, successCb) {
+  Team.findOne({id: teamId})
+    .populate('members')
+    .exec(function (error, team) {
+      var isAdmin = false;
+      _.each(team.members, function (member) {
+        if (member.id === userId) {
+          isAdmin = true;
+        }
+      });
+
+      if (!isAdmin) {
+        return response.send(403, {
+          code: 'access.denied',
+          message: 'Access denied'
+        });
+      }
+
+      successCb();
+    });
+
+}
