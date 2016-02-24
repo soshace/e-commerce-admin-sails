@@ -6,7 +6,8 @@
  */
 
 var _ = require('underscore'),
-  async = require('async');
+  async = require('async'),
+  adminsOnly = require('../services/CompanyService').adminsOnly;
 
 module.exports = {
   create: function (request, response) {
@@ -70,7 +71,7 @@ module.exports = {
             company: returnedCompany
           });
         });
-      })
+      });
 
     });
   },
@@ -373,41 +374,3 @@ module.exports = {
       });
   }
 };
-
-function adminsOnly(response, teams, userId, successCb) {
-  var adminTeam;
-
-  _.each(teams, function (team) {
-    if (team.admin) {
-      adminTeam = team;
-    }
-  });
-
-  if (_.isEmpty(adminTeam)) {
-    return response.send(404, {
-      code: 'error',
-      message: 'Admin team not found'
-    });
-  }
-
-  Team.findOne({id: teamId})
-    .populate('members')
-    .exec(function (error, team) {
-      var isAdmin = false;
-      _.each(team.members, function (member) {
-        if (member.id === userId) {
-          isAdmin = true;
-        }
-      });
-
-      if (!isAdmin) {
-        return response.send(403, {
-          code: 'access.denied',
-          message: 'Access denied'
-        });
-      }
-
-      successCb();
-    });
-
-}
