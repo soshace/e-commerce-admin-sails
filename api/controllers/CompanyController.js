@@ -149,24 +149,28 @@ module.exports = {
           });
         }
 
-        _.each(adminTeam.members, function (member) {
-          if (member.id === userId) {
-            isAdmin = true;
-          }
-        });
+        Team.findOne({id: adminTeam.id})
+          .populate('members')
+          .exec(function (err, team) {
+            _.each(team.members, function (member) {
+              if (member.id === userId) {
+                isAdmin = true;
+              }
+            });
 
-        if (!isAdmin) {
-          return response.send(403, {
-            code: 'access.denied',
-            message: 'Access denied'
+            if (!isAdmin) {
+              return response.send(403, {
+                code: 'access.denied',
+                message: 'Access denied'
+              });
+            }
+
+            response.send(200, {
+              code: 'successful',
+              message: 'Company was successfully found',
+              company: company
+            });
           });
-        }
-
-        return response.send(200, {
-          code: 'successful',
-          message: 'Company was successfully found',
-          company: company
-        });
       });
   },
 
@@ -398,7 +402,9 @@ module.exports = {
       });
     }
 
-    Company.findOne({id: companyId}).populate('teams').populate('projects')
+    Company.findOne({id: companyId})
+      .populate('teams')
+      .populate('projects')
       .exec(function (error, company) {
         var adminTeam,
           isAdmin = false;
