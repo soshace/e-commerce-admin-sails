@@ -5,7 +5,8 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
-var _ = require('underscore');
+var _ = require('underscore'),
+  adminsOnly = require('../services/CompanyService').adminsOnly;
 
 module.exports = {
   create: function (request, response) {
@@ -21,63 +22,39 @@ module.exports = {
       });
     }
 
-    Company.findOne({id: companyId}).populate('teams').exec(function (error, company) {
-      var teams,
-        adminTeam,
-        isAdmin = false;
+    Company
+      .findOne({id: companyId})
+      .populate('teams')
+      .exec(function (error, company) {
+        var teams;
 
-      if (error) {
-        return response.serverError(error);
-      }
-
-      if (_.isEmpty(company)) {
-        return response.send(404, {
-          code: 'not.found',
-          message: 'Company not found'
-        });
-      }
-
-      teams = company.teams;
-      _.each(teams, function (team) {
-        if (team.admin) {
-          adminTeam = team;
-        }
-      });
-
-      if (_.isEmpty(adminTeam)) {
-        return response.send(404, {
-          code: 'not.found',
-          message: 'Admin team not found'
-        })
-      }
-
-      _.each(adminTeam.members, function (teamMember) {
-        if (teamMember === userId) {
-          isAdmin = true;
-        }
-      });
-
-      if (!isAdmin) {
-        return response.send(403, {
-          code: 'access.denied',
-          message: 'Access denied'
-        });
-      }
-
-      Team.create(teamData).exec(function (error, team) {
         if (error) {
-          return response.send(500, {
-            code: 'error',
-            message: error
+          return response.serverError(error);
+        }
+
+        if (_.isEmpty(company)) {
+          return response.send(404, {
+            code: 'not.found',
+            message: 'Company not found'
           });
         }
 
-        response.send(200, {
-          code: 'successful',
-          team: team
+        adminsOnly(response, company.teams, userId, function () {
+          Team.create(teamData).exec(function (error, team) {
+            if (error) {
+              return response.send(500, {
+                code: 'error',
+                message: error
+              });
+            }
+
+            response.send(200, {
+              code: 'successful',
+              team: team
+            });
+          });
         });
       });
-    });
   },
 
   update: function (request, response) {
@@ -106,10 +83,6 @@ module.exports = {
       }
 
       Company.findOne({id: team.company}).populate('teams').exec(function (error, company) {
-        var teams,
-          adminTeam,
-          isAdmin = false;
-
         if (error) {
           return response.serverError(error);
         }
@@ -121,50 +94,25 @@ module.exports = {
           });
         }
 
-        teams = company.teams;
-        _.each(teams, function (team) {
-          if (team.admin) {
-            adminTeam = team;
-          }
-        });
+        adminsOnly(response, company.teams, userId, function () {
+          _.extend(team, teamData);
 
-        if (_.isEmpty(adminTeam)) {
-          return response.send(404, {
-            code: 'not.found',
-            message: 'Admin team not found'
-          })
-        }
+          team.save(function (error, team) {
+            var returnedTeam;
 
-        _.each(adminTeam.members, function (teamMember) {
-          if (teamMember === userId) {
-            isAdmin = true;
-          }
-        });
+            if (error) {
+              return response.send(500, {
+                code: 'error',
+                message: error
+              });
+            }
 
-        if (!isAdmin) {
-          return response.send(403, {
-            code: 'access.denied',
-            message: 'Access denied'
-          });
-        }
-
-        _.extend(team, teamData);
-
-        team.save(function (error, team) {
-          var returnedTeam;
-
-          if (error) {
-            return response.send(500, {
-              code: 'error',
-              message: error
+            returnedTeam = _.pick(team, 'id', 'name', 'createdAt', 'updatedAt');
+            response.send(200, {
+              code: 'successful',
+              message: 'Team was successfully updated',
+              team: returnedTeam
             });
-          }
-
-          returnedTeam = _.pick(team, 'id', 'name', 'createdAt', 'updatedAt');
-          response.send(200, {
-            code: 'successful',
-            message: 'Team was successfully updated',
-            team: returnedTeam
           });
         });
       });
