@@ -4,9 +4,12 @@ var async = require('async'),
 module.exports = {
   getTeamProjects: function (team, callback) {
     Team
-      .findOne({id: team.id, admin: true})
+      .findOne({id: team.id})
       .populate('permissions')
       .exec(function (err, team) {
+        if (err) {
+          return callback(err);
+        }
         var projects = [];
         async.each(team.permissions, function (permission, callback) {
           Project
