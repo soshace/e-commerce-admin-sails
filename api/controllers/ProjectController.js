@@ -205,15 +205,17 @@ module.exports = {
             .exec(callback);
         },
         function (user, callback) {
+          var projects = [];
           async.each(user.teams, function (team, callback) {
-            var projects = [];
             ProjectService.getTeamProjects(team, function (err, teamProjects) {
-              projects = _.uniq(_.union(projects, teamProjects), false, function (item) {
-                return item.id;
+              teamProjects.forEach(function (project) {
+                if (!(_.findWhere(projects, {id: project.id}))) {
+                  projects.push(project);
+                }
               });
-              callback(projects);
+              callback();
             })
-          }, function (projects) {
+          }, function (err) {
             callback(null, projects);
           });
         }
