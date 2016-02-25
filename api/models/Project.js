@@ -105,15 +105,22 @@ module.exports = {
           }).exec(callback);
         },
         function (productType, callback) {
-          Team.find({company: project.company}).exec(callback);
+          Team.find({company: project.company}).populate('members').exec(callback);
         },
         function (teams, callback) {
           async.each(teams, function (team, callback) {
-            Permission.create({
-              project: project.id,
-              team: team.id,
-              owner: project.owner
-            }).exec(callback);
+            Permission
+              .create({
+                project: project.id,
+                team: team.id,
+                owner: project.owner
+              })
+              .exec(function (err, permission) {
+                team.members.forEach(function (member) {
+                  permission.members.add(member.id);
+                });
+                permission.save(callback)
+              });
           }, callback)
         }
       ],

@@ -5,7 +5,8 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
-var _ = require('underscore');
+var _ = require('underscore'),
+  adminsOnly = require('../services/CompanyService').adminsOnly;
 
 module.exports = {
   /**
@@ -40,9 +41,7 @@ module.exports = {
       user = request.user,
       userId = user.id;
 
-    Permission.findOne({id: permissionId}).populate('members').exec(function (error, permission) {
-      var hasAccess = false;
-
+    Permission.findOne({id: permissionId}).exec(function (error, permission) {
       if (error) {
         return response.serverError(error);
       }
@@ -54,37 +53,32 @@ module.exports = {
         });
       }
 
-      _.each(permission.members, function (member) {
-        if (member.id === userId) {
-          hasAccess = true;
-        }
-      });
+      Project.findOne({id: permission.project}).exec(function (err, project) {
+        Company.findOne({id: project.company}).populate('teams').exec(function (error, company) {
+          adminsOnly(response, company.teams, userId, function () {
+            _.extend(permission, permissionData);
 
-      if (!hasAccess) {
-        return response.send(403, {
-          code: 'access.denied',
-          message: 'Access denied'
-        });
-      }
+            permission.save(function (error, updatedPermission) {
+              if (error) {
+                return response.send(500, {
+                  code: 'error',
+                  message: error
+                });
+              }
 
-      _.extend(permission, permissionData);
+              updatedPermission.project = updatedPermission.project.id;
+              updatedPermission.team = updatedPermission.team.id;
+              response.send(200, {
+                code: 'successful',
+                message: 'Permission was successfully updated',
+                permission: updatedPermission
+              });
+            });
 
-      permission.save(function (error, updatedPermission) {
-        if (error) {
-          return response.send(500, {
-            code: 'error',
-            message: error
           });
-        }
-
-        updatedPermission.project = updatedPermission.project.id;
-        updatedPermission.team = updatedPermission.team.id;
-        response.send(200, {
-          code: 'successful',
-          message: 'Permission was successfully updated',
-          permission: updatedPermission
         });
-      });
+      })
+
     });
   }
 };
