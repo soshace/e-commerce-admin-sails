@@ -243,7 +243,7 @@ module.exports = {
         PermissionsService.getPermissionsByProject(userId, projectId, callback);
       },
       function (permission, callback) {
-        if (permission.admin) {
+        if (permission.productsPermission !== 'none') {
           return Category.find({project: projectId}).exec(function (error, categories) {
             if (error) {
               return callback(error);
@@ -285,7 +285,7 @@ module.exports = {
         PermissionsService.getPermissionsByProject(userId, projectId, callback);
       },
       function (permission, callback) {
-        if (!permission.admin) {
+        if (permission.productsPermission === 'none') {
           response.send(403, {
             code: 'permission.denied',
             message: 'Permission denied'
@@ -352,7 +352,7 @@ module.exports = {
         return response.serverError(error);
       }
 
-      if (!permission.admin) {
+      if (permission.productsPermission === 'none') {
         return response.send(403, {
           code: 'access.denied',
           message: 'Access denied'

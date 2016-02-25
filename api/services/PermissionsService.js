@@ -54,7 +54,7 @@ module.exports = {
             }
           });
 
-          callback(null, projectPermission, project, user);
+          callback(null, projectPermission);
         })
       }
     ], callback);
