@@ -2,6 +2,23 @@ var async = require('async'),
   _ = require('underscore');
 
 module.exports = {
+  adminsOnly: function (user, project, callback) {
+    Team
+      .findOne({company: project.company, admin: true})
+      .populate('members')
+      .exec(function (err, team) {
+        var member = _.findWhere(team.members, {id: user.id});
+        if (member) {
+          callback(null)
+        } else {
+          callback({
+            code: 'access.denied',
+            message: 'Access denied'
+          })
+        }
+      })
+  },
+
   getPermissionsByProject: function (userId, projectId, callback) {
     async.waterfall([
       function (callback) {

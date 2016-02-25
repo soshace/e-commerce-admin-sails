@@ -82,47 +82,36 @@ module.exports = {
   update: function (request, response) {
     var projectData = request.body,
       projectId = request.param('id'),
-      user = request.user,
-      userId = user.id;
+      user = request.user;
 
-    PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission, project) {
-      if (error) {
-        return response.serverError(error);
+    Project.findOne({id: projectId}).exec(function (err, project) {
+      if (err) {
+        return response.send(err);
       }
-
-      if (!permission.admin) {
-        return response.send(403, {
-          code: 'access.denied',
-          message: 'Access denied'
-        });
-      }
-
-      _.extend(project, projectData);
-
-      project.save(function (error, project) {
-        var returnedProject,
-          company;
-
-        if (error) {
-          return response.serverError(error);
+      PermissionsService.adminsOnly(user, project, function (err) {
+        if (err) {
+          return response.send(err);
         }
+        _.extend(project, projectData);
 
-        if (typeof project === 'undefined') {
-          return response.send(404, {
-            code: 'not.found',
-            message: 'project not found'
+        project.save(function (error, project) {
+          var returnedProject,
+            company;
+
+          if (error) {
+            return response.serverError(error);
+          }
+
+          returnedProject = _.clone(project);
+          company = returnedProject.company;
+          returnedProject.company = company && company.id;
+          returnedProject = _.pick(returnedProject, 'id', 'name', 'createdAt', 'updatedAt', 'company', 'owner');
+
+          response.send(200, {
+            code: 'successful',
+            message: 'Project was successfully updated',
+            project: returnedProject
           });
-        }
-
-        returnedProject = _.clone(project);
-        company = returnedProject.company;
-        returnedProject.company = company && company.id;
-        returnedProject = _.pick(returnedProject, 'id', 'name', 'createdAt', 'updatedAt', 'company', 'owner');
-
-        response.send(200, {
-          code: 'successful',
-          message: 'Project was successfully updated',
-          project: returnedProject
         });
       });
     });
