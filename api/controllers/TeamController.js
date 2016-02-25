@@ -246,10 +246,6 @@ module.exports = {
       }
 
       Company.findOne({id: team.company}).populate('teams').exec(function (error, company) {
-        var teams,
-          adminTeam,
-          isAdmin = false;
-
         if (error) {
           return response.serverError(error);
         }
@@ -261,55 +257,31 @@ module.exports = {
           });
         }
 
-        teams = company.teams;
-        _.each(teams, function (team) {
-          if (team.admin) {
-            adminTeam = team;
-          }
-        });
+        adminsOnly(response, company.teams, userId, function () {
+          Team.destroy({id: teamId})
+            .exec(function (error, team) {
+              if (error) {
+                return response.send(500, {
+                  code: 'error',
+                  message: error
+                });
+              }
 
-        if (_.isEmpty(adminTeam)) {
-          return response.send(404, {
-            code: 'not.found',
-            message: 'Admin team not found'
-          })
-        }
+              if (typeof team === 'undefined') {
+                return response.send(400, {
+                  code: 'not.found',
+                  message: 'Team not found'
+                });
+              }
 
-        _.each(adminTeam.members, function (teamMember) {
-          if (teamMember === userId) {
-            isAdmin = true;
-          }
-        });
-
-        if (!isAdmin) {
-          return response.send(403, {
-            code: 'access.denied',
-            message: 'Access denied'
-          });
-        }
-
-        Team.destroy({id: teamId})
-          .exec(function (error, team) {
-            if (error) {
-              return response.send(500, {
-                code: 'error',
-                message: error
+              return response.send(200, {
+                code: 'successful',
+                message: 'Team was removed successfully',
+                team: team
               });
-            }
-
-            if (typeof team === 'undefined') {
-              return response.send(400, {
-                code: 'not.found',
-                message: 'Team not found'
-              });
-            }
-
-            return response.send(200, {
-              code: 'successful',
-              message: 'Team was removed successfully',
-              team: team
             });
-          });
+        });
+
       });
     });
   },
