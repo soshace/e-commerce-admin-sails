@@ -7,7 +7,8 @@
 
 var _ = require('underscore'),
   async = require('async'),
-  adminsOnly = require('../services/CompanyService').adminsOnly;
+  adminsOnly = require('../services/CompanyService').adminsOnly,
+  ProjectService = require('../services/ProjectService');
 
 module.exports = {
   checkSlug: function (request, response) {
@@ -199,26 +200,21 @@ module.exports = {
 
     async.waterfall([
         function (callback) {
-          User.findOne({id: userId}).populate('permissions').exec(callback);
+          User.findOne({id: userId})
+            .populate('teams')
+            .exec(callback);
         },
-        function (userPopulated, callback) {
-          var projects = [],
-            permissions = userPopulated.permissions;
-
-          async.each(permissions, function (permission, callback) {
-            Project.findOne({id: permission.project}).exec(function (error, project) {
-              if (error) {
-                return callback(error);
-              }
-
-              if (!_.isEmpty(project)) {
-                projects.push(project);
-              }
-
-              callback(null, projects);
-            });
-          }, function (error) {
-            callback(error, projects);
+        function (user, callback) {
+          async.each(user.teams, function (team, callback) {
+            var projects = [];
+            ProjectService.getTeamProjects(team, function (err, teamProjects) {
+              projects = _.uniq(_.union(projects, teamProjects), false, function (item) {
+                return item.id;
+              });
+              callback(projects);
+            })
+          }, function (projects) {
+            callback(null, projects);
           });
         }
       ],
