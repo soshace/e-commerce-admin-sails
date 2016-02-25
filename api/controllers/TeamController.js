@@ -423,10 +423,6 @@ module.exports = {
       }
 
       Company.findOne({id: team.company}).populate('teams').exec(function (error, company) {
-        var teams,
-          adminTeam,
-          isAdmin = false;
-
         if (error) {
           return response.serverError(error);
         }
@@ -438,58 +434,33 @@ module.exports = {
           });
         }
 
-        teams = company.teams;
-        _.each(teams, function (team) {
-          if (team.admin) {
-            adminTeam = team;
-          }
-        });
-
-        if (_.isEmpty(adminTeam)) {
-          return response.send(404, {
-            code: 'not.found',
-            message: 'Admin team not found'
-          })
-        }
-
-        _.each(adminTeam.members, function (teamMember) {
-          if (teamMember === userId) {
-            isAdmin = true;
-          }
-        });
-
-        if (!isAdmin) {
-          return response.send(403, {
-            code: 'access.denied',
-            message: 'Access denied'
+        adminsOnly(response, company.teams, userId, function () {
+          async.waterfall([
+            function (callback) {
+              team.members.remove(memberId);
+              team.save(callback);
+            },
+            function (team, callback) {
+              Permission.find({team: team.id}).exec(callback);
+            },
+            function (permissions, callback) {
+              async.each(permissions, function (permission, callback) {
+                permission.members.remove(memberId);
+                permission.save(callback);
+              }, callback);
+            }
+          ], function (error) {
+            if (error) {
+              return response.serverError(error);
+            }
           });
-        }
+          team.save(function (error, team) {
 
-        async.waterfall([
-          function (callback) {
-            team.members.remove(memberId);
-            team.save(callback);
-          },
-          function (team, callback) {
-            Permission.find({team: team.id}).exec(callback);
-          },
-          function (permissions, callback) {
-            async.each(permissions, function (permission, callback) {
-              permission.members.remove(memberId);
-              permission.save(callback);
-            }, callback);
-          }
-        ], function (error) {
-          if (error) {
-            return response.serverError(error);
-          }
-        });
-        team.save(function (error, team) {
-
-          return response.send(200, {
-            code: 'successful',
-            message: 'Team member was removed successfully',
-            team: team
+            return response.send(200, {
+              code: 'successful',
+              message: 'Team member was removed successfully',
+              team: team
+            });
           });
         });
       });
