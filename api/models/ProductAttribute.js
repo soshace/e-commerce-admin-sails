@@ -50,6 +50,14 @@ module.exports = {
   afterCreate: function (attribute, callback) {
     async.waterfall([
         function (callback) {
+          ProductAttribute.findOne({id: attribute.id}).exec(function (err, attr) {
+            ProductType.findOne({id: attribute.productType}).exec(function (err, productType) {
+              attr.project = productType.project;
+              attr.save(callback);
+            })
+          });
+        },
+        function (attribute, callback) {
           sails.log('---ProductAttributes afterCreate attribute---', attribute);
           Variant.find({productType: attribute.productType}).exec(callback);
         },
