@@ -80,28 +80,34 @@ module.exports = {
           .findOne({id: team.company})
           .populate('teams')
           .exec(function (err, company) {
-            if (user.id === company.owner) {
-              return callback({
-                statusCode: 403,
-                code: 'not.allowed',
-                message: 'Not allowed to move company owner'
-              });
-            }
-
             callback(err, company, team);
           })
       },
-      function (company, team, callback) {
+      function (company, teamToJoin, callback) {
         async.each(company.teams, function (team, callback) {
           Team
             .findOne({id: team.id})
             .populate('members')
             .exec(function (err, team) {
-              team.members.remove(user.id);
-              team.save(callback);
+              //if this make admin team empty, return error
+              var removingLastFromAdmin = (
+                team.admin &&
+                team.members.length == 1 &&
+                team.id !== teamToJoin.id &&
+                !!_.findWhere(team.members, {id: user.id})
+              );
+              if (removingLastFromAdmin) {
+                callback({
+                  statusCode: 403,
+                  message: 'Admin team should contain at least one user'
+                })
+              } else {
+                team.members.remove(user.id);
+                team.save(callback);
+              }
             })
         }, function (error) {
-          callback(error, team);
+          callback(error, teamToJoin);
         });
       },
       function (team, callback) {
