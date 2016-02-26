@@ -24,26 +24,27 @@ module.exports = {
 
       isAdmin = permission.admin;
       managerOfProducts = permission.productsPermission === 'manage';
-      if (!isAdmin && !managerOfProducts) {
-        return response.send(403, {
+      if (isAdmin || managerOfProducts) {
+        Category.create(categoryData).exec(function (error, category) {
+          if (error) {
+            return response.send(500, {
+              code: 'error',
+              message: error
+            });
+          }
+
+          response.send(200, {
+            code: 'successful',
+            category: category
+          });
+        });
+      } else {
+        response.send(403, {
           code: 'access.denied',
           message: 'Access denied'
         });
       }
 
-      Category.create(categoryData).exec(function (error, category) {
-        if (error) {
-          return response.send(500, {
-            code: 'error',
-            message: error
-          });
-        }
-
-        response.send(200, {
-          code: 'successful',
-          category: category
-        });
-      });
     });
   },
 
