@@ -46,6 +46,13 @@ module.exports = {
         return response.serverError(error);
       }
 
+      if (permission.admin) {
+        return response.send(403, {
+          code: 'not.allowed',
+          message: 'Admin permissions are not allowed to update'
+        })
+      }
+
       if (_.isEmpty(permission)) {
         return response.send(404, {
           code: 'not.found',

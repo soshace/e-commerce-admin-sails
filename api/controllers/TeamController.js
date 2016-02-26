@@ -75,6 +75,13 @@ module.exports = {
         return response.serverError(error);
       }
 
+      if (team.admin) {
+        return response.send(403, {
+          code: 'not.allowed',
+          message: 'Admin team is not allowed to update'
+        })
+      }
+
       if (_.isEmpty(team)) {
         return response.send(404, {
           code: 'not.found',
@@ -236,6 +243,13 @@ module.exports = {
     Team.findOne({id: teamId}).exec(function (error, team) {
       if (error) {
         return response.serverError(error);
+      }
+
+      if (team.admin) {
+        return response.send(403, {
+          code: 'not.allowed',
+          message: 'Admin team is removable'
+        })
       }
 
       if (_.isEmpty(team)) {
