@@ -116,6 +116,7 @@ module.exports = {
                 owner: project.owner
               })
               .exec(function (err, permission) {
+                permission.admin = team.admin;
                 team.members.forEach(function (member) {
                   permission.members.add(member.id);
                 });

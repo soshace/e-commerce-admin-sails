@@ -243,7 +243,8 @@ module.exports = {
         PermissionsService.getPermissionsByProject(userId, projectId, callback);
       },
       function (permission, callback) {
-        if (permission.productsPermission !== 'none') {
+        var allowed = permission.admin || (permission.productsPermission !== 'none');
+        if (allowed) {
           return Category.find({project: projectId}).exec(function (error, categories) {
             if (error) {
               return callback(error);
@@ -285,7 +286,8 @@ module.exports = {
         PermissionsService.getPermissionsByProject(userId, projectId, callback);
       },
       function (permission, callback) {
-        if (permission.productsPermission === 'none') {
+        var allowed = permission.admin || (permission.productsPermission !== 'none');
+        if (!allowed) {
           response.send(403, {
             code: 'permission.denied',
             message: 'Permission denied'
@@ -348,11 +350,12 @@ module.exports = {
       userId = user.id;
 
     PermissionsService.getPermissionsByProject(userId, projectId, function (error, permission) {
+      var allowed = permission.admin || (permission.productsPermission !== 'none');
       if (error) {
         return response.serverError(error);
       }
 
-      if (permission.productsPermission === 'none') {
+      if (!allowed) {
         return response.send(403, {
           code: 'access.denied',
           message: 'Access denied'
