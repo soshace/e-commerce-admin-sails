@@ -295,12 +295,8 @@ module.exports = {
       .populate('members')
       .populate('permissions')
       .exec(function (error, teams) {
-        var isAdmin;
         if (error) {
-          return response.send(500, {
-            code: 'error',
-            message: error
-          });
+          return response.serverError(error);
         }
 
         if (_.isEmpty(teams)) {
@@ -310,28 +306,18 @@ module.exports = {
           });
         }
 
-        _.each(teams, function (team) {
-          if (team.admin) {
-            _.each(team.members, function (member) {
-              if (member.id === userId) {
-                isAdmin = true;
-              }
-            });
-
-            if (!isAdmin) {
-              return response.send(403, {
-                code: 'access.denied',
-                message: 'Access denied'
+        Company.findOne({id: companyId})
+          .populate('teams')
+          .exec(function (error, company) {
+            adminsOnly(response, company.teams, userId, function () {
+              response.send(200, {
+                code: 'successful',
+                message: 'Company\'s teams were successfully found',
+                teams: teams
               });
-            }
-          }
-        });
+            });
+          });
 
-        response.send(200, {
-          code: 'successful',
-          message: 'Company\'s teams were successfully found',
-          teams: teams
-        });
       });
   },
 

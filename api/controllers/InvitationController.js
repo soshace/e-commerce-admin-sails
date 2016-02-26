@@ -43,6 +43,9 @@ module.exports = {
     ], function (error) {
       sails.log('-------InvitationController create error------', error);
       if (error) {
+        if (error.statusCode) {
+          return response.send(error.statusCode, error);
+        }
         return response.serverError(error);
       }
     });
@@ -57,7 +60,49 @@ module.exports = {
         sails.log('-------InvitationController 3-  arguments-----', invitations);
         Team.findOne({id: invitation.team})
           .populate('permissions')
-          .exec(callback);
+          .exec(function (err, team) {
+            if (err) {
+              response.serverError(err);
+              return callback(err);
+            }
+            if (!team) {
+              return callback({
+                statusCode: 404,
+                code: 'not.found',
+                message: 'Team wasn\'t found'
+              });
+            }
+            callback(err, team)
+          });
+      },
+      function (team, callback) {
+        Company
+          .findOne({id: team.company})
+          .populate('teams')
+          .exec(function (err, company) {
+            if (user.id === company.owner) {
+              return callback({
+                statusCode: 403,
+                code: 'not.allowed',
+                message: 'Not allowed to move company owner'
+              });
+            }
+
+            callback(err, company, team);
+          })
+      },
+      function (company, team, callback) {
+        async.each(company.teams, function (team, callback) {
+          Team
+            .findOne({id: team.id})
+            .populate('members')
+            .exec(function (err, team) {
+              team.members.remove(user.id);
+              team.save(callback);
+            })
+        }, function (error) {
+          callback(error, team);
+        });
       },
       function (team, callback) {
         if (typeof team === 'undefined') {
