@@ -84,17 +84,17 @@ module.exports = {
           })
       },
       function (company, teamToJoin, callback) {
+        var permissions = [];
         async.each(company.teams, function (team, callback) {
           Team
             .findOne({id: team.id})
             .populate('members')
+            .populate('permissions')
             .exec(function (err, team) {
-              //if this make admin team empty, return error
               var removingLastFromAdmin = (
                 team.admin &&
                 team.members.length == 1 &&
-                team.id !== teamToJoin.id &&
-                !!_.findWhere(team.members, {id: user.id})
+                team.id !== teamToJoin.id && !!_.findWhere(team.members, {id: user.id})
               );
               if (removingLastFromAdmin) {
                 callback({
@@ -103,11 +103,26 @@ module.exports = {
                 })
               } else {
                 team.members.remove(user.id);
+                permissions = permissions.concat(team.permissions);
                 team.save(callback);
               }
+            });
+        }, function (error) {
+          callback(error, teamToJoin, permissions);
+        });
+
+      },
+      function (team, permissions, callback) {
+        async.each(permissions, function (permission, callback) {
+          Permission
+            .findOne({id: permission.id})
+            .populate('members')
+            .exec(function (err, permission) {
+              permission.members.remove(user.id);
+              permission.save(callback);
             })
         }, function (error) {
-          callback(error, teamToJoin);
+          callback(error, team);
         });
       },
       function (team, callback) {
