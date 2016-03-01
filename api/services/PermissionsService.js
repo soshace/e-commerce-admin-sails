@@ -63,8 +63,9 @@ module.exports = {
   getPermissionByUser: function (userId, permissions) {
     var permissionByUser;
 
+    sails.log('-------getPermissionByUser userId----', userId);
     _.each(permissions, function (permission) {
-      if (permission.members.indexOf(userId) !== -1) {
+      if (_.pluck(permission.members, 'id').indexOf(userId) !== -1) {
         permissionByUser = permission;
       }
     });
@@ -79,7 +80,7 @@ module.exports = {
    * @returns {boolean}
    */
   accessByOnePermission: function (userId, permissions) {
-    var permission = this.getPermissionByUser.call(arguments);
+    var permission = this.getPermissionByUser(userId, permissions);
 
     if (typeof permission === 'undefined') {
       return false;

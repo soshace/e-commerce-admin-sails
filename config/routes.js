@@ -175,4 +175,6 @@ module.exports.routes = {
   'post /customers': 'CustomerController.create',
   'get /customers/verify/:email': 'CustomerController.verify',
   'get /customers/current': 'CustomerController.current',
+
+  'post /oauth/token': 'OauthController.token'
 };

@@ -22,15 +22,19 @@ module.exports = {
     },
 
     compareSecret: function (clientSecret) {
-      return bcrypt.compareSync(clientSecret, this.clientSecret);
+      //TODO: need to revert this logic
+      //return bcrypt.compareSync(clientSecret, this.clientSecret);
+      return clientSecret === this.clientSecret;
     },
 
-    toJSON: function () {
-      var obj = this.toObject();
-      delete obj.clientSecret;
-
-      return obj;
-    }
+    //TODO: need to add separate request for client secret
+    //TODO: need to uncomment this method
+    //toJSON: function () {
+    //  var obj = this.toObject();
+    //  delete obj.clientSecret;
+    //
+    //  return obj;
+    //}
   },
 
   afterCreate: function (client, next) {
@@ -41,21 +45,22 @@ module.exports = {
     });
   },
 
-  beforeCreate: function (client, next) {
-    if (client.hasOwnProperty('clientSecret')) {
-      client.clientSecret = bcrypt.hashSync(client.clientSecret, bcrypt.genSaltSync(10));
-      return next(false, client);
-    }
-
-    next(null, client);
-  },
-
-  beforeUpdate: function (client, next) {
-    if (client.hasOwnProperty('clientSecret')) {
-      client.clientSecret = bcrypt.hashSync(client.clientSecret, bcrypt.genSaltSync(10));
-      return next(false, client);
-    }
-
-    next(null, client);
-  }
+  //TODO: need to revert this logic later
+  //beforeCreate: function (client, next) {
+  //  if (client.hasOwnProperty('clientSecret')) {
+  //    client.clientSecret = bcrypt.hashSync(client.clientSecret, bcrypt.genSaltSync(10));
+  //    return next(false, client);
+  //  }
+  //
+  //  next(null, client);
+  //},
+  //
+  //beforeUpdate: function (client, next) {
+  //  if (client.hasOwnProperty('clientSecret')) {
+  //    client.clientSecret = bcrypt.hashSync(client.clientSecret, bcrypt.genSaltSync(10));
+  //    return next(false, client);
+  //  }
+  //
+  //  next(null, client);
+  //}
 };

@@ -3,6 +3,27 @@
 a [Sails](http://sailsjs.org) application
 
 
+#NODE ENV
+
+##Examples
+```
+export  EMAIL_ADDRESS='user@mail.com'
+export  EMAIL_PASSWORD='123123'
+export EMAIL_SERVICE='yandex'
+export  PROTOCOL='http'
+export  PORT='1337'
+export DATABASE='freeway'
+export DATABASE_USER='user'
+export DATABASE_PASSWORD='password'
+export SESSION_SECRET='359619ad07ab7195dc8cbfa6b0f8a3d8'
+export UPLOAD_FOLDER='/var/www/'
+export IMG_ROOT_URI ='hello'
+export SERVER_URL='http://45.55.60.139:1337'
+export  HOST='45.55.60.139'
+```
+
+
+
 #API
 
 ##Users
@@ -729,7 +750,13 @@ GET /projects/:id
     "language": "en",
     "createdAt": "2016-02-04T13:21:36.298Z",
     "updatedAt": "2016-02-04T13:32:59.056Z",
-    "id": "56b350602d62407e669fdd0e"
+    "id": "56b350602d62407e669fdd0e",
+    "client": {
+          "clientId": "Xs5HSxGNegqwtFiQ331toZPYWof4wTUX",
+          "createdAt": "2016-02-28T13:22:18.266Z",
+          "updatedAt": "2016-02-28T13:22:18.266Z",
+          "id": "56d2f48ab1f81d7d31efd20b"
+        },
   }
 }
 ```
@@ -2764,5 +2791,70 @@ GET /currencies/:locale
     },
     ...
   ]
+}
+```
+
+
+##Customers
+
+###Create Customers
+```
+POST /customers
+```
+**Example of the API's request:**
+```
+{
+    "name": "Nikita",
+    "password": "123qwe123",
+    "email": "user@mail.ru"
+}
+```
+
+**Example of the API's answer:**
+```
+{
+  "url": "http://45.55.60.139:1337/customers/verify/user@mail.ru?code=gitCRIY6EWluU024dwjJXMhVRIhghRAh"
+}
+```
+
+
+###Verify Customers
+```
+GET /customers/verify/:email
+```
+
+```
+   http://45.55.60.139:1337/customers/verify/user@mail.ru?code=gitCRIY6EWluU024dwjJXMhVRIhghRAh
+```
+
+**Example of the API's answer:**
+```
+{
+  "verified": true,
+  "email": "user@mail.ru"
+}
+```
+
+
+##Token
+
+###Create Token
+
+**Example of the API's request:**
+```
+POST /oauth/token HTTP/1.1
+Host: server.example.com
+Authorization: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=password&username=user@mail.ru&password=A3ddj3w&client_id&client_secret=$2a$10$YhP2Ri5oMj8IHIlthhWIM..BqfoxppACJwaxEKuHcQAywdutC9YPG
+```
+
+**Example of the API's answer:**
+```
+{
+  "token_type": "bearer",
+  "access_token": "7d4e0c261ee17d5c8bbc3d793f84867343c76cea",
+  "expires_in": 3600
 }
 ```

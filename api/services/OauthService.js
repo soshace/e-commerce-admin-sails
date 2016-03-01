@@ -22,18 +22,28 @@ model.getClient = function (clientId, clientSecret, callback) {
       return callback(null, client);
     }
 
-    callback('User was not found');
+    callback({error: 'User was not found'});
   });
 };
 
+//TODO: need to figure out with details of this
 // This will very much depend on your setup, I wouldn't advise doing anything exactly like this but
 // it gives an example of how to use the method to resrict certain grant types
-var authorizedClientIds = ['s6BhdRkqt3', 'toto'];
 model.grantTypeAllowed = function (clientId, grantType, callback) {
   console.log('in grantTypeAllowed (clientId: ' + clientId + ', grantType: ' + grantType + ')');
 
   if (grantType === 'password') {
-    return callback(false, authorizedClientIds.indexOf(clientId) >= 0);
+    return Client.findOne({clientId: clientId}).exec(function (error, client) {
+      if (error) {
+        return callback(error);
+      }
+
+      if (client) {
+        return callback(null, true);
+      }
+
+      callback({error: 'User was not found'});
+    });
   }
 
   callback(false, true);
@@ -44,6 +54,7 @@ model.saveAccessToken = function (token, clientId, expires, customerId, callback
 
   Token.create({
     accessToken: token,
+    refreshToken: Token.generateTokenString(),
     clientId: clientId,
     userId: customerId,
     expires: expires
@@ -56,26 +67,36 @@ model.saveAccessToken = function (token, clientId, expires, customerId, callback
 model.getUser = function (email, password, callback) {
   console.log('in getUser (email: ' + email + ', password: ' + password + ')');
 
-  Customer.findOne({email: email, password: password}).exec(function (error, customer) {
-    if (error) return callback(error);
-    callback(null, customer.id);
+  Customer.findOne({email: email}).exec(function (error, customer) {
+    if (error) {
+      return callback(error);
+    }
+
+    sails.log('-----OauthService getUser email password----', customer, customer.comparePassword(password));
+    //TODO: need to check password
+    if (customer) {
+      return callback(null, customer.id);
+    }
+
+    callback({error: 'User with current email & password does not exists'});
   });
 };
+
 
 /*
  * Required to support refreshToken grant type
  */
-model.saveRefreshToken = function (token, clientId, expires, userId, callback) {
-  console.log('in saveRefreshToken (token: ' + token + ', clientId: ' + clientId + ', userId: ' + userId + ', expires: ' + expires + ')');
-
-  Token.create({
-    refreshToken: token,
-    clientId: clientId,
-    userId: userId,
-    expires: expires
-  }).exec(callback);
-};
-
+//model.saveRefreshToken = function (token, clientId, expires, userId, callback) {
+//  console.log('in saveRefreshToken (token: ' + token + ', clientId: ' + clientId + ', userId: ' + userId + ', expires: ' + expires + ')');
+//
+//  Token.create({
+//    refreshToken: token,
+//    clientId: clientId,
+//    userId: userId,
+//    expires: expires
+//  }).exec(callback);
+//};
+//
 model.getRefreshToken = function (refreshToken, callback) {
   console.log('in getRefreshToken (refreshToken: ' + refreshToken + ')');
 

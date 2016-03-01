@@ -123,37 +123,44 @@ module.exports = {
     var userId = request.user.id,
       projectId = request.param('id');
 
-    Project.findOne({id: projectId})
-      .populate('permissions')
-      .exec(function (error, project) {
-        var hasAccessByPermissions;
+    Permission.find({project: projectId}).populate('members').exec(function (error, permissions) {
+      var hasAccessByPermissions;
 
-        if (error) {
-          return response.serverError(error);
-        }
+      if (error) {
+        return response.serverError(error);
+      }
 
-        if (typeof project === 'undefined') {
-          return response.send(400, {
-            code: 'not.found',
-            message: 'Project was not found'
-          });
-        }
+      hasAccessByPermissions = PermissionsService.accessByOnePermission(userId, permissions);
 
+      sails.log('----hasAccessByPermissions---', hasAccessByPermissions);
+      if (!hasAccessByPermissions) {
+        return response.send(403, {
+          code: 'access.denied',
+          message: 'Access denied'
+        });
+      }
 
-        hasAccessByPermissions = PermissionsService.accessByOnePermission(userId, project.permissions);
-        if (hasAccessByPermissions) {
+      Project.findOne({id: projectId})
+        .populate('client')
+        .exec(function (error, project) {
+          if (error) {
+            return response.serverError(error);
+          }
+
+          if (typeof project === 'undefined') {
+            return response.send(400, {
+              code: 'not.found',
+              message: 'Project was not found'
+            });
+          }
+
           return response.send(200, {
             code: 'successful',
             message: 'Project was successfully found',
             project: project
           });
-        }
-
-        response(403, {
-          code: 'access.denied',
-          message: 'Access denied'
         });
-      });
+    });
   },
 
   remove: function (request, response) {
