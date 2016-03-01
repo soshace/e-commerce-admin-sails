@@ -171,4 +171,8 @@ module.exports.routes = {
   'get /languages/:locale': 'LanguageController.find',
 
   'get /currencies/:locale': 'CurrencyController.find',
+
+  'post /customers': 'CustomerController.create',
+  'get /customers/verify/:email': 'CustomerController.verify',
+  'get /customers/current': 'CustomerController.current',
 };

@@ -169,6 +169,12 @@ module.exports.policies = {
 
   'CurrencyController': {
     'find': 'isAuthenticated'
+  },
+
+  CustomerController: {
+    '*': 'OauthService.authorize',
+    'create': true,
+    'verify': true
   }
 
   // RabbitController: {
