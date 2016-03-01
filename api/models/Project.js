@@ -5,7 +5,8 @@
  * @docs        :: http://sailsjs.org/#!documentation/models
  */
 
-var async = require('async');
+var async = require('async'),
+  _ = require('underscore');
 
 module.exports = {
 
@@ -56,10 +57,6 @@ module.exports = {
       collection: 'order',
       via: 'project'
     },
-    customers: {
-      collection: 'customer',
-      via: 'project'
-    },
     productTypes: {
       collection: 'productType',
       via: 'project'
@@ -67,6 +64,9 @@ module.exports = {
     permissions: {
       collection: 'permission',
       via: 'project'
+    },
+    client: {
+      model: 'client'
     }
   },
 
@@ -90,15 +90,13 @@ module.exports = {
    * @param callback
    */
   afterCreate: function (project, callback) {
-    var projectOwner = project.owner,
-      projectId = project.id;
+    var projectId = project.id;
 
     sails.log('--------Project afterCreate project--------', project);
     async.waterfall([
         function (callback) {
           sails.log('--------Project afterCreate--------');
           ProductType.create({
-            owner: projectOwner,
             name: 'Sample Product Type',
             description: 'A demo product type',
             project: projectId
@@ -109,23 +107,42 @@ module.exports = {
         },
         function (teams, callback) {
           async.each(teams, function (team, callback) {
+            sails.log('-------Project create team-----', team);
             Permission
               .create({
                 project: project.id,
                 team: team.id,
-                owner: project.owner
+                admin: team.admin
               })
-              .exec(function (err, permission) {
-                permission.admin = team.admin;
-                team.members.forEach(function (member) {
-                  permission.members.add(member.id);
-                });
-                permission.save(callback)
+              .exec(function (error, permission) {
+                if (error) {
+                  return callback(error);
+                }
+
+                async.each(team.members, function (member, callback) {
+                  permission.members.add(member);
+                  permission.save(callback);
+                }, callback);
               });
           }, callback)
         }
       ],
       callback);
+  },
+
+
+  beforeCreate: function (project, callback) {
+    Client.create({
+      clientId: Token.generateTokenString(),
+      clientSecret: Token.generateTokenString()
+    }).exec(function (error, client) {
+      if (error) {
+        return callback(error);
+      }
+
+      project.client = client.id;
+      callback(null, project);
+    });
   },
 
   /**
@@ -166,4 +183,3 @@ module.exports = {
     }, callback);
   }
 };
-

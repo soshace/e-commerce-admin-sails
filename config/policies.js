@@ -172,7 +172,7 @@ module.exports.policies = {
   },
 
   CustomerController: {
-    '*': 'OauthService.authorize',
+    '*': 'OauthAuthorised',
     'create': true,
     'verify': true
   }
