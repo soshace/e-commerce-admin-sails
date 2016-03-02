@@ -13,6 +13,13 @@ module.exports = {
     APIService(RegistrationService.verifyUser, request, response);
   },
   current: function (request, response) {
-    APIService(RegistrationService.currentUser, request, response);
+    var id = request.param('id'),
+      user = request.user;
+    console.log('user', user);
+    Customer.findOne({id: user.id}).exec(function(err, customer) {
+      console.log('customer', customer);
+      response.send(customer);
+    });
+    //APIService(RegistrationService.currentUser, request, response);
   }
 };
