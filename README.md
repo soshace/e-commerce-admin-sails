@@ -2,6 +2,12 @@
 
 a [Sails](http://sailsjs.org) application
 
+# Installation
+* Install MongoDB and create database with a user (do not forget to set database name, user name and user password via environment variables)
+* Install Redis `$ sudo apt-get install redis-server`
+* Install NodeJS (and npm if not installed with node)
+* Export environment variables
+* Install npm packages `$ npm install`
 
 #NODE ENV
 
