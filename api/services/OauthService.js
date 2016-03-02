@@ -1,4 +1,5 @@
 var oauthserver = require('oauth2-server'),
+  OAuth2Error = require('oauth2-server/lib/error'),
   model = {};
 
 model.getAccessToken = function (bearerToken, callback) {
@@ -72,13 +73,19 @@ model.getUser = function (email, password, callback) {
       return callback(error);
     }
 
-    sails.log('-----OauthService getUser email password----', customer, customer.comparePassword(password));
-    //TODO: need to check password
-    if (customer) {
+    sails.log('-----OauthService getUser email password----');
+
+    if (customer && customer.comparePassword(password)) {
+      console.log('customer', customer, customer.comparePassword(password));
       return callback(null, customer.id);
     }
 
-    callback({error: 'User with current email & password does not exists'});
+    var err = new Error('Wrong email/password pair');
+    err.code = 403;
+    // Is there a better way to remove stack?
+    delete err.stack;
+    callback(err);
+
   });
 };
 
